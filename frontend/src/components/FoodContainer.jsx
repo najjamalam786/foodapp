@@ -13,7 +13,6 @@ const FoodContainer = ({flag, dataValue }) => {
   const { cartItems } = useSelector((state) => state.item);
   const { currentUser } = useSelector((state) => state.user);
   const [qty, setQty] = useState();
-  const [allCartItems, setAllCartItems] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -60,7 +59,7 @@ const FoodContainer = ({flag, dataValue }) => {
 
                 await res.json().then(() => {
 
-                  console.log("duplicate item quantity", qty + 1);
+                  console.log("duplicate item quantity", cartItems[i].quantity + 1);
                   fetchAllUserCart();
                 });
 
@@ -98,33 +97,34 @@ const FoodContainer = ({flag, dataValue }) => {
         }
   
       }
-        // last API call
-        const fetchAllUserCart = async () => {
+      
+      addUserCart();
+    }
+
+    // last API call
+    const fetchAllUserCart = async () => {
           
-          const res = await fetch('/api/user/allcart', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: currentUser?.email }),
-          }
-          );
-          await res.json().then(async (allData) => {
-            addtocart(allData);
-            
-            setAllCartItems(allData);
-            console.log('allData',allData)
-           
-          });
-          
-        }
-        addUserCart();
+      const res = await fetch('/api/user/allcart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: currentUser?.email }),
+      }
+      );
+      await res.json().then(async (allData) => {
+        addtocart(allData);
+        
+        console.log('allData',allData)
+       
+      });
+      
     }
     
     useEffect(() => {
 
       // last API call
-
+      fetchAllUserCart();
         
     // dispatch(addCartItems([]))
     // console.log("allCartItems empty");

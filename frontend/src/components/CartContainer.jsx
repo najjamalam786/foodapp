@@ -15,70 +15,38 @@ const CartContainer = () => {
   const { currentUser } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
-  const [allCartData, setAllCartData] = useState([]);
+  
   const [total, setTotal] = useState(0);
   const [flag, setFlag] = useState(1);
   
 
 
-  // const addtocart = async(allData) => {
-  //   await dispatch(addCartItems(allData))
-  //   localStorage.setItem("cartItems", JSON.stringify([...cartItems]));
-    
-  // };
 
-  // console.log(cartItems);
 
   const showCartHandler = () => {
-    // console.log("data", cartData);
-    console.log("cartItems", cartItems);
-    dispatch(itemShowCart(!showCart));
-    
+    dispatch(itemShowCart(!showCart));  
   };
 
    
   
-
+  
   useEffect(() => {
 
     
     setTotal(
       cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
     );
-
-    // const fetchCartItems = async() => {
-    //   // console.log("email", currentUser?.email);
-    //   const response = await fetch('/api/user/cartData', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({email: currentUser?.email}),
-    //   }
-    //   );
-    //   await response.json().then((allData) => {
-    //     // setCartData(data);
-    //     addtocart(allData);
-    //     setAllCartData(allData);
-    //     console.log(allData.length);
-    //     // console.log(data[1][0]._id);
-    //     // dispatch(addCartItems(data));
-    //   });
-    // }
-
-    // fetchCartItems();
-
- 
+      // console.log("1 flag", flag);
     
-  }, [flag, currentUser]);
+  }, []);
 
-  const clearCartItem = () => {
-    dispatch(addCartItems([]));
+  // const clearCartItem = () => {
+  //   dispatch(addCartItems([]));
 
-    localStorage.setItem("cartItems", JSON.stringify([]));
-  }
+  //   localStorage.setItem("cartItems", JSON.stringify([]));
+  // }
   
-  
+  console.log("total", total);
   
 
   return (
@@ -97,7 +65,7 @@ const CartContainer = () => {
 
         <p
           className="flex items-center gap-2 p-1 px-2 my-2 bg-gray-100 rounded-md hover:shadow-md  cursor-pointer text-textColor text-base"
-          onClick={clearCartItem}
+          // onClick={clearCartItem}
 
         >
           Clear <RiRefreshFill />
@@ -115,8 +83,8 @@ const CartContainer = () => {
                 <CartItem
                   key={item._id}
                   item={item}
-                  setFlag={setFlag}
-                  flag={flag}
+                  setTotal={setTotal}
+                  
                 />
               ))}
           </div>

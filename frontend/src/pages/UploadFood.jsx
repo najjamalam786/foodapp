@@ -144,11 +144,12 @@ const UploadFood = () => {
             setMsg("Data Uploaded successfully!");
             setAlertStatus("Success");
             setTimeout(() => {
-              setFields(false);
-            }, 4000);
+            //   setFields(false);
+              window.location.reload();
+            }, 3000);
 
 
-            clearData();
+            // clearData();
           
         } catch (error) {
           console.log(error);
@@ -164,17 +165,18 @@ const UploadFood = () => {
         // fetchData();
       };
 
-        const clearData = () => {
-        setFoodData({
-          name: "",
-          imageURL: "",
-          category: "",
-          calories: "",
-          pieces: "",
-          quantity: "",
-          price: "",
-        })
-      };
+    //     const clearData = () => {
+    //     setFoodData({
+    //       name: "",
+    //       imageURL: "",
+    //       category: "",
+    //       calories: "",
+    //       pieces: "",
+    //       quantity: "",
+    //       price: "",
+    //     })
+        
+    //   };
 
     //   const fetchData = async () => {
     //     await getAllFoodItems().then((data) => {

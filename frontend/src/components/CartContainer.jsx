@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { MdAllInclusive, MdOutlineKeyboardBackspace } from "react-icons/md";
+import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import { RiRefreshFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import EmptyCart from "../img/emptyCart.svg";
-import { addCartItems, itemShowCart } from "../redux/createSlice/itemSlice";
-// import CartItem from "./CartItem";
+import { itemShowCart } from "../redux/createSlice/itemSlice";
 
 
 import CartItem from "./CartItem";
@@ -17,7 +16,6 @@ const CartContainer = () => {
   const dispatch = useDispatch();
   
   const [total, setTotal] = useState(0);
-  const [flag, setFlag] = useState(1);
   
 
 
@@ -36,7 +34,6 @@ const CartContainer = () => {
     setTotal(
       cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
     );
-      // console.log("1 flag", flag);
     
   }, []);
 
@@ -46,7 +43,6 @@ const CartContainer = () => {
   //   localStorage.setItem("cartItems", JSON.stringify([]));
   // }
   
-  console.log("total", total);
   
 
   return (

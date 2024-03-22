@@ -16,7 +16,8 @@ const CartItem = ({ item, setTotal}) => {
 
 
   const updateQty = async (action, id) => {
-    if (action === 'inc') {
+    if (action === 'inc' ) {
+      setQty(qty + 1);
       await fetch('/api/user/updatecart', {
         method: 'POST',
         headers: {
@@ -28,7 +29,10 @@ const CartItem = ({ item, setTotal}) => {
 
     }
 
-    else if (action === 'dec') {
+    else if (action === 'dec' && qty > 1) {
+
+      setQty(qty - 1);
+
       await fetch('/api/user/updatecart', {
         method: 'POST',
         headers: {
@@ -86,7 +90,6 @@ const CartItem = ({ item, setTotal}) => {
         <div
           onClick={() => {
             updateQty("dec", item?._id);
-            setQty(qty - 1);
 
           }}
         >
@@ -100,7 +103,6 @@ const CartItem = ({ item, setTotal}) => {
         <div
           onClick={() => {
             updateQty("inc", item?._id);
-            setQty(qty + 1);
           }}
         >
           <BiPlus className="text-gray-50 " />

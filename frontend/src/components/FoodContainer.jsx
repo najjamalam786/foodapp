@@ -4,34 +4,31 @@ import NotFound from "../img/NotFound.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { addCartItems } from "../redux/createSlice/itemSlice";
 
-const FoodContainer = ({flag, dataValue }) => {
+const FoodContainer = ({flag, dataValue, scrollValue }) => {
 
   // const rowContainer = useRef();
   const foodContainer = useRef();
  
-  // const [items, setItems] = useState({});
   const { cartItems } = useSelector((state) => state.item);
   const { currentUser } = useSelector((state) => state.user);
-  const [qty, setQty] = useState();
 
   const dispatch = useDispatch();
 
-  // const [items, setItems] = useState({});
 
   
 
   const addtocart = async(allData) => {
     dispatch(addCartItems(allData))
-    localStorage.setItem("cartItems", JSON.stringify([...cartItems]));
+    // localStorage.setItem("cartItems", JSON.stringify([...cartItems]));
     
   };
 
   
   
   
-  // useEffect(() => {
-    //   rowContainer.current.scrollLeft += scrollValue;
-    // }, [scrollValue]);
+  useEffect(() => {
+      foodContainer.current.scrollLeft += scrollValue;
+    }, [scrollValue]);
 
     const handleClick = async(items) => {
       const addUserCart = async() => {
@@ -59,7 +56,6 @@ const FoodContainer = ({flag, dataValue }) => {
 
                 await res.json().then(() => {
 
-                  console.log("duplicate item quantity", cartItems[i].quantity + 1);
                   fetchAllUserCart();
                 });
 
@@ -86,11 +82,6 @@ const FoodContainer = ({flag, dataValue }) => {
               console.log("add to Cart");
             });
           }
-          
-          
-    
-          // 
-          
         } catch (error) {
           console.log(error);
           
@@ -114,9 +105,7 @@ const FoodContainer = ({flag, dataValue }) => {
       );
       await res.json().then(async (allData) => {
         addtocart(allData);
-        
-        console.log('allData',allData)
-       
+
       });
       
     }

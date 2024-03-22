@@ -21,66 +21,65 @@ const CartItem = ({ item, setFlag, flag}) => {
   };
 
   const updateQty = async(action, id) => {
-      if(action === 'inc') {
-        await fetch('/api/user/updatecart', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({email: currentUser?.email, ID: id, qty: qty+1}),
-        });
-        console.log("quantity",qty+1);
-
-      } else if(action === 'dec') {
-        await fetch('/api/user/updatecart', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({email: currentUser?.email, ID: id, qty: qty-1}),
-        });
-
-        console.log("quantity",qty-1);
-      }
-    
-      
-      
-     
-    
-      if (qty === 1) {
-        items = cartItems.filter((item) => item._id !== id);
-        setFlag(flag + 1);
-        cartDispatch();
-      } 
-      cartDispatch();
-      
-    
-  };
-
-  useEffect(() => {
-
-    const fetchCartItems = async() => {
-      // console.log("email", currentUser?.email);
-      const response = await fetch('/api/user/cartData', {
+    if(action === 'inc') {
+      await fetch('/api/user/updatecart', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({email: currentUser?.email}),
-      }
-      );
-      await response.json().then((data) => {
-
-        console.log("cartData", data)
-        items = data;
-        cartDispatch();
+        body: JSON.stringify({email: currentUser?.email, ID: id, qty: qty+1}),
       });
-    }
+      console.log("quantity",qty+1);
 
-    fetchCartItems();
+    } else if(action === 'dec') {
+      await fetch('/api/user/updatecart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({email: currentUser?.email, ID: id, qty: qty-1}),
+      });
+
+      console.log("quantity",qty-1);
+    }
+  
+    
+    
+   
+  
+    if (qty === 1) {
+      items = cartItems.filter((item) => item._id !== id);
+      setFlag(flag + 1);
+      cartDispatch();
+    } 
+    cartDispatch();
+    
+  
+};
+
+  useEffect(() => {
+
+    // const fetchCartItems = async() => {
+    //   // console.log("email", currentUser?.email);
+    //   const response = await fetch('/api/user/cartData', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({email: currentUser?.email}),
+    //   }
+    //   );
+    //   await response.json().then((data) => {
+
+    //     items = data;
+    //     cartDispatch();
+    //   });
+    // }
+
+    // fetchCartItems();
 
     // items = cartItems;
-  }, [qty]);
+  }, []);
 
   return (
     <div className="w-full p-1 px-2 rounded-lg bg-cartItem flex items-center gap-2">
@@ -102,8 +101,8 @@ const CartItem = ({ item, setFlag, flag}) => {
       <div className="group flex items-center gap-2 ml-auto cursor-pointer">
         <div
           onClick={() => {
+            updateQty("remove", item?._id);
             setQty(qty - 1);
-            updateQty("dec", item?._id);
           }}
         >
           <BiMinus className="text-gray-50 " />
@@ -115,9 +114,9 @@ const CartItem = ({ item, setFlag, flag}) => {
 
         <div
           onClick={() => {
+            updateQty("add", item?._id);
             setQty(qty + 1);
-            updateQty("inc", item?._id);
-        }}
+          }}
         >
           <BiPlus className="text-gray-50 " />
         </div>

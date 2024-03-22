@@ -108,16 +108,16 @@ export const logOut = async (req, res, next) => {
 // Add to cart
 
 export const addItemToCart = async (req, res, next) => {
-    const cartData = req.body.userCart;
+    const cartData = req.body;
     
     // const itemID = await User.findOne({_d: req.body.cartData._id});
 
     // await cartData.splice(0,0{Order_data: req.body.userCart})
-
+    
+    
     try {
-        await User.findOneAndUpdate({email: req.body.email}, {$push: {userCart: cartData}}).then(() => {
-            res.status(200).json("Item added to cart");
-        });
+        const response = await User.findOneAndUpdate({email: cartData.email,}, {$push: {userCart: cartData.userCart}},{new: true} );
+        res.status(200).json(response);
     } catch (error) {
         next(error);
     }
@@ -125,7 +125,7 @@ export const addItemToCart = async (req, res, next) => {
 }
 
 // import cartData from user 
-export const fetchUserCartData = async(req, res, next) => {
+export const UserAllCartData = async(req, res, next) => {
 
     try {
         const response = await User.findOne({email: req.body.email});
@@ -140,21 +140,20 @@ export const fetchUserCartData = async(req, res, next) => {
 export const updateUserCart = async(req, res, next) => {
     // const quantity = req.body.quantity;
     const cartData = req.body;
-    console.log(cartData.qty)
-const query = { email: cartData.email };
-
-const updateDocument = {
-  $set: { "userCart.$[i].quantity": cartData.qty },
-};
-
-const options = {
-  arrayFilters: [
-    {
-      "i._id": cartData.ID,
-      
-    }
-  ]
-};
+    const query = { email: cartData.email };
+    
+    const updateDocument = {
+        $set: { "userCart.$[i].quantity": cartData.qty },
+    };
+    
+    const options = {
+        arrayFilters: [
+            {
+                "i._id": cartData.ID,
+                
+            }
+        ]
+    };
 
     try {
         await User.findOneAndUpdate(query, updateDocument, options, {new: true}).then(() => {

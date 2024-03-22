@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { MdOutlineKeyboardBackspace } from "react-icons/md";
+import { MdAllInclusive, MdOutlineKeyboardBackspace } from "react-icons/md";
 import { RiRefreshFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import EmptyCart from "../img/emptyCart.svg";
@@ -15,12 +15,17 @@ const CartContainer = () => {
   const { currentUser } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
-  const [cartData, setCartData] = useState([]);
+  const [allCartData, setAllCartData] = useState([]);
   const [total, setTotal] = useState(0);
   const [flag, setFlag] = useState(1);
   
 
 
+  // const addtocart = async(allData) => {
+  //   await dispatch(addCartItems(allData))
+  //   localStorage.setItem("cartItems", JSON.stringify([...cartItems]));
+    
+  // };
 
   // console.log(cartItems);
 
@@ -41,25 +46,27 @@ const CartContainer = () => {
       cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
     );
 
-    const fetchCartItems = async() => {
-      // console.log("email", currentUser?.email);
-      const response = await fetch('/api/user/cartData', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({email: currentUser?.email}),
-      }
-      );
-      await response.json().then((data) => {
-        setCartData(data);
-        // console.log(data.length);
-        // console.log(data[1][0]._id);
-        // dispatch(addCartItems(data));
-      });
-    }
+    // const fetchCartItems = async() => {
+    //   // console.log("email", currentUser?.email);
+    //   const response = await fetch('/api/user/cartData', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({email: currentUser?.email}),
+    //   }
+    //   );
+    //   await response.json().then((allData) => {
+    //     // setCartData(data);
+    //     addtocart(allData);
+    //     setAllCartData(allData);
+    //     console.log(allData.length);
+    //     // console.log(data[1][0]._id);
+    //     // dispatch(addCartItems(data));
+    //   });
+    // }
 
-    fetchCartItems();
+    // fetchCartItems();
 
  
     
@@ -103,8 +110,7 @@ const CartContainer = () => {
           {/* cart Items section */}
           <div className="w-full h-340 md:h-42 px-6 py-10 flex flex-col gap-3 overflow-y-scroll no-scrollbar">
             {/* cart Item */}
-            {cartItems &&
-              cartItems.length > 0 &&
+            {
               cartItems.map((item) => (
                 <CartItem
                   key={item._id}

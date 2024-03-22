@@ -4,22 +4,25 @@ import NotFound from "../img/NotFound.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { addCartItems } from "../redux/createSlice/itemSlice";
 
-const FoodContainer = ({ flag, dataValue }) => {
+const FoodContainer = ({flag, dataValue }) => {
 
   // const rowContainer = useRef();
   const foodContainer = useRef();
  
-  const [itemID, setItemID] = useState(null);
+  // const [items, setItems] = useState({});
   const { cartItems } = useSelector((state) => state.item);
   const { currentUser } = useSelector((state) => state.user);
-  const [qty, setQty] = useState(1);
+  const [qty, setQty] = useState();
+  const [allCartItems, setAllCartItems] = useState([]);
 
   const dispatch = useDispatch();
+
+  // const [items, setItems] = useState({});
 
   
 
   const addtocart = async(allData) => {
-    await dispatch(addCartItems(allData))
+    dispatch(addCartItems(allData))
     localStorage.setItem("cartItems", JSON.stringify([...cartItems]));
     
   };
@@ -30,125 +33,103 @@ const FoodContainer = ({ flag, dataValue }) => {
   // useEffect(() => {
     //   rowContainer.current.scrollLeft += scrollValue;
     // }, [scrollValue]);
-    
-    useEffect(() => {
 
-      // last API call
-      const fetchUserCart = async(data) => {
-
+    const handleClick = async(items) => {
+      const addUserCart = async() => {
         try {
-  
-          const response = await fetch("/api/user/cart",{
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              userCart: data,
-              email: currentUser?.email,
-              // userCart: new Date().toDateString()
-            }),
-          });
+          // first api call
           
-          const dataMessage = await response.json();
-          
-          if(dataMessage) {
-            console.log(dataMessage);
-          }else{
-            console.log("not Working Cart");
-          }
-          
-        } catch (error) {
-          console.log(error);
-          
-        }
-        
-      } 
-      
-      // second API call
-      const fetchCartItems = async() => {
-  
-        try {
-          const response = await fetch(`/api/item/get/${itemID}`);
-          await response.json().then((data) => {
-            
-            
-            fetchUserCart(data);
-          });
-        } catch (error) {
-          console.log(error);
-  
-        }
-      }
-
-
-      // first API call
-      const fetchAllUserCart = async() => {
-
-        const res = await fetch('/api/user/cartData', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({email: currentUser?.email}),
-        }
-        );
-        await res.json().then(async(allData) => {
-
-          addtocart(allData);
-          
-          if(itemID){
-
-            for(let i = 0; i < allData.length; i++){
-              if(allData[i]._id === itemID){
-
-                // setQty(allData[i].quantity);
+          if(currentUser){
+            for(let i = 0; i < cartItems.length; i++){
+              if(cartItems[i]._id === items._id){
                 
-                // cartItems[i].quantity = qty;
-                // dispatch(addCartItems(cartItems[i].quantity + 1));
-                const response = await fetch("/api/user/updatecart",{
+                
+                // second API call
+                const res = await fetch("/api/user/updatecart", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
                   },
                   body: JSON.stringify({
-                    ID: itemID,
-                    qty,
+                    ID: items._id,
+                    qty: cartItems[i].quantity + 1,
                     email: currentUser?.email,
-                    // id: itemID,
                     // userCart: new Date().toDateString()
                   }),
                 });
 
-                response.json().then((data) => {
-                  console.log(data);
-                })
+                await res.json().then(() => {
 
+                  console.log("duplicate item quantity", qty + 1);
+                  fetchAllUserCart();
+                });
 
-                
-                console.log("duplicate value", );
-                setItemID(null);
                 return;
               }
             }
             
-            fetchCartItems();
-            setItemID(null);
+            // first API call
+            const response = await fetch("/api/user/cart",{
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                userCart: items,
+                email: currentUser?.email,
+                // userCart: new Date().toDateString()
+              }),
+            });
+            
+            await response.json().then(() => {
+              
+              fetchAllUserCart();
+              console.log("add to Cart");
+            });
           }
+          
+          
+    
+          // 
+          
+        } catch (error) {
+          console.log(error);
+          
+        }
+  
+      }
+        // last API call
+        const fetchAllUserCart = async () => {
+          
+          const res = await fetch('/api/user/allcart', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: currentUser?.email }),
+          }
+          );
+          await res.json().then(async (allData) => {
+            addtocart(allData);
             
-
-            
-            // console.log(data.length);
-            // console.log(data[1][0]._id);
-            // dispatch(addCartItems(data));
+            setAllCartItems(allData);
+            console.log('allData',allData)
+           
           });
           
         }
+        addUserCart();
+    }
+    
+    useEffect(() => {
 
-        fetchAllUserCart();
+      // last API call
+
         
+    // dispatch(addCartItems([]))
+    // console.log("allCartItems empty");
         
-    }, [itemID, currentUser]);
+    }, []);
     
     
 
@@ -183,8 +164,8 @@ const FoodContainer = ({ flag, dataValue }) => {
                   <div
                     className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center cursor-pointer hover:shadow-md -mt-8"
                   onClick={() => {
-                    setItemID(item._id);
-                    setQty(qty + 1);
+                    handleClick(item);
+                    // setQty(item?.quantity);
                   }}
                   >
                     <MdShoppingBasket className="text-white text-lg" />
@@ -206,9 +187,7 @@ const FoodContainer = ({ flag, dataValue }) => {
               <p className="mt-1 text-sm text-gray-500">
                 {item?.calories} Calories
               </p>
-              <p className="mt-1 text-sm text-gray-500">
-                {qty + 1} quantity
-              </p>
+              
               {item?.prices > 1 && (
               <p className="mb-1 text-sm text-gray-500">
                 {item?.pieces} <span className="text-sm text-slate-500">pieces</span>

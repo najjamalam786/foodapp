@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { BiMinus, BiPlus } from "react-icons/bi";
+import { BiMinus, BiPlus, BiTrash } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { addCartItems } from "../redux/createSlice/itemSlice";
 
-// let items = [];
 
-const CartItem = ({ item, setTotal}) => {
+const CartItem = ({ item, setTotal }) => {
 
-  // const { cartItems } = useSelector((state) => state.item);
   const { currentUser } = useSelector((state) => state.user);
   const dispatchEvent = useDispatch();
-  // console.log(item)
   const [qty, setQty] = useState(item?.quantity);
-  // const [items, setItems] = useState([]);
 
 
   const updateQty = async (action, id) => {
-    if (action === 'inc' ) {
+
+    if (action === 'inc') {
       setQty(qty + 1);
       await fetch('/api/user/updatecart', {
         method: 'POST',
@@ -24,6 +21,14 @@ const CartItem = ({ item, setTotal}) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email: currentUser?.email, ID: id, qty: qty + 1 }),
+      }).then((res) => {
+        res.json().then((allData) => {
+          dispatchEvent(addCartItems(allData));
+          setTotal(
+            allData.reduce((acc, item) => acc + item.price * item.quantity, 0)
+          );
+
+        });
       });
 
 
@@ -39,29 +44,36 @@ const CartItem = ({ item, setTotal}) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email: currentUser?.email, ID: id, qty: qty - 1 }),
-      })
+      }).then((res) => {
+        res.json().then((allData) => {
+          dispatchEvent(addCartItems(allData));
+          setTotal(
+            allData.reduce((acc, item) => acc + item.price * item.quantity, 0)
+          );
+
+        });
+      });
 
 
     }
+    else if (action === 'delete') {
 
-    await fetch("/api/user/allcart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email: currentUser?.email }),
-    }).then((res) => res.json().then((allData) => {
-      dispatchEvent(addCartItems(allData));
-      
-      setTotal(
-        allData.reduce((acc, item) => acc + item.price * item.quantity, 0)
-      );
-    }));
-    // if (qty === 1) {
-    //   items = cartItems.filter((item) => item._id !== id);
-    //   setFlag(flag + 1);
-    //   cartDispatch();
-    // } 
+      await fetch('/api/user/deleteusercart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: currentUser?.email, ID: id }),
+      }).then((res) => {
+        res.json().then((allData) => {
+          dispatchEvent(addCartItems(allData));
+          setTotal(
+            allData.reduce((acc, item) => acc + item.price * item.quantity, 0)
+          );
+
+        });
+      });
+    }
 
 
 
@@ -82,30 +94,36 @@ const CartItem = ({ item, setTotal}) => {
         <p className="text-sm block text-gray-300 font-semibold">
           ₹ {parseFloat(item?.price) * qty} {item?.pieces > 1 && `/${item?.pieces}`}
         </p>
-      
+
       </div>
 
       {/* button section */}
-      <div className="group flex items-center gap-2 ml-auto cursor-pointer">
-        <div
-          onClick={() => {
-            updateQty("dec", item?._id);
 
-          }}
-        >
-          <BiMinus className="text-gray-50 " />
-        </div>
+      <div className="flex flex-col items-center gap-4 ml-auto">
 
-        <p className="w-5 h-5 rounded-sm bg-cartBg text-gray-50 flex items-center justify-center">
-          {qty}
-        </p>
+        <BiTrash onClick={() => updateQty("delete", item?._id)} className="text-gray-50 hover:text-red-600" />
 
-        <div
-          onClick={() => {
-            updateQty("inc", item?._id);
-          }}
-        >
-          <BiPlus className="text-gray-50 " />
+        <div className="group flex  gap-2  cursor-pointer">
+          <div
+            onClick={() => {
+              updateQty("dec", item?._id);
+
+            }}
+          >
+            <BiMinus className="text-gray-50 " />
+          </div>
+
+          <p className="w-5 h-5 rounded-sm bg-cartBg text-gray-50 flex items-center justify-center">
+            {qty}
+          </p>
+
+          <div
+            onClick={() => {
+              updateQty("inc", item?._id);
+            }}
+          >
+            <BiPlus className="text-gray-50 " />
+          </div>
         </div>
       </div>
     </div>

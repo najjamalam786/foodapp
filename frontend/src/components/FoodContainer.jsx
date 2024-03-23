@@ -17,11 +17,11 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
 
   
 
-  const addtocart = async(allData) => {
-    dispatch(addCartItems(allData))
+  // const addtocart = async(allData) => {
+  //   dispatch(addCartItems(allData))
     // localStorage.setItem("cartItems", JSON.stringify([...cartItems]));
     
-  };
+  // };
 
   
   
@@ -41,7 +41,7 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
                 
                 
                 // second API call
-                const res = await fetch("/api/user/updatecart", {
+                await fetch("/api/user/updatecart", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
@@ -52,11 +52,11 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
                     email: currentUser?.email,
                     // userCart: new Date().toDateString()
                   }),
-                });
+                }).then((res) => {
+                  res.json().then((allCart) => {
+                    dispatch(addCartItems(allCart))
 
-                await res.json().then(() => {
-
-                  fetchAllUserCart();
+                  });
                 });
 
                 return;
@@ -76,10 +76,9 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
               }),
             });
             
-            await response.json().then(() => {
+            await response.json().then((allCart) => {
+              dispatch(addCartItems(allCart))
               
-              fetchAllUserCart();
-              console.log("add to Cart");
             });
           }
         } catch (error) {
@@ -93,30 +92,29 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
     }
 
     // last API call
-    const fetchAllUserCart = async () => {
-          
-      const res = await fetch('/api/user/allcart', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: currentUser?.email }),
-      }
-      );
-      await res.json().then(async (allData) => {
-        addtocart(allData);
-
-      });
-      
-    }
+    
     
     useEffect(() => {
 
-      // last API call
-      fetchAllUserCart();
+      // only one time API call
+      const fetchAllUserCart = async () => {
+          
+        const res = await fetch('/api/user/allcart', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: currentUser?.email }),
+        }
+        );
+        await res.json().then(async (allData) => {
+          dispatch(addCartItems(allData));
+  
+        });
         
-    // dispatch(addCartItems([]))
-    // console.log("allCartItems empty");
+      }
+      fetchAllUserCart();
+     
         
     }, []);
     

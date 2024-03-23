@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
+import Logo from "../img/favicon.png";
 import { RiRefreshFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import EmptyCart from "../img/emptyCart.svg";
@@ -49,23 +50,26 @@ const CartContainer = () => {
     
     <div
     
-    className="fixed top-0 right-0 w-full md:w-375 h-screen bg-white drop-shadow-md flex flex-col z-[101]"
+    className="fixed top-0 right-0 w-full md:w-375 h-screen bg-green-300 drop-shadow-md flex flex-col z-[101]"
     >
       
     
-      <div className="w-full flex items-center justify-between p-4 cursor-pointer">
+      <div className="w-full flex items-center justify-between p-4 cursor-pointer bg-green-300">
         <div onClick={showCartHandler}>
           <MdOutlineKeyboardBackspace className="text-textColor text-3xl" />
         </div>
-        <p className="text-textColor text-lg font-semibold">Cart</p>
-
         <p
           className="flex items-center gap-2 p-1 px-2 my-2 bg-gray-100 rounded-md hover:shadow-md  cursor-pointer text-textColor text-base"
           // onClick={clearCartItem}
 
         >
-          Clear <RiRefreshFill />
+          <img src={Logo} alt="logo" className="w-8 h-8 object-contain" />
+
         </p>
+
+        <p className="text-textColor text-lg font-semibold">Cart</p>
+
+       
       </div>
 
       {/* bottom section */}

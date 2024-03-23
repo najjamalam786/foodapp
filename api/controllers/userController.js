@@ -117,7 +117,7 @@ export const addItemToCart = async (req, res, next) => {
     
     try {
         const response = await User.findOneAndUpdate({email: cartData.email,}, {$push: {userCart: cartData.userCart}},{new: true} );
-        res.status(200).json(response);
+        res.status(200).json(response.userCart);
     } catch (error) {
         next(error);
     }
@@ -156,11 +156,37 @@ export const updateUserCart = async(req, res, next) => {
     };
 
     try {
-        await User.findOneAndUpdate(query, updateDocument, options, {new: true}).then(() => {
-            res.status(200).json("Cart updated");
+        await User.findOneAndUpdate(query, updateDocument, options).then(async() => {
+            
+            await User.findOne({email: cartData.email}).then((response) => {
+                res.status(200).json(response.userCart);
+            })
         });
     } catch (error) {
         next(error);
     }
 }
     
+
+// Delete user cart
+
+export const deleteUserCart = async(req, res, next) => {
+    const cartData = req.body;
+    const query = { email: cartData.email };
+    
+    const updateDocument = {
+        $pull: { "userCart": { _id: cartData.ID } },
+    };
+    
+    try {
+        await User.findOneAndUpdate(query, updateDocument, {new: true}).then(async() => {
+            
+            await User.findOne({email: cartData.email}).then((response) => {
+                res.status(200).json(response.userCart);
+            })
+        });
+
+    } catch (error) {
+        next(error);
+    }
+}

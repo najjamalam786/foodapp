@@ -1,5 +1,5 @@
 import express from "express"
-import { addItemToCart, createUser, UserAllCartData, googleLogin, logOut, signIn, updateUserCart } from "../controllers/userController.js";
+import { addItemToCart, createUser, UserAllCartData, googleLogin, logOut, signIn, updateUserCart, deleteUserCart } from "../controllers/userController.js";
 import { verifyToken } from "../utils/verifyUser.js";
 
 const router = express.Router();
@@ -11,7 +11,8 @@ router
 .get('/logout', logOut)
 .post('/cart', verifyToken, addItemToCart)
 .post('/allcart', verifyToken, UserAllCartData)
-.post('/updatecart', verifyToken, updateUserCart);
+.post('/updatecart', verifyToken, updateUserCart)
+.post('/deleteusercart', verifyToken, deleteUserCart);
 
 
 export default router

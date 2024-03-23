@@ -98,6 +98,7 @@ export default function Header() {
 
           <div 
           onMouseEnter={() => {setIsMenu(true);}}
+          onMouseLeave={() => {setIsMenu(false);}}
           
           
             className="relative">
@@ -110,8 +111,8 @@ export default function Header() {
             />
             
               {isMenu && <div
-                onMouseLeave={() => {setIsMenu(false);}}
-                className="w-40 z-10 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-12 right-0"
+                
+                className="w-40 z-10 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-10 right-0"
               >
                 
                  

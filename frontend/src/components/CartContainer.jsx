@@ -5,14 +5,14 @@ import Logo from "../img/favicon.png";
 import { RiRefreshFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import EmptyCart from "../img/emptyCart.svg";
-import { itemShowCart } from "../redux/createSlice/itemSlice";
+import { addTotalPrice, itemShowCart } from "../redux/createSlice/itemSlice";
 
 
 import CartItem from "./CartItem";
 
 const CartContainer = () => {
 
-  const { cartItems, showCart } = useSelector((state) => state.item);
+  const { cartItems, showCart, totalPrice } = useSelector((state) => state.item);
   const { currentUser } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
@@ -115,10 +115,14 @@ const CartContainer = () => {
             </div>
 
             {currentUser ? (
-              <Link to="/order-create"
+              <Link to="/order-create" target="_blank"
                 
                 type="button"
-                className="w-full p-2 rounded-full bg-gradient-to-tr from-orange-400 to-orange-600 text-gray-50 text-lg my-2 hover:shadow-lg"
+                className="w-full p-2 rounded-full bg-gradient-to-tr text-center from-orange-400 to-orange-600 text-gray-50 text-lg my-2 hover:shadow-lg"
+                onClick={() => {
+                  showCartHandler();
+                  dispatch(addTotalPrice(total + 2.5));
+                }}
               >
                 Check Out
               </Link>

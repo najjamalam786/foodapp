@@ -37,11 +37,11 @@ const App = () => {
 
           <Route element={<PrivateRout />}>
 
+            <Route path="/order-create" element={<ShippingAddress/>} />
             
             <Route element={<AdminPrivateRout />}>
               <Route path="/createItem" element={<UploadFood />} />
             </Route>
-            <Route path="/order-create" element={<ShippingAddress/>} />
 
           </Route>
 

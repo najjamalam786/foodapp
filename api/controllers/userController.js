@@ -1,5 +1,5 @@
 import User from "../models/userModel.js";
-import Item from "../models/itemModel.js";
+import Order from "../models/OrderModel.js"
 import bcryptjs from "bcryptjs";
 import { errorHandler } from "../utils/errors.js";
 import jwt from "jsonwebtoken";
@@ -189,4 +189,45 @@ export const deleteUserCart = async(req, res, next) => {
     } catch (error) {
         next(error);
     }
+}
+
+// Order create by user 
+
+export const orderCreate = async(req, res, next) => {
+    const orderData = req.body;
+    const userE = await Order.findOne({email: orderData.email});
+
+    if(userE == null){
+        try{
+            await Order.create({
+                name: orderData.name,
+                email: orderData.email,
+                orderItems: [{foodData: orderData.orderItems, shippingAddress: orderData.shippingAddress, totalPrice: orderData.totalPrice}],
+                
+            }).then(() => {
+                console.log("Successfull user and order created");
+                res.status(200).json("Successfull user and order created");
+            });
+        }catch(error){
+            console.log('1 error');
+            next(error);
+        }
+    }
+
+    else{
+        try {
+            await Order.findOneAndUpdate({email: orderData.email}, {$push: {orderItems: [{foodData: orderData.orderItems, shippingAddress: orderData.shippingAddress, totalPrice: orderData.totalPrice}],  } },{new: true}).then(async() => {
+
+                await User.findOneAndUpdate({email: orderData.email}, {$set: {userCart: []}}, {new: true})
+                res.status(200).json("Successfull order created");
+
+            });
+            
+        } catch (error) {
+            console.log('2 error');
+
+            next(error);
+        }
+    }
+    
 }

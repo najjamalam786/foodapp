@@ -192,25 +192,7 @@ export default function Header() {
                 
               </div>}
 
-            {currentUser && cartItems && cartItems.length > 0 && (
-              <div className='fixed z-10 bottom-14 right-14 cursor-pointer bg-orange-200 p-2 rounded-full'
-              onMouseEnter={() => { setIsMenu(false); }}
-              onClick={showCartHandler}
-              >
-
-                <img src={AddTiffin} alt="cart" className="  w-10 h-10 "
-                  
-                />
-
-                <div className=" absolute -top-1 -right-1 w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center">
-                  <p className="text-xs text-white font-semibold">
-                    {cartItems.length}
-                  </p>
-                </div>
-
-              </div>
-
-            )}
+            
               
             
           </div>

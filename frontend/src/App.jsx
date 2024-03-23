@@ -14,9 +14,9 @@ import AdminPrivateRout from "./components/AdminPrivateRout";
 import HomePage from "./pages/HomePage";
 import { useSelector } from "react-redux";
 import CartContainer from "./components/CartContainer";
-// import { useState } from "react";
-// import { getAllFoodItems } from "./utils/firebaseFunctions";
-// import { actionType } from "./context/reducer";
+import ShippingAddress from "./pages/ShippingAddress";
+import Main from "./Main_2";
+
 
 const App = () => {
   const { showCart } = useSelector((state) => state.item);
@@ -28,7 +28,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Header />
-      {result && <CartContainer/>}
+      {result && <Main><CartContainer /></Main>}
       <main className="mt-2 md:mt-4 px-4 md:px-16 py-4 w-full">
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -41,6 +41,7 @@ const App = () => {
             <Route element={<AdminPrivateRout />}>
               <Route path="/createItem" element={<UploadFood />} />
             </Route>
+            <Route path="/order-create" element={<ShippingAddress/>} />
 
           </Route>
 

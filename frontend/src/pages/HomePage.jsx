@@ -1,20 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
+import AddTiffin from "../img/pngwing.png";
+
 import HomeContainer from "./Section01/HomeContainer";
 import MenuContainer from "./Section02/MenuContainer";
 import FoodContainer from "../components/FoodContainer";
-// import CartContainer from "../components/CartContainer";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { itemShowCart } from "../redux/createSlice/itemSlice";
 
 
 
 
 const HomePage = () => {
   
-  const { foodItems, showCart } = useSelector((state) => state.item);
+  const { cartItems, foodItems, showCart } = useSelector((state) => state.item);
+  const {currentUser} = useSelector(state => state.user);
   const [scrollValue, setScrollValue] = useState(0);
-
+  const dispatchEvent = useDispatch();
   // console.log("Working ", foodItems);
+
+  const showCartHandler = () => {
+    dispatchEvent(itemShowCart(!showCart));
+   
+  }
 
   useEffect(() => {}, [scrollValue, showCart]);
 
@@ -54,15 +62,25 @@ const HomePage = () => {
           dataValue={foodItems?.filter((n) => n.category === "fruits")}
         />
       </section>
-
       
+      {currentUser && cartItems && cartItems.length > 0 && (
+              <div className='fixed z-10 bottom-14 right-14 cursor-pointer bg-orange-200 p-2 rounded-full'
+              onClick={showCartHandler}
+              >
 
-      
+                <img src={AddTiffin} alt="cart" className="  w-10 h-10 "
+                  
+                />
 
-      
+                <div className=" absolute -top-1 -right-1 w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center">
+                  <p className="text-xs text-white font-semibold">
+                    {cartItems.length}
+                  </p>
+                </div>
 
-      {/* {showCart && <CartContainer />} */}
+              </div>
 
+            )}
       
     </div>
   );

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { MdOutlineKeyboardBackspace } from "react-icons/md";
+import { Link } from "react-router-dom";
+import { IoMdCloseCircle } from "react-icons/io";
 import Logo from "../img/favicon.png";
 import { RiRefreshFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
@@ -50,14 +51,15 @@ const CartContainer = () => {
     
     <div
     
-    className="fixed top-0 right-0 w-full md:w-375 h-screen bg-green-300 drop-shadow-md flex flex-col z-[101]"
+    className="w-full h-full rounded-t-[2rem] bg-green-300 drop-shadow-md flex flex-col"
     >
       
     
-      <div className="w-full flex items-center justify-between p-4 cursor-pointer bg-green-300">
-        <div onClick={showCartHandler}>
-          <MdOutlineKeyboardBackspace className="text-textColor text-3xl" />
-        </div>
+      <div className="w-full  flex items-center rounded-t-[2rem] justify-between p-4 cursor-pointer  bg-green-300">
+      <p className="text-textColor text-lg font-semibold">Cart</p>
+
+        
+        <div>
         <p
           className="flex items-center gap-2 p-1 px-2 my-2 bg-gray-100 rounded-md hover:shadow-md  cursor-pointer text-textColor text-base"
           // onClick={clearCartItem}
@@ -66,8 +68,11 @@ const CartContainer = () => {
           <img src={Logo} alt="logo" className="w-8 h-8 object-contain" />
 
         </p>
+        </div>
 
-        <p className="text-textColor text-lg font-semibold">Cart</p>
+        <div onClick={showCartHandler}>
+          <IoMdCloseCircle className=" w-8 text-3xl hover:text-5xl hover:text-red-600" />
+        </div>
 
        
       </div>
@@ -90,7 +95,7 @@ const CartContainer = () => {
           </div>
 
           {/* cart total section */}
-          <div className="w-full flex-1 bg-cartTotal rounded-t-[2rem] flex flex-col items-center justify-evenly px-8 py-2">
+          <div className="w-full flex-1  bg-cartTotal rounded-t-[2rem] flex flex-col items-center justify-evenly px-8 py-2">
             <div className="w-full flex items-center justify-between">
               <p className="text-gray-400 text-lg">Sub Total</p>
               <p className="text-gray-400 text-lg">$ {total}</p>
@@ -110,13 +115,13 @@ const CartContainer = () => {
             </div>
 
             {currentUser ? (
-              <button
+              <Link to="/order-create"
                 
                 type="button"
                 className="w-full p-2 rounded-full bg-gradient-to-tr from-orange-400 to-orange-600 text-gray-50 text-lg my-2 hover:shadow-lg"
               >
                 Check Out
-              </button>
+              </Link>
             ) : (
               <button
                 

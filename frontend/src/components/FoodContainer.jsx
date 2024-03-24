@@ -50,7 +50,6 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
                     ID: items._id,
                     qty: cartItems[i].quantity + 1,
                     email: currentUser?.email,
-                    // userCart: new Date().toDateString()
                   }),
                 }).then((res) => {
                   res.json().then((allCart) => {
@@ -58,7 +57,7 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
 
                   });
                 });
-
+                  
                 return;
               }
             }
@@ -72,7 +71,6 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
               body: JSON.stringify({
                 userCart: items,
                 email: currentUser?.email,
-                // userCart: new Date().toDateString()
               }),
             });
             

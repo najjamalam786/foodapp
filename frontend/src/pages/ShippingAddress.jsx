@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from "react-router-dom";
 import { addCartItems } from '../redux/createSlice/itemSlice';
+import Logo from '../img/favicon.png';
 
 
 export default function ShippingAddress() {
@@ -51,6 +52,7 @@ export default function ShippingAddress() {
                 orderItems: cartItems,
                 shippingAddress: formData,
                 totalPrice: totalPrice,
+
             }),
         }).then((response) => response.json()).then(() => {
             dispatch(addCartItems([]));
@@ -72,12 +74,25 @@ export default function ShippingAddress() {
   return (
     <>
         <main className=" p-3 max-w-4xl mx-auto">
-            <h1 className="text-3xl font-semibold text-center my-7">
-                Food Delivery Address
-            </h1>
+        <div className="w-full  flex items-center justify-between p-4  ">
+
+<img src={Logo} alt="logo" className="w-14 h-14" />
+<p
+className="text-slate-800 text-2xl font-semibold p-1 px-2 "
+// onClick={clearCartItem}
+
+>
+Food Delivery Address
+</p>
+</div>
 
             <form onSubmit={handleSubmit}  className="flex flex-col my-[50px] sm:flex-row gap-4 ">
                 <div className="flex flex-col gap-4 flex-1">
+
+                    <p
+                        className="border font-semibold text-slate-500 p-3 rounded-lg"
+                    >{currentUser.username} / {currentUser.email}</p>
+
                     <input
                         type="text"
                         placeholder="Landmark"
@@ -89,6 +104,8 @@ export default function ShippingAddress() {
                         value={formData.landmark}
                         required
                     />
+                    
+                    
                     <textarea
                         type="textarea"
                         placeholder="Address"
@@ -225,7 +242,7 @@ export default function ShippingAddress() {
                     </p>
                     <div className="flex gap-4">
                         <input
-                            onChange={(e) => setFiles(e.target.files)}
+                            // onChange={(e) => setFiles(e.target.files)}
                             type="file"
                             className="p-3 border border-gray-300 rounded w-full"
                             id="images"

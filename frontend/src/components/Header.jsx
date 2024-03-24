@@ -6,6 +6,7 @@ import { TiUserAdd } from "react-icons/ti";
 import Logo from "../img/logo.png";
 import Avatar from "../img/avatar.png";
 import AddTiffin from "../img/pngwing.png";
+import OrderTiffin from "../img/order_tiffin.png";
 import { Link } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { deleteFailure, deleteSuccess, deleteUserStart } from '../redux/createSlice/userSlice';
@@ -124,7 +125,7 @@ export default function Header() {
                       <div className="">
                       <Link to={"/admin-profile"}>
                         <p
-                          className="px-4 py-2 flex items-center gap-3 cursor-pointer hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor text-base"
+                          className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor text-base"
                           
                         >
                           Admin <GrUserAdmin />
@@ -133,7 +134,7 @@ export default function Header() {
 
                       <Link to={"/createItem"}>
                     <p
-                      className="px-4 py-2 flex items-center gap-3 cursor-pointer hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor text-base"
+                      className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor text-base"
                       
                     >
                       New Item <MdAdd />
@@ -145,7 +146,7 @@ export default function Header() {
                     <div>
                     <Link to={"/profile"}>
                       <p
-                        className="px-4 py-2 flex items-center gap-3 cursor-pointer hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor text-base"
+                        className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor text-base"
                         
                       >
                         Profile <FaUserCog />
@@ -159,9 +160,19 @@ export default function Header() {
                     }
                      
                   
+                  <Link to={"/user-orders"}>
+                  <span
+                    className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor text-base"
+                  >
+                    Order 
+                  <img src={OrderTiffin} className="w-5 h-5" alt="order" />
+                  </span>
+
+                  </Link>
+
                   <Link to={'/signin'}>
                   <p
-                    className="px-4 py-2 flex items-center gap-3 cursor-pointer hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor text-base"
+                    className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor text-base"
                     onClick={LogOut}
                   >
                     Logout <MdLogout />
@@ -171,7 +182,7 @@ export default function Header() {
                 ) : (
                   <div>
                   <Link to={"/signin"}>
-                    <p className="px-4 py-2 flex items-center gap-3 cursor-pointer hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor text-base"
+                    <p className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor text-base"
 
                     >                    
                     Login <MdLogin />
@@ -180,7 +191,7 @@ export default function Header() {
                   </Link>
 
                   <Link to={"/signup"}>
-                    <p className="px-4 py-2 flex items-center gap-3 cursor-pointer hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor text-base"
+                    <p className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor text-base"
 
                     >                    
                     Sign Up <TiUserAdd />

@@ -12,23 +12,36 @@ import UploadFood from "./pages/UploadFood";
 import PrivateRout from "./components/PrivateRout";
 import AdminPrivateRout from "./components/AdminPrivateRout";
 import HomePage from "./pages/HomePage";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CartContainer from "./components/CartContainer";
 import ShippingAddress from "./pages/ShippingAddress";
 import Main from "./Main_2";
+import { showNavBar } from "./redux/createSlice/itemSlice";
+import { useEffect } from "react";
+import UserOrder from "./pages/UserOrder";
 
 
 const App = () => {
-  const { showCart } = useSelector((state) => state.item);
-  const result = showCart;
+  const { showCart, showNav } = useSelector((state) => state.item);
+  const dispatch = useDispatch();
+  
 
+useEffect(() => {
+  console.log("current time", new Date().toLocaleTimeString());
+  console.log("current date", new Date().toDateString());
 
+  if(window.location.pathname === "/order-create") {
+    dispatch(showNavBar(false));
+  }else{
+  dispatch(showNavBar(true));
+}
+}, [])
 
 
   return (
     <BrowserRouter>
-      <Header />
-      {result && <Main><CartContainer /></Main>}
+      {showNav && <Header />}
+      {showCart && <Main><CartContainer /></Main>}
       <main className="mt-2 md:mt-4 px-4 md:px-16 py-4 w-full">
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -38,6 +51,7 @@ const App = () => {
           <Route element={<PrivateRout />}>
 
             <Route path="/order-create" element={<ShippingAddress/>} />
+            <Route path="/user-orders" element={<UserOrder/>} />
             
             <Route element={<AdminPrivateRout />}>
               <Route path="/createItem" element={<UploadFood />} />

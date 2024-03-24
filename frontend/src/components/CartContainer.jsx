@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { IoMdCloseCircle } from "react-icons/io";
 import Logo from "../img/favicon.png";
-import { RiRefreshFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import EmptyCart from "../img/emptyCart.svg";
 import { addTotalPrice, itemShowCart } from "../redux/createSlice/itemSlice";
@@ -12,7 +11,7 @@ import CartItem from "./CartItem";
 
 const CartContainer = () => {
 
-  const { cartItems, showCart, totalPrice } = useSelector((state) => state.item);
+  const { cartItems, showCart } = useSelector((state) => state.item);
   const { currentUser } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
@@ -115,7 +114,7 @@ const CartContainer = () => {
             </div>
 
             {currentUser ? (
-              <Link to="/order-create" target="_blank"
+              <Link to="/order-create" 
                 
                 type="button"
                 className="w-full p-2 rounded-full bg-gradient-to-tr text-center from-orange-400 to-orange-600 text-gray-50 text-lg my-2 hover:shadow-lg"

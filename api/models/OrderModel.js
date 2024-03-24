@@ -11,6 +11,15 @@ const orderSchema = new mongoose.Schema({
     },
     orderItems:[
         {
+            orderDate:{
+                type:String,
+                required:true
+            },
+            orderTime:{
+                type:String,
+                required: true
+            },
+            
             foodData:{
                 type:Array,
                 required:true,
@@ -24,6 +33,7 @@ const orderSchema = new mongoose.Schema({
                 type:Number,
                 required:true
             },
+            
         }
     ],
     paymentMethod:{
@@ -32,10 +42,9 @@ const orderSchema = new mongoose.Schema({
     paymentResult:{
         type:Object,
     },
+    
    
-}, {
-    timestamps: true
-})
+} )
 
 const Order = mongoose.model("Order", orderSchema)
 export default Order

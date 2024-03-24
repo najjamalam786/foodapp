@@ -202,7 +202,7 @@ export const orderCreate = async(req, res, next) => {
             await Order.create({
                 name: orderData.name,
                 email: orderData.email,
-                orderItems: [{foodData: orderData.orderItems, shippingAddress: orderData.shippingAddress, totalPrice: orderData.totalPrice}],
+                orderItems: [{foodData: orderData.orderItems, shippingAddress: orderData.shippingAddress, totalPrice: orderData.totalPrice, orderDate: new Date().toDateString(), orderTime: new Date().toLocaleTimeString()}],
                 
             }).then(() => {
                 console.log("Successfull user and order created");
@@ -216,7 +216,7 @@ export const orderCreate = async(req, res, next) => {
 
     else{
         try {
-            await Order.findOneAndUpdate({email: orderData.email}, {$push: {orderItems: [{foodData: orderData.orderItems, shippingAddress: orderData.shippingAddress, totalPrice: orderData.totalPrice}],  } },{new: true}).then(async() => {
+            await Order.findOneAndUpdate({email: orderData.email}, {$push: {orderItems: [{foodData: orderData.orderItems, shippingAddress: orderData.shippingAddress, totalPrice: orderData.totalPrice, orderDate: new Date().toDateString(), orderTime: new Date().toLocaleTimeString()}],  } },{new: true}).then(async() => {
 
                 await User.findOneAndUpdate({email: orderData.email}, {$set: {userCart: []}}, {new: true})
                 res.status(200).json("Successfull order created");
@@ -230,4 +230,24 @@ export const orderCreate = async(req, res, next) => {
         }
     }
     
+}
+
+
+// Order get by user
+
+export const orderGet = async(req, res, next) => {
+    const orderData = req.body;
+    try {
+        const response = await Order.findOne({email: orderData.email});
+        
+        if(response.orderItems === null){
+            res.status(200).json("No order found");
+        }else{
+            res.status(200).json(response.orderItems);
+        }
+        
+    } catch (error) {
+        console.log("not working");
+        next(error);
+    }
 }

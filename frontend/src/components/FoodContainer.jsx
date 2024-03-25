@@ -13,12 +13,13 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
   const { currentUser } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
+  // const [items, setItems] = useState([]);
 
 
   
 
-  // const addtocart = async(allData) => {
-  //   dispatch(addCartItems(allData))
+  // const addtocart = () => {
+  //   dispatch(addCartItems(items))
     // localStorage.setItem("cartItems", JSON.stringify([...cartItems]));
     
   // };
@@ -30,14 +31,30 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
       foodContainer.current.scrollLeft += scrollValue;
     }, [scrollValue]);
 
+    const deleteCartItems = async() => {
+      await fetch("/api/user/deletecartItems", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: currentUser?.email
+        }),
+      })
+    }
+
 
     const handleClick = (items) => {
+
+      if(cartItems.length === 0){
+        console.log("length:",cartItems.length)
+        deleteCartItems();
+      }
+      
       const addUserCart = async() => {
         try {
           // first api call
-          
-          if(currentUser){
-            console.log(cartItems)
+          if(currentUser ){
             
             for(let i = 0; i < cartItems.length; i++){
               if(cartItems[i]._id === items._id){
@@ -77,7 +94,6 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
               }),
             }).then((res) => {
               res.json().then((allData) => {
-                
                 dispatch(addCartItems(allData))
               });
             });;
@@ -99,7 +115,6 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
     
     useEffect(() => {
       
-      // dispatch(addCartItems([]))
       // only one time API call
       // const fetchAllUserCart = async () => {
           
@@ -134,7 +149,7 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
       }`}
     >
       {dataValue && dataValue.length > 0 ? (
-        dataValue.reverse().map((item) => (
+        dataValue.slice(0).reverse().map((item) => (
           <div
             key={item._id}
             className="w-275 h-[175px] min-w-[275px] md:w-300 md:min-w-[300px]  bg-cardOverlay rounded-lg py-2 px-4  my-12 backdrop-blur-lg hover:drop-shadow-lg flex flex-col items-center justify-evenly relative"

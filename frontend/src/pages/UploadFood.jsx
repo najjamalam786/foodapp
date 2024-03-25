@@ -146,7 +146,7 @@ const UploadFood = () => {
             setTimeout(() => {
             //   setFields(false);
               window.location.reload();
-            }, 3000);
+            }, 2000);
 
 
             // clearData();

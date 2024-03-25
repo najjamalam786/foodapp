@@ -178,7 +178,7 @@ export const updateUserCart = async(req, res, next) => {
 
 // Delete user cart
 
-export const deleteUserCart = async(req, res, next) => {
+export const deleteUserCartItems = async(req, res, next) => {
     const cartData = req.body;
     const query = { email: cartData.email };
     
@@ -237,6 +237,21 @@ export const orderCreate = async(req, res, next) => {
         }
     }
     
+}
+
+// Delete Cart Items if "cartItems" is empty
+export const deleteCartItems = async(req, res, next) => {
+    const orderData = req.body;
+    try {
+        await User.findOneAndUpdate({email: orderData.email}, {$set: {userCart: []}}, {new: true}).then(() => {
+            res.json("Cart is empty");
+        });
+    } catch (error) {
+        next(error)
+        
+    }
+
+
 }
 
 

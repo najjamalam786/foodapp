@@ -61,7 +61,7 @@ export default function UserOrder() {
               { orderItems && orderItems.length > 0 ? 
               // <p className="text-slate-800 text-2xl font-semibold">working</p>
             
-              orderItems.reverse().map((item) => (
+              orderItems.slice(0).reverse().map((item) => (
                 <OrderItems
                   key={item._id}
                   orderitem={item}

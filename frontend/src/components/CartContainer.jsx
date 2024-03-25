@@ -4,7 +4,7 @@ import { IoMdCloseCircle } from "react-icons/io";
 import Logo from "../img/favicon.png";
 import { useDispatch, useSelector } from "react-redux";
 import EmptyCart from "../img/emptyCart.svg";
-import { addCartItems, addTotalPrice, itemShowCart } from "../redux/createSlice/itemSlice";
+import { addTotalPrice, itemShowCart } from "../redux/createSlice/itemSlice";
 
 
 import CartItem from "./CartItem";
@@ -26,15 +26,16 @@ const CartContainer = () => {
     dispatch(itemShowCart(!showCart));  
   };
 
+  
    
   
   
   useEffect(() => {
 
-    if(cartItems !== null){
-      // setTotal(
-      //   cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
-      // );
+    if(cartItems.length > 0){
+      setTotal(
+        cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
+      );
     }
     // dispatch(addCartItems([]))
   }, []);
@@ -76,7 +77,7 @@ const CartContainer = () => {
           <div className="w-full h-340 md:h-42 px-6 py-10 flex flex-col gap-3 overflow-y-scroll no-scrollbar">
             {/* cart Item */}
             {
-              cartItems.reverse().map((item) => (
+              cartItems.slice(0).reverse().map((item) => (
                 <CartItem
                   key={item._id}
                   item={item}

@@ -15,7 +15,7 @@ export default function OrderItems({ orderitem }) {
 
 
           {/* Food Item */}
-          {orderitem && orderitem.foodData.slice(0).reverse().map((item) => (
+          {orderitem && orderitem.foodData.reverse().map((item) => (
             <FoodData
               key={item._id}
               food={item}

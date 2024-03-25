@@ -19,16 +19,29 @@ import Main from "./Main_2";
 import { showNavBar } from "./redux/createSlice/itemSlice";
 import { useEffect } from "react";
 import UserOrder from "./pages/UserOrder";
+import { deleteSuccess } from "./redux/createSlice/userSlice";
 
 
 const App = () => {
+
   const { showCart, showNav } = useSelector((state) => state.item);
   const dispatch = useDispatch();
   
 
 useEffect(() => {
-  console.log("current time", new Date().toLocaleTimeString());
-  console.log("current date", new Date().toDateString());
+  const fetchVerifyUser = async() => {
+    console.log("data");
+    const res = await fetch("/api/user/verify")
+
+    const data = await res.json();
+    if(data === null ){
+      dispatch(deleteSuccess(data))
+    }
+    
+    
+  }
+
+  fetchVerifyUser();
 
   if(window.location.pathname === "/order-create") {
     dispatch(showNavBar(false));

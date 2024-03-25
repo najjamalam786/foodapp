@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import EmptyCart from "../img/emptyCart.svg";
 import OrderItems from '../components/OrderItems';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { addAllOrders } from '../redux/createSlice/orderSlice';
 
 
 export default function UserOrder() {
 
   const {currentUser} = useSelector(state => state.user);
 
-  const [orderItems, setOrderItems] = useState([]);
+  const { orderItems } = useSelector((state) => state.order);
+
+  const dispatchEvent = useDispatch();
 
 
   useEffect(() => {
@@ -20,9 +23,12 @@ export default function UserOrder() {
         },
         body: JSON.stringify({ email: currentUser?.email }),
       }).then((res) => {
-        res.json().then((allOrder) => {
+        res.json().then((response) => {
           // console.log("allOrder",allOrder);
-          setOrderItems(allOrder);
+         
+            dispatchEvent(addAllOrders(response));
+            
+          
         })
       })
     }
@@ -52,7 +58,10 @@ export default function UserOrder() {
            
             <div className="w-full max-h-[700px] md:h-42 px-6 py-6 flex flex-col gap-3 overflow-y-scroll no-scrollbar">
               {/* Order Item */}
-              { orderItems ? orderItems.slice(0).reverse().map((item) => (
+              { orderItems && orderItems.length > 0 ? 
+              // <p className="text-slate-800 text-2xl font-semibold">working</p>
+            
+              orderItems.reverse().map((item) => (
                 <OrderItems
                   key={item._id}
                   orderitem={item}

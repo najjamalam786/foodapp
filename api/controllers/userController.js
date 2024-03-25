@@ -24,7 +24,7 @@ export const googleLogin = async (req, res, next) => {
         const user = await User.findOne({ email: req.body.email });
         if(user){
             
-            const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin}, process.env.JWT_SECRET);
+            const token = jwt.sign({ id: user._id}, process.env.JWT_SECRET);
 
             // hide validUser password
             const { password: passwords, ...others } = user._doc
@@ -79,7 +79,7 @@ export const signIn = async (req, res, next) => {
             return next(errorHandler(404, "Wrong password"));
         }
 
-        const token = jwt.sign({ id: validUser._id}, process.env.JWT_SECRET);
+        const token = jwt.sign({ id: validUser._id}, process.env.JWT_SECRET);        
 
         // hide validUser password
         const { password: passwords, ...others } = validUser._doc
@@ -104,27 +104,7 @@ export const logOut = async (req, res, next) => {
     .json("User has been logged out");
 }
 
-
-// Add to cart
-
-export const addItemToCart = async (req, res, next) => {
-    const cartData = req.body;
-    
-    // const itemID = await User.findOne({_d: req.body.cartData._id});
-
-    // await cartData.splice(0,0{Order_data: req.body.userCart})
-    
-    
-    try {
-        const response = await User.findOneAndUpdate({email: cartData.email,}, {$push: {userCart: cartData.userCart}},{new: true} );
-        res.status(200).json(response.userCart);
-    } catch (error) {
-        next(error);
-    }
-
-}
-
-// import cartData from user 
+// All user Cart Data 
 export const UserAllCartData = async(req, res, next) => {
 
     try {
@@ -135,11 +115,38 @@ export const UserAllCartData = async(req, res, next) => {
     }
 }
 
+
+// Add to cart
+
+export const addItemToCart = async (req, res, next) => {
+    const cartData = req.body;
+    
+    
+    try {
+        await User.findOneAndUpdate({email: cartData.email,}, {$push: {userCart: cartData.userCart}},{new: true} ).then(async(response) => {
+            
+            if(response === null){
+                res.status(200).json(response);
+            }else{
+                await User.findOne({email: cartData.email}).then((response) => {
+                    res.status(200).json(response.userCart);
+                })
+            }
+        });
+    } catch (error) {
+        next(error);
+    }
+
+}
+
 // Update user cart
 
 export const updateUserCart = async(req, res, next) => {
     // const quantity = req.body.quantity;
     const cartData = req.body;
+    
+
+    
     const query = { email: cartData.email };
     
     const updateDocument = {
@@ -162,6 +169,7 @@ export const updateUserCart = async(req, res, next) => {
                 res.status(200).json(response.userCart);
             })
         });
+
     } catch (error) {
         next(error);
     }
@@ -204,12 +212,11 @@ export const orderCreate = async(req, res, next) => {
                 email: orderData.email,
                 orderItems: [{foodData: orderData.orderItems, shippingAddress: orderData.shippingAddress, totalPrice: orderData.totalPrice, orderDate: new Date().toDateString(), orderTime: new Date().toLocaleTimeString()}],
                 
-            }).then(() => {
-                console.log("Successfull user and order created");
-                res.status(200).json("Successfull user and order created");
+            }).then(async() => {
+                
+                await User.findOneAndUpdate({email: orderData.email}, {$set: {userCart: []}}, {new: true});
             });
         }catch(error){
-            console.log('1 error');
             next(error);
         }
     }
@@ -218,13 +225,13 @@ export const orderCreate = async(req, res, next) => {
         try {
             await Order.findOneAndUpdate({email: orderData.email}, {$push: {orderItems: [{foodData: orderData.orderItems, shippingAddress: orderData.shippingAddress, totalPrice: orderData.totalPrice, orderDate: new Date().toDateString(), orderTime: new Date().toLocaleTimeString()}],  } },{new: true}).then(async() => {
 
-                await User.findOneAndUpdate({email: orderData.email}, {$set: {userCart: []}}, {new: true})
-                res.status(200).json("Successfull order created");
+                await User.findOneAndUpdate({email: orderData.email}, {$set: {userCart: []}}, {new: true}).then((response) => {
+                    res.status(200).json(response.userCart);
+                });
 
             });
             
         } catch (error) {
-            console.log('2 error');
 
             next(error);
         }
@@ -240,14 +247,47 @@ export const orderGet = async(req, res, next) => {
     try {
         const response = await Order.findOne({email: orderData.email});
         
-        if(response.orderItems === null){
-            res.status(200).json("No order found");
+        if(response === null){
+            res.status(200).json(response);
         }else{
             res.status(200).json(response.orderItems);
         }
         
     } catch (error) {
-        console.log("not working");
         next(error);
     }
 }
+
+// User Token Verify
+export const verifyUser = (req, res, next) => {
+    
+    try {
+        // console.log("working");
+        const token = req.cookies.access_token;
+
+    if (!token) {
+        res.json(null);
+    }
+    } catch (error) {
+        next(error)
+        
+    }
+}
+
+// export const reverseOrder = async(req, res, next) => {
+//     const Data = req.body;
+
+//     try {
+//         const response = await Order.findOne({email: Data.email});
+
+
+//         if(response === null){
+//             res.status(200).json(response);
+//         }else{
+            
+//             res.status(200).json(response.orderItems.reverse());
+//         }
+//     } catch (error) {
+//         next(error);
+//     }
+// }

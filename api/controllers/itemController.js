@@ -1,8 +1,9 @@
+// import { response } from "express";
 import Item from "../models/itemModel.js";
 
 
 
-
+// Create Items
 export const createItems = async (req, res, next) => {
     const item = req.body;
     const newItem = new Item(item);
@@ -14,6 +15,7 @@ export const createItems = async (req, res, next) => {
     }
 };
 
+// Get All Items
 export const getItems = async (req, res, next) => {
     try {
         const items = await Item.find();
@@ -23,6 +25,7 @@ export const getItems = async (req, res, next) => {
     }
 };
 
+// Get Item
 export const getItem = async (req, res, next) => {
     const id = req.params.id;
     try {
@@ -34,23 +37,24 @@ export const getItem = async (req, res, next) => {
 };
 
 
-
+// Delete Items
 export const deleteItem = async (req, res, next) => {
     const id = req.params.id;
     try {
-        await Item.findByIdAndDelete(id);
-        res.status(200).json("Successfully deleted");
+        const response = await Item.findByIdAndDelete(id);
+        res.status(200).json(response);
     } catch (error) {
         next(error);
     }
 };
 
+// Update Items
 export const updateItem = async (req, res, next) => {
     const id = req.params.id;
     const item = req.body;
     try {
-        await Item.findByIdAndUpdate(id, item, { new: true });
-        res.status(200).json("Successfully updated");
+        const response = await Item.findByIdAndUpdate(id, item, { new: true });
+        res.status(200).json(response);
     } catch (error) {
         next(error)
     }

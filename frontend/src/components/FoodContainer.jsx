@@ -30,15 +30,17 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
       foodContainer.current.scrollLeft += scrollValue;
     }, [scrollValue]);
 
-    const handleClick = async(items) => {
+
+    const handleClick = (items) => {
       const addUserCart = async() => {
         try {
           // first api call
           
           if(currentUser){
+            console.log(cartItems)
+            
             for(let i = 0; i < cartItems.length; i++){
               if(cartItems[i]._id === items._id){
-                
                 
                 // second API call
                 await fetch("/api/user/updatecart", {
@@ -61,9 +63,10 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
                 return;
               }
             }
+
             
             // first API call
-            const response = await fetch("/api/user/cart",{
+            await fetch("/api/user/cart",{
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -72,46 +75,49 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
                 userCart: items,
                 email: currentUser?.email,
               }),
-            });
+            }).then((res) => {
+              res.json().then((allData) => {
+                
+                dispatch(addCartItems(allData))
+              });
+            });;
             
-            await response.json().then((allCart) => {
-              dispatch(addCartItems(allCart))
-              
-            });
           }
         } catch (error) {
           console.log(error);
           
         }
-  
+        
       }
       
       addUserCart();
+      
     }
-
+    
     // last API call
     
     
     useEffect(() => {
-
+      
+      // dispatch(addCartItems([]))
       // only one time API call
-      const fetchAllUserCart = async () => {
+      // const fetchAllUserCart = async () => {
           
-        const res = await fetch('/api/user/allcart', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email: currentUser?.email }),
-        }
-        );
-        await res.json().then(async (allData) => {
-          dispatch(addCartItems(allData));
+      //   const res = await fetch('/api/user/allcart', {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //     body: JSON.stringify({ email: currentUser?.email }),
+      //   }
+      //   );
+      //   await res.json().then(async (allData) => {
+      //     dispatch(addCartItems(allData));
   
-        });
+      //   });
         
-      }
-      fetchAllUserCart();
+      // }
+      // fetchAllUserCart();
      
         
     }, []);
@@ -128,7 +134,7 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
       }`}
     >
       {dataValue && dataValue.length > 0 ? (
-        dataValue.map((item) => (
+        dataValue.reverse().map((item) => (
           <div
             key={item._id}
             className="w-275 h-[175px] min-w-[275px] md:w-300 md:min-w-[300px]  bg-cardOverlay rounded-lg py-2 px-4  my-12 backdrop-blur-lg hover:drop-shadow-lg flex flex-col items-center justify-evenly relative"

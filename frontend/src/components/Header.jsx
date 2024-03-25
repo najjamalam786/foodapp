@@ -32,7 +32,6 @@ export default function Header() {
       dispatchEvent(deleteUserStart())
       const res = await fetch('api/user/logout')
       const data = await res.json()
-
       if(data.success === false ){
         dispatchEvent(deleteFailure(data.message))
       }

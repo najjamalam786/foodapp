@@ -7,138 +7,140 @@ import Logo from '../img/favicon.png';
 
 export default function ShippingAddress() {
 
-  const { currentUser } = useSelector((state) => state.user);
-  const { cartItems, totalPrice } = useSelector((state) => state.item);
+    const { currentUser } = useSelector((state) => state.user);
+    const { cartItems, totalPrice } = useSelector((state) => state.item);
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [formData, setFormData] = useState({
-    
-    landmark: "",
-    address:"",
-    pincode:"",
-    district:"Patna",
-    
-  })
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [formData, setFormData] = useState({
 
-  const handleChange = (e) => {
-    if(e.target.id === "district") {
-      const district = e.target.value;
-      setFormData({
-        ...formData,
-        district
-      })
-    } else {
-      setFormData({
-        ...formData,
-        [e.target.id]: e.target.value
-      })
-    }
-    
-  }
+        landmark: "",
+        address: "",
+        pincode: "",
+        district: "Patna",
 
-  const handleSubmit = async(e) => {
-    e.preventDefault();
+    })
 
-    try {
-        await fetch('/api/user/ordercreate', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: currentUser.username,
-                email: currentUser.email,
-                orderItems: cartItems,
-                shippingAddress: formData,
-                totalPrice: totalPrice,
+    const handleChange = (e) => {
+        if (e.target.id === "district") {
+            const district = e.target.value;
+            setFormData({
+                ...formData,
+                district
+            })
+        } else {
+            setFormData({
+                ...formData,
+                [e.target.id]: e.target.value
+            })
+        }
 
-            }),
-        }).then((response) => response.json()).then(() => {
-            dispatch(addCartItems([]));
-
-        });
-        
-      
-    
-            navigate('/');
-    //   navigate('/payment');
-
-    } catch (error) {
-      console.log("Error", error);
-      
     }
 
-  }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-  return (
-    <>
-        <main className=" p-3 max-w-4xl mx-auto">
-        <div className="w-full  flex items-center justify-between p-4  ">
+        try {
+            await fetch('/api/user/ordercreate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: currentUser.username,
+                    email: currentUser.email,
+                    orderItems: cartItems,
+                    shippingAddress: formData,
+                    totalPrice: totalPrice,
 
-<img src={Logo} alt="logo" className="w-14 h-14" />
-<p
-className="text-slate-800 text-2xl font-semibold p-1 px-2 "
-// onClick={clearCartItem}
+                }),
+            }).then(() => {
 
->
-Food Delivery Address
-</p>
-</div>
+                dispatch(addCartItems([]));
+                navigate('/');
 
-            <form onSubmit={handleSubmit}  className="flex flex-col my-[50px] sm:flex-row gap-4 ">
-                <div className="flex flex-col gap-4 flex-1">
 
+            });
+
+
+
+            //   navigate('/payment');
+
+        } catch (error) {
+            console.log("Error", error);
+
+        }
+
+    }
+
+    return (
+        <>
+            <main className=" p-3 max-w-4xl mx-auto">
+                <div className="w-full  flex items-center justify-between p-4  ">
+
+                    <img src={Logo} alt="logo" className="w-14 h-14" />
                     <p
-                        className="border font-semibold text-slate-500 p-3 rounded-lg"
-                    >{currentUser.username} / {currentUser.email}</p>
+                        className="text-slate-800 text-2xl font-semibold p-1 px-2 "
+                    // onClick={clearCartItem}
 
-                    <input
-                        type="text"
-                        placeholder="Landmark"
-                        className="border p-3 rounded-lg"
-                        id="landmark"
-                        maxLength={62}
-                        minLength={10}
-                        onChange={handleChange}
-                        value={formData.landmark}
-                        required
-                    />
-                    
-                    
-                    <textarea
-                        type="textarea"
-                        placeholder="Address"
-                        className="border p-3 rounded-lg"
-                        id="address"
-                        onChange={handleChange}
-                        value={formData.address}
-                        required
-                    />
-            <div className='flex justify-between'>
-              <input
-                type="number"
-                placeholder="pincode"
-                className="border p-3 rounded-lg"
-                id="pincode"
-                onChange={handleChange}
-                value={formData.pincode}
-                required
-              />
-              <select
-                name="district" id="district"
-                onChange={handleChange}
-                className="w-[50%] border p-3 rounded-lg text-slate-600 font-semibold"
-              >
-                <option value="Patna">Patna</option>
-                <option value="Bhagalpur">Bhagalpur</option>
-                <option value="Madhepura">Madhepura</option>
-                <option value="Gaya">Gaya</option>
-                <option value="Muzaffarnagar">Muzaffarpur</option>
-              </select> 
-            </div>
+                    >
+                        Food Delivery Address
+                    </p>
+                </div>
 
-                    {/* <div className="flex gap-6 flex-wrap">
+                <form onSubmit={handleSubmit} className="flex flex-col my-[50px] sm:flex-row gap-4 ">
+                    <div className="flex flex-col gap-4 flex-1">
+
+                        <p
+                            className="border font-semibold text-slate-500 p-3 rounded-lg"
+                        >{currentUser.username} / {currentUser.email}</p>
+
+                        <input
+                            type="text"
+                            placeholder="Landmark"
+                            className="border p-3 rounded-lg"
+                            id="landmark"
+                            maxLength={62}
+                            minLength={10}
+                            onChange={handleChange}
+                            value={formData.landmark}
+                            required
+                        />
+
+
+                        <textarea
+                            type="textarea"
+                            placeholder="Address"
+                            className="border p-3 rounded-lg"
+                            id="address"
+                            onChange={handleChange}
+                            value={formData.address}
+                            required
+                        />
+                        <div className='flex justify-between'>
+                            <input
+                                type="number"
+                                placeholder="pincode"
+                                className="border p-3 rounded-lg"
+                                id="pincode"
+                                onChange={handleChange}
+                                value={formData.pincode}
+                                required
+                            />
+                            <select
+                                name="district" id="district"
+                                onChange={handleChange}
+                                className="w-[50%] border p-3 rounded-lg text-slate-600 font-semibold"
+                            >
+                                <option value="Patna">Patna</option>
+                                <option value="Bhagalpur">Bhagalpur</option>
+                                <option value="Madhepura">Madhepura</option>
+                                <option value="Gaya">Gaya</option>
+                                <option value="Muzaffarnagar">Muzaffarpur</option>
+                            </select>
+                        </div>
+
+                        {/* <div className="flex gap-6 flex-wrap">
                         <div className="flex gap-2">
                             <input type="checkbox" id="sale" className="w-5"
                                 onChange={handleChange}
@@ -171,7 +173,7 @@ Food Delivery Address
                         </div>
                     </div> */}
 
-                    {/* <div className="flex flex-wrap gap-6">
+                        {/* <div className="flex flex-wrap gap-6">
                         <div className="flex items-center gap-2">
                             <input
                                 type="number"
@@ -232,8 +234,8 @@ Food Delivery Address
                             </div>
                         </div>}
                     </div> */}
-                </div>
-                {/* <div className="flex flex-col flex-1 gap-4">
+                    </div>
+                    {/* <div className="flex flex-col flex-1 gap-4">
                     <p className="font-semibold">
                         Images:
                         <span className="font-normal text-gray-600 ml-2">
@@ -300,10 +302,10 @@ Food Delivery Address
                     {error && <p className="text-red-700 text-sm">{error}</p>}
                 </div> */}
 
-                {/* tempory button */}
-                <button type="submit" className="p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-90">Button Order Proceed</button>
-            </form>
-        </main>
-    </>
-);
+                    {/* tempory button */}
+                    <button type="submit" className="p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-90">Button Order Proceed</button>
+                </form>
+            </main>
+        </>
+    );
 }

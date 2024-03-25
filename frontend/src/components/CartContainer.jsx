@@ -4,7 +4,7 @@ import { IoMdCloseCircle } from "react-icons/io";
 import Logo from "../img/favicon.png";
 import { useDispatch, useSelector } from "react-redux";
 import EmptyCart from "../img/emptyCart.svg";
-import { addTotalPrice, itemShowCart } from "../redux/createSlice/itemSlice";
+import { addCartItems, addTotalPrice, itemShowCart } from "../redux/createSlice/itemSlice";
 
 
 import CartItem from "./CartItem";
@@ -31,20 +31,13 @@ const CartContainer = () => {
   
   useEffect(() => {
 
-    
-    setTotal(
-      cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
-    );
-    
+    if(cartItems !== null){
+      // setTotal(
+      //   cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
+      // );
+    }
+    // dispatch(addCartItems([]))
   }, []);
-
-  // const clearCartItem = () => {
-  //   dispatch(addCartItems([]));
-
-  //   localStorage.setItem("cartItems", JSON.stringify([]));
-  // }
-  
-  
 
   return (
     
@@ -83,7 +76,7 @@ const CartContainer = () => {
           <div className="w-full h-340 md:h-42 px-6 py-10 flex flex-col gap-3 overflow-y-scroll no-scrollbar">
             {/* cart Item */}
             {
-              cartItems.map((item) => (
+              cartItems.reverse().map((item) => (
                 <CartItem
                   key={item._id}
                   item={item}
@@ -97,11 +90,11 @@ const CartContainer = () => {
           <div className="w-full flex-1  bg-cartTotal rounded-t-[2rem] flex flex-col items-center justify-evenly px-8 py-2">
             <div className="w-full flex items-center justify-between">
               <p className="text-gray-400 text-lg">Sub Total</p>
-              <p className="text-gray-400 text-lg">$ {total}</p>
+              <p className="text-gray-400 text-lg">₹ {total}</p>
             </div>
             <div className="w-full flex items-center justify-between">
               <p className="text-gray-400 text-lg">Delivery</p>
-              <p className="text-gray-400 text-lg">$ 2.5</p>
+              <p className="text-gray-400 text-lg">₹ 20</p>
             </div>
 
             <div className="w-full border-b border-gray-600 my-2"></div>
@@ -109,7 +102,7 @@ const CartContainer = () => {
             <div className="w-full flex items-center justify-between">
               <p className="text-gray-200 text-xl font-semibold">Total</p>
               <p className="text-gray-200 text-xl font-semibold">
-                ${total + 2.5}
+              ₹ {total + 2.5}
               </p>
             </div>
 
@@ -120,7 +113,7 @@ const CartContainer = () => {
                 className="w-full p-2 rounded-full bg-gradient-to-tr text-center from-orange-400 to-orange-600 text-gray-50 text-lg my-2 hover:shadow-lg"
                 onClick={() => {
                   showCartHandler();
-                  dispatch(addTotalPrice(total + 2.5));
+                  dispatch(addTotalPrice(total + 20));
                 }}
               >
                 Check Out

@@ -289,20 +289,29 @@ export const verifyUser = (req, res, next) => {
     }
 }
 
-// export const reverseOrder = async(req, res, next) => {
-//     const Data = req.body;
+// Add User address by user
 
-//     try {
-//         const response = await Order.findOne({email: Data.email});
+export const userAddress = async (req, res, next) => {
+    
+    try {
+        const addressData = req.body;
+        const response = await User.findOneAndUpdate({email: addressData.email}, {$addToSet: {userAddress: addressData.shippingAddress}}, {new: true});
+        // console.log("userAddress",response.userAddress);
+        res.status(200).json(response);
+    } catch (error) {
+        next(error)
+        
+    }
+}
 
+// Get User address by user
 
-//         if(response === null){
-//             res.status(200).json(response);
-//         }else{
-            
-//             res.status(200).json(response.orderItems.reverse());
-//         }
-//     } catch (error) {
-//         next(error);
-//     }
-// }
+export const getAdderss = async(req, res, next) => {
+    try {
+        const response = await User.findOne({email: req.body.email});
+        res.status(200).json(response.userAddress);
+    } catch (error) {
+        next(error)
+        
+    }
+}

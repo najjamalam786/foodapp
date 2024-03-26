@@ -1,5 +1,5 @@
 import express from "express"
-import { addItemToCart, createUser, UserAllCartData, googleLogin, logOut, signIn, updateUserCart, orderCreate, orderGet, verifyUser, deleteUserCartItems, deleteCartItems } from "../controllers/userController.js";
+import { addItemToCart, createUser, UserAllCartData, googleLogin, logOut, signIn, updateUserCart, orderCreate, orderGet, verifyUser, deleteUserCartItems, deleteCartItems, userAddress, getAdderss } from "../controllers/userController.js";
 import { verifyToken } from "../utils/verifyToken.js";
 
 const router = express.Router();
@@ -17,6 +17,8 @@ router
 .post('/ordercreate',verifyToken, orderCreate)
 .post('/orderdata',verifyToken, orderGet)
 .get("/verify", verifyUser)
+.post('/useraddress', verifyToken, userAddress)
+.post('/getaddress', verifyToken, getAdderss)
 // .post('/reverse', verifyToken, reverseOrder);
 
 

@@ -30,7 +30,6 @@ const App = () => {
 
 useEffect(() => {
   const fetchVerifyUser = async() => {
-    console.log("data");
     const res = await fetch("/api/user/verify")
 
     const data = await res.json();

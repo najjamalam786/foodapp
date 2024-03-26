@@ -24,8 +24,12 @@ const userSchema = new mongoose.Schema({
         default:"https://firebasestorage.googleapis.com/v0/b/fooddeliveryapp-4818c.appspot.com/o/defaultAvatar.png?alt=media&token=18e52fdb-4724-4412-aa01-c224a14dbe14",
     },
     userCart: {
-        type: Array,
-        default: []
+        type: Object,
+        default: {}
+    },
+    userAddress:{
+            type: Object,
+            default: {}
     }
 }, {
     timestamps: true

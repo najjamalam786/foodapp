@@ -5,13 +5,13 @@ const authToken = process.env.TWILIO_AUTH_TOKEN ;
 
 
 const client = Twilio(accountSid, authToken);
-
 const sendSMS = async (msg) => {
     let msgOption = {
         from: process.env.TWILIO_FROM_NUMBER,
         to: process.env.TWILIO_TO_NUMBER,
         body: msg,
     };
+    
     try {
         await client.messages.create(msgOption);
         

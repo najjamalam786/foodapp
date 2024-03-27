@@ -47,7 +47,6 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
     const handleClick = (items) => {
 
       if(cartItems.length === 0){
-        console.log("length:",cartItems.length)
         deleteCartItems();
       }
       
@@ -98,6 +97,8 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
               });
             });;
             
+          }else{
+            alert("Please login first");
           }
         } catch (error) {
           console.log(error);
@@ -178,7 +179,10 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
                   </div>
                 ) : (
                   <div
-                    className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center cursor-pointer hover:shadow-md -mt-8"
+                    className="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center cursor-pointer hover:shadow-md -mt-8"
+                    onClick={() => {
+                      handleClick(item);
+                    }}
                   >
                     <MdShoppingBasket className="text-white text-lg" />
                   </div>

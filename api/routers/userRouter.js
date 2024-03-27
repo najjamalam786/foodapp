@@ -1,6 +1,7 @@
 import express from "express"
 import { addItemToCart, createUser, UserAllCartData, googleLogin, logOut, signIn, updateUserCart, orderCreate, orderGet, verifyUser, deleteUserCartItems, deleteCartItems, userAddress, getAdderss } from "../controllers/userController.js";
 import { verifyToken } from "../utils/verifyToken.js";
+import { getMessage } from "../utils/sendSMS.js";
 
 const router = express.Router();
 
@@ -19,6 +20,7 @@ router
 .get("/verify", verifyUser)
 .post('/useraddress', verifyToken, userAddress)
 .post('/getaddress', verifyToken, getAdderss)
+.post("/message",verifyToken, getMessage);
 // .post('/reverse', verifyToken, reverseOrder);
 
 

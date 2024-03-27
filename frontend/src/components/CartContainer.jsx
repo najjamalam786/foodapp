@@ -120,13 +120,15 @@ const CartContainer = () => {
                 Check Out
               </Link>
             ) : (
-              <button
+              <Link to="/signin"
                 
-                type="button"
-                className="w-full p-2 rounded-full bg-gradient-to-tr from-orange-400 to-orange-600 text-gray-50 text-lg my-2 hover:shadow-lg"
+                className="w-full p-2 rounded-full text-center bg-gradient-to-tr from-orange-400 to-orange-600 text-gray-50 text-lg my-2 hover:shadow-lg"
+                onClick={() => {
+                  showCartHandler();
+                }}
               >
                 Login to check out
-              </button>
+              </Link>
             )}
           </div>
         </div>

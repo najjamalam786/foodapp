@@ -16,44 +16,62 @@ import { useDispatch, useSelector } from "react-redux";
 import CartContainer from "./components/CartContainer";
 import ShippingAddress from "./pages/ShippingAddress";
 import Main from "./Main_2";
-import { showNavBar } from "./redux/createSlice/itemSlice";
 import { useEffect } from "react";
 import UserOrder from "./pages/UserOrder";
 import { deleteSuccess } from "./redux/createSlice/userSlice";
+import { pageLoader } from "./redux/createSlice/orderSlice";
+import Loader from "./components/Loader";
+import ShowNavBar from "./components/ShowNavBar";
+import ConfirmOrder from "./pages/ConfirmOrder";
 
 
 const App = () => {
 
-  const { showCart, showNav } = useSelector((state) => state.item);
+  const { showCart, cartItems } = useSelector((state) => state.item);
+  const { loading, confirmOrder } = useSelector((state) => state.order);
   const dispatch = useDispatch();
   
 
 useEffect(() => {
+  dispatch(pageLoader(true));
+
+  
   const fetchVerifyUser = async() => {
+    
     const res = await fetch("/api/user/verify")
 
     const data = await res.json();
+
+    setTimeout(() => {
+      dispatch(pageLoader(false))
+    }, 800);
+
     if(data === null ){
       dispatch(deleteSuccess(data))
     }
     
     
   }
-
+  
+  
   fetchVerifyUser();
-
-  if(window.location.pathname === "/order-create") {
-    dispatch(showNavBar(false));
-  }else{
-  dispatch(showNavBar(true));
-}
+  setTimeout(() => {
+    dispatch(pageLoader(false))
+  }, 800);
 }, [])
 
 
   return (
     <BrowserRouter>
-      {showNav && <Header />}
+
+      {loading && <Main><Loader /></Main>}
+
+      {confirmOrder && <Main><ConfirmOrder /></Main>}
+
+      <ShowNavBar> <Header /> </ShowNavBar>
+
       {showCart && <Main><CartContainer /></Main>}
+
       <main className="mt-2 md:mt-4 px-4 md:px-16 py-4 w-full">
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -62,7 +80,8 @@ useEffect(() => {
 
           <Route element={<PrivateRout />}>
 
-            <Route path="/order-create" element={<ShippingAddress/>} />
+            <Route path="/order-create" element={cartItems.length > 0 && <ShippingAddress/>} />
+            
             <Route path="/user-orders" element={<UserOrder/>} />
             
             <Route element={<AdminPrivateRout />}>

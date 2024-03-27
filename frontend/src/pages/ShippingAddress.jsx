@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { addCartItems } from '../redux/createSlice/itemSlice';
 import Logo from '../img/favicon.png';
 import OrderAddress from '../components/OrderAddress';
+import { confirmOrderPlaced, pageLoader } from '../redux/createSlice/orderSlice';
 
 
 export default function ShippingAddress() {
@@ -11,6 +12,8 @@ export default function ShippingAddress() {
     const { currentUser } = useSelector((state) => state.user);
     const { cartItems, totalPrice } = useSelector((state) => state.item);
     const [orderAddress, setOrderAddress] = useState();
+  const [index, setIndex] = useState();
+//   const [defaultaddress, setDefaultAddress] = useState();
 
     const [flag, setflag] = useState(false);
 
@@ -36,8 +39,10 @@ export default function ShippingAddress() {
     }
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
 
+        dispatch(pageLoader(true));
+        e.preventDefault();
+        
         // order create api
         try {
             await fetch('/api/user/ordercreate', {
@@ -65,28 +70,36 @@ export default function ShippingAddress() {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ email: currentUser?.email, shippingAddress: [{
+                    body: JSON.stringify({ email: currentUser?.email, shippingAddress: {
                         landmark: formData.landmark.trim(),
                         address: formData.address.trim(),
                         pincode: formData.pincode.trim(),
                         district: formData.district.trim()
-                    }],}),
+                    },
+                }),
                 });
 
-                    dispatch(addCartItems([]));
-                    navigate('/');
+                    setTimeout(() => {
+                        dispatch(addCartItems([]));
+                        dispatch(pageLoader(false));
+                        navigate('/');
+                        dispatch(confirmOrderPlaced(true));
+
+                    },1000)
+                    
                 
             });
 
         } catch (error) {
+            dispatch(pageLoader(false));
             console.log("Error", error);
 
         }
 
     }
-
     useEffect(() => {
-
+        dispatch(pageLoader(true));
+        
         const fetchOrderAddress = async () => {
             try {
                 
@@ -100,22 +113,75 @@ export default function ShippingAddress() {
 
                     const userAddress = await res.json();
                     setOrderAddress(userAddress);
+
+                    setTimeout(() => {
+                        dispatch(pageLoader(false))
+                    }, 800);
                 
             } catch (error) {
+                dispatch(pageLoader(false));
                 console.log(error);
             }
         }
 
         fetchOrderAddress();
 
+        setTimeout(() => {
+            dispatch(pageLoader(false))
+        }, 800);
+
+
     }, [])
+
+    const handleDefaultAddress = async(e) => {
+        dispatch(pageLoader(true));
+
+        e.preventDefault();
+        try {
+            if(index === undefined){
+                alert("please select address");
+            }else{
+                await fetch('/api/user/ordercreate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: currentUser.username,
+                        email: currentUser.email,
+                        orderItems: cartItems,
+                        shippingAddress: orderAddress[index],
+                        totalPrice: totalPrice,
+    
+                    })
+                }).then(() => {
+
+                    setTimeout(() => {
+                        dispatch(addCartItems([]));
+                        dispatch(pageLoader(false));
+                        navigate('/');
+                        dispatch(confirmOrderPlaced(true));
+                    },1000)
+                });
+                
+            }
+        } catch (error) {
+            dispatch(pageLoader(false));
+            console.log(error)
+            
+        }
+    }
 
     return (
         <>
             <main className=" p-3 max-w-4xl mx-auto">
-                <div className="w-full  flex items-center justify-between p-4  ">
+                
+                <div className="w-full  flex flex-col gap-4 sm:flex-row items-center justify-between p-4  ">
 
-                    <img src={Logo} alt="logo" className="w-14 h-14" />
+                    <div className="flex  items-center ">
+                        <img src={Logo} alt="logo" className="w-14 h-14 " />
+                        <p className="w-full text-slate-800 text-2xl font-semibold ">Cash On Delivery</p>
+                    </div>
                     <p
                         className="text-slate-800 text-2xl font-semibold p-1 px-2 "
                     // onClick={clearCartItem}
@@ -136,6 +202,10 @@ export default function ShippingAddress() {
                                         <OrderAddress
                                             key={index}
                                             address={item}
+                                            setIndex={setIndex}
+                                            index={index}
+                                            
+
                                         />
                                     ))}
 
@@ -144,9 +214,9 @@ export default function ShippingAddress() {
                                 </div>
                                 <button
                                     className="w-full bg-green-500 mb-4 text-slate-50 p-3 rounded-lg"
-                                    onClick={() => setflag(true)}
+                                    onClick={handleDefaultAddress}
 
-                                >Continue</button>
+                                >Order Confirm</button>
                             </div>
 
                             {flag ? (
@@ -207,7 +277,7 @@ export default function ShippingAddress() {
                                     </div>
 
                                     {/* tempory button */}
-                                    <button type="submit" className="p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-90">Button Order Proceed</button>
+                                    <button type="submit" className="p-3 bg-green-500 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-90">Order Proceed</button>
                                 </form>
                             ) :
                                 (
@@ -279,7 +349,7 @@ export default function ShippingAddress() {
                             </div>
 
                             {/* tempory button */}
-                            <button type="submit" className="p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-90">Button Order Proceed</button>
+                            <button type="submit" className="p-3 bg-green-500 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-90">Order Proceed</button>
                         </form>
                     )
 

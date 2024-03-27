@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import { deleteFailure, deleteSuccess, deleteUserStart } from '../redux/createSlice/userSlice';
 import { useDispatch } from 'react-redux';
 import { addCartItems, itemShowCart } from '../redux/createSlice/itemSlice';
+import { pageLoader } from '../redux/createSlice/orderSlice';
 
 
 
@@ -26,17 +27,22 @@ export default function Header() {
   const [isMenu, setIsMenu] = useState(false);
 
  const LogOut = async () => {
+   dispatchEvent(pageLoader(true));
    try {
-
       dispatchEvent(addCartItems([]));
       dispatchEvent(deleteUserStart())
       const res = await fetch('api/user/logout')
       const data = await res.json()
       if(data.success === false ){
+        dispatchEvent(pageLoader(false));
         dispatchEvent(deleteFailure(data.message))
+        
       }
 
       dispatchEvent(deleteSuccess(data));
+      setTimeout(() => {
+        dispatchEvent(pageLoader(false));
+      }, 2000);
           
     } catch (error) {
     dispatchEvent(deleteFailure(error.message))

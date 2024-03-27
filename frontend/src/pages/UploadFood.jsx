@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import { motion } from "framer-motion";
 
 import {
@@ -11,7 +11,7 @@ import {
 import { PiPlusMinusFill } from "react-icons/pi";
 import { FaRupeeSign } from "react-icons/fa";
 import { categories } from "../utils/data";
-import Loader from "../components/Loader";
+import { useDispatch } from "react-redux";
 import {
     deleteObject,
     getDownloadURL,
@@ -20,20 +20,14 @@ import {
     uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase.config.js";
-// import { getAllFoodItems, saveItem } from "../utils/firebaseFunctions";
-// import { actionType } from "../context/reducer";
-// import { useStateValue } from "../context/StateProvider";
+import { pageLoader } from "../redux/createSlice/orderSlice.js";
+
 
 const UploadFood = () => {
-    //   const [name, setName] = useState("");
-    //   const [calories, setCalories] = useState("");
-    //   const [price, setPrice] = useState("");
-    //   const [category, setCategory] = useState(null);
-    // const [imageAsset, setImageAsset] = useState(null);
+    
     const [fields, setFields] = useState(false);
     const [alertStatus, setAlertStatus] = useState("Faild");
     const [msg, setMsg] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
 
     const [foodData, setFoodData] = useState({
         name: "",
@@ -44,11 +38,12 @@ const UploadFood = () => {
         quantity: 1,
         price: "",
     })
-    //   const [{ foodItems }, dispatch] = useStateValue();
+      const dispatchEvent = useDispatch();
     
 
     const uploadImage = (e) => {
-        setIsLoading(true);
+        dispatchEvent(pageLoader(true));
+
         const imagefile = e.target.files[0];
         const storage = getStorage(app);
         const fileName = new Date().getTime() + imagefile.name;
@@ -69,7 +64,7 @@ const UploadFood = () => {
                 setAlertStatus("Faild");
                 setTimeout(() => {
                     setFields(false);
-                    setIsLoading(false);
+                    dispatchEvent(pageLoader(false));
                 }, 4000);
                 
             },
@@ -77,7 +72,7 @@ const UploadFood = () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                     setFoodData({ ...foodData, imageURL: downloadURL });
 
-                    setIsLoading(false);
+                    dispatchEvent(pageLoader(false));
                     setFields(true);
                     setMsg("Image uploaded successfully!");
                     setAlertStatus("Success");
@@ -91,12 +86,17 @@ const UploadFood = () => {
     };
 
     const deleteImage = () => {
-        setIsLoading(true);
+        dispatchEvent(pageLoader(true));
+
         const storage = getStorage(app)
         const deleteRef = ref(storage, foodData.imageURL);
         deleteObject(deleteRef).then(() => {
             setFoodData({ ...foodData, imageURL: "" });
-            setIsLoading(false);
+            
+            setTimeout(() => {
+                dispatchEvent(pageLoader(false));
+            }, 500);
+
             setFields(true);
             setMsg("Image deleted successfully!");
             setAlertStatus("success");
@@ -114,7 +114,7 @@ const UploadFood = () => {
             try{
                 
                 
-            setIsLoading(true);
+                dispatchEvent(pageLoader(true));
             const response = await fetch("/api/item/create", {
                 method: "POST",
                 headers: {
@@ -128,7 +128,9 @@ const UploadFood = () => {
             
 
 
-            setIsLoading(false);
+            setTimeout(() => {
+                dispatchEvent(pageLoader(false));
+            }, 500);
             setFields(true);
 
             if(data.success === false){
@@ -143,10 +145,11 @@ const UploadFood = () => {
 
             setMsg("Data Uploaded successfully!");
             setAlertStatus("Success");
+            // e.target.reset();
             setTimeout(() => {
             //   setFields(false);
               window.location.reload();
-            }, 2000);
+            }, 1200);
 
 
             // clearData();
@@ -158,34 +161,13 @@ const UploadFood = () => {
           setAlertStatus("Faild");
           setTimeout(() => {
             setFields(false);
-            setIsLoading(false);
+            dispatchEvent(pageLoader(false));
           }, 4000);
         }
 
-        // fetchData();
       };
 
-    //     const clearData = () => {
-    //     setFoodData({
-    //       name: "",
-    //       imageURL: "",
-    //       category: "",
-    //       calories: "",
-    //       pieces: "",
-    //       quantity: "",
-    //       price: "",
-    //     })
-        
-    //   };
 
-    //   const fetchData = async () => {
-    //     await getAllFoodItems().then((data) => {
-    //       dispatch({
-    //         type: actionType.SET_FOOD_ITEMS,
-    //         foodItems: data,
-    //       });
-    //     });
-    //   };
       
       const handleChange = (e) => {
           
@@ -206,7 +188,9 @@ const UploadFood = () => {
         
         
     return (
+        
         <form onSubmit={handleSubmit} className="w-full min-h-screen flex items-center justify-center">
+            
             <div className="w-[90%] md:w-[80%] border border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center gap-4">
                 {fields && (<p
                     className={`w-full p-2 rounded-lg text-center text-lg font-semibold ${alertStatus === "Faild" ? "bg-red-400 text-red-800" : "bg-emerald-400 text-emerald-800"
@@ -262,9 +246,7 @@ const UploadFood = () => {
 
                 <div className="group flex justify-center items-center flex-col border-2 border-dotted border-gray-300 w-full h-225 md:h-340 cursor-pointer rounded-lg">
 
-                    {isLoading ? (
-                        <Loader />
-                    ) : (
+                    
                         <>
                             {!foodData.imageURL ? (
                                 <>
@@ -304,7 +286,6 @@ const UploadFood = () => {
                                 </>
                             )}
                         </>
-                    )}
                 </div>
 
                 <div className="w-full flex flex-col md:flex-row items-center gap-3">
@@ -361,7 +342,9 @@ const UploadFood = () => {
                     </button>
                 </div>
             </div>
+        
         </form>
+
     );
 };
 

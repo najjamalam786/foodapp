@@ -1,6 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-export default function OrderAddress({address}) {
+export default function OrderAddress({address, index, setIndex}) {
+
+  const [checkBox, setCheckBox] = useState(true);
+
+  
+  const handleCheckBox = () => {
+    
+    if(checkBox == true){
+
+      setIndex(index);
+    }else{
+      setIndex(undefined);
+    }
+  }
+  
  
   return (
     <div className='w-full border rounded-lg px-6 py-6 '>
@@ -14,7 +28,10 @@ export default function OrderAddress({address}) {
 
 </div>
 <div className="flex flex-col items-end gap-2 ">
-            <input type='checkbox' name='defaultAddress' className=" w-4 h-4"/>
+            <input type='checkbox'onClick={()=> {
+              setCheckBox(!checkBox);
+              handleCheckBox();
+              }}  name='defaultAddress' className=" w-4 h-4"/>
               
 
 

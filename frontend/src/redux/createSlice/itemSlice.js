@@ -5,7 +5,6 @@ const initialState = {
     foodItems: [],
     showCart: false,
     cartItems: [],
-    showNav: true,
     totalPrice: 0,
   };
 
@@ -31,12 +30,10 @@ const itemSlice = createSlice({
     addTotalPrice(state, action) {
       state.totalPrice = action.payload;
     },
-    showNavBar(state, action) {
-      state.showNav = action.payload;
-    },
+    
     
   },
 })
 
-export const { signInUser, itemAdded, itemShowCart, addCartItems, addTotalPrice, showNavBar  } = itemSlice.actions
+export const { signInUser, itemAdded, itemShowCart, addCartItems, addTotalPrice  } = itemSlice.actions
 export default itemSlice.reducer

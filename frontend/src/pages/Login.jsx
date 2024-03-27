@@ -3,6 +3,7 @@ import {Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInStart, signInFailure, signInSuccess } from '../redux/createSlice/userSlice';
 import GoogleAuth from '../components/GoogleAuth';
+import { pageLoader } from '../redux/createSlice/orderSlice';
 
 export default function Login() {
 
@@ -23,6 +24,7 @@ export default function Login() {
   }
 
   const handleSubmit = async(e) => {
+    dispatch(pageLoader(true));
     e.preventDefault();
 
     try{
@@ -51,12 +53,18 @@ export default function Login() {
       }
       // setLoading(false);
       // setError(null);
-      dispatch(signInSuccess(data));
-      navigate('/');
+      setTimeout(() => {
+        dispatch(signInSuccess(data));
+        dispatch(pageLoader(false));
+        navigate('/');
+      }, 1000);
+      
 
     }catch(error){
       // setError(error.message);
       // setLoading(false)
+      dispatch(pageLoader(false));
+
       dispatch(signInFailure(error.message));
     }
   }

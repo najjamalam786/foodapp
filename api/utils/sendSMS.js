@@ -5,10 +5,10 @@ const authToken = process.env.TWILIO_AUTH_TOKEN ;
 
 
 const client = Twilio(accountSid, authToken);
-const sendSMS = async (msg) => {
+const sendSMS = async (toMobile, msg) => {
     let msgOption = {
         from: process.env.TWILIO_FROM_NUMBER,
-        to: process.env.TWILIO_TO_NUMBER,
+        to: toMobile,
         body: msg,
     };
     
@@ -16,14 +16,14 @@ const sendSMS = async (msg) => {
         await client.messages.create(msgOption);
         
     } catch (error) {
-        console.log("error");
+        console.log("error SMS");
     }
 }
 
 // post('/api/user/message', getMessage);
 export const getMessage = async (req, res, next) => {
     try {
-        sendSMS(req.body.message);
+        sendSMS(req.body.mobile, req.body.message);
         res.status(200).json({ message: "Message sent" });
 
     } catch (error) {

@@ -23,6 +23,7 @@ import { pageLoader } from "./redux/createSlice/orderSlice";
 import Loader from "./components/Loader";
 import ShowNavBar from "./components/ShowNavBar";
 import ConfirmOrder from "./pages/ConfirmOrder";
+// import MobileAuthentication from "./pages/MobileAuthentication";
 
 
 const App = () => {
@@ -68,7 +69,10 @@ useEffect(() => {
 
       {confirmOrder && <Main><ConfirmOrder /></Main>}
 
-      <ShowNavBar> <Header /> </ShowNavBar>
+      <ShowNavBar>
+         <Header />
+
+      </ShowNavBar>
 
       {showCart && <Main><CartContainer /></Main>}
 
@@ -76,6 +80,7 @@ useEffect(() => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/signup" element={<SignUp />} />
+          {/* <Route path="/mobile-auth" element={<MobileAuthentication />} /> */}
             <Route path="/signin" element={<Login />} />
 
           <Route element={<PrivateRout />}>
@@ -96,7 +101,9 @@ useEffect(() => {
 
         </Routes>
       </main>
-      <Footer />
+      
+      <ShowNavBar> <Footer /> </ShowNavBar>
+
     </BrowserRouter>
   );
 };

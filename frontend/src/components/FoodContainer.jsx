@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { MdShoppingBasket } from "react-icons/md";
 import NotFound from "../img/NotFound.svg";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { addCartItems } from "../redux/createSlice/itemSlice";
 
 const FoodContainer = ({flag, dataValue, scrollValue }) => {
@@ -13,6 +14,7 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
   const { currentUser } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   // const [items, setItems] = useState([]);
 
 
@@ -99,6 +101,8 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
             
           }else{
             alert("Please login first");
+            
+            navigate("/signin");
           }
         } catch (error) {
           console.log(error);
@@ -115,25 +119,11 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
     
     
     useEffect(() => {
-      
-      // only one time API call
-      // const fetchAllUserCart = async () => {
-          
-      //   const res = await fetch('/api/user/allcart', {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify({ email: currentUser?.email }),
-      //   }
-      //   );
-      //   await res.json().then(async (allData) => {
-      //     dispatch(addCartItems(allData));
-  
-      //   });
-        
-      // }
-      // fetchAllUserCart();
+
+      // dispatch(pageLoader(true));
+      // setTimeout(() => {
+      //   dispatch(pageLoader(false));
+      // }, 500);
      
         
     }, []);

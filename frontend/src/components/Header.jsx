@@ -1,6 +1,6 @@
 import {useState} from 'react'
 import {  MdAdd, MdLogout, MdLogin,  } from "react-icons/md";
-import { FaUserCog } from "react-icons/fa";
+import { FaCaretDown, FaUserCog } from "react-icons/fa";
 import { GrUserAdmin } from "react-icons/gr";
 import { TiUserAdd } from "react-icons/ti";
 import Logo from "../img/logo.png";
@@ -101,24 +101,32 @@ export default function Header() {
             )}
             
           </div>
-
+              
           <div 
           onMouseEnter={() => {setIsMenu(true);}}
           onMouseLeave={() => {setIsMenu(false);}}
           
           
+
             className="relative">
+            {currentUser ? (
+              <div className="flex items-center gap-1 ">
+                <FaCaretDown/>
+                <p className="text-lg h-8 text-textColor hover:text-teal-600 duration-100 transition-all ease-in-out lowercase cursor-pointer">{currentUser.username.split(" ")[0]}...</p>
+              </div>
+            ) 
+            : 
             <img
-              src={currentUser ? currentUser.avatar : Avatar}
+              src={Avatar}
               className="w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl cursor-pointer rounded-full"
               alt="userprofile"
               
               
-            />
+            />}
             
               {isMenu && <div
                 
-                className="w-40 z-10 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-10 right-0"
+                className="w-40 z-10 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-8 right-0"
               >
                 
                  
@@ -128,14 +136,23 @@ export default function Header() {
                   <div>
                     {currentUser.isAdmin ? (
                       <div className="">
-                      <Link to={"/admin-profile"}>
+                        
+                        <p
+                        className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer  transition-all duration-100 ease-in-out capitalize text-white bg-teal-600 rounded-lg text-base"
+                        
+                      >
+                        {currentUser.username.split(" ")[0]} <FaUserCog />
+                      </p>
+                        
+                      
+                      {/* <Link to={"/admin-profile"}> */}
                         <p
                           className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor text-base"
                           
                         >
                           Admin <GrUserAdmin />
                         </p>
-                      </Link>
+                      {/* </Link> */}
 
                       <Link to={"/createItem"}>
                     <p
@@ -149,17 +166,13 @@ export default function Header() {
                       </div>
                     ) : (
                     <div>
-                    <Link to={"/profile"}>
+                    
                       <p
-                        className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor text-base"
+                        className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer  transition-all duration-100 ease-in-out capitalize text-white bg-teal-600 rounded-lg text-base"
                         
                       >
-                        Profile <FaUserCog />
+                        {currentUser.username} <FaUserCog />
                       </p>
-                    </Link>
-
-
-
                     </div>
                     )
                     }

@@ -19,7 +19,11 @@ export default function ConfirmOrder() {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ message: `Thank you for ordering from our ${currentUser.email} website. Your order will be delivered soon. `}),
+                body: JSON.stringify({
+                  mobile: import.meta.env.VITE_TWILIO_NUMBER, 
+
+                  message: `from TIFFINBOX... Thank you for ordering from our ${currentUser.email} website. Your order will be delivered soon. `
+                }),
             }).then(() => {
                 console.log("working twilio")
             })
@@ -30,15 +34,17 @@ export default function ConfirmOrder() {
   return (
     <div
     
-    className="w-full h-full rounded-t-[2rem] bg-green-300 drop-shadow-md flex flex-col"
+    className="w-full h-full rounded-t-[2rem] bg-gradient-to-tr from-[#0d2650] to-[#3760a7] drop-shadow-md flex flex-col"
     >
         <div className="w-full h-full flex flex-col items-center justify-center gap-6">
           <img src={ConfirmTiffin} className="w-300" alt="confirm_img" />
-          <p className="text-xl text-textColor font-semibold">
+          <div className="flex flex-col items-center justify-center gap-2">
+          <p className="text-xl text-white font-semibold">
             Thank you for ordering from our website.
-            <br />
-            Your Food will be delivered soon.
+            
           </p>
+          <p className="text-xl text-white font-semibold">Your Food will be delivered soon...</p>
+          </div>
         <button onClick={confirmOrderHandler} className='bg-orange-500 w-[200px] text-white  px-4 py-2 rounded-lg'>Go Back Home</button>
         <Link to="/user-orders">
         <button onClick={confirmOrderHandler} className='bg-green-500 w-[200px] text-white px-4 py-2 rounded-lg'>See Order</button>

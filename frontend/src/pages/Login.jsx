@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInStart, signInFailure, signInSuccess } from '../redux/createSlice/userSlice';
@@ -68,6 +68,13 @@ export default function Login() {
       dispatch(signInFailure(error.message));
     }
   }
+
+  useEffect(() => {
+    dispatch(pageLoader(true));
+    setTimeout(() => {
+      dispatch(pageLoader(false));
+    }, 500);
+  },[])
 
   return (
     <div className='p-3 max-w-lg mx-auto'>

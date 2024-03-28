@@ -1,13 +1,19 @@
 import { useState } from 'react'
 import {Link, useNavigate } from 'react-router-dom';
 import GoogleAuth from '../components/GoogleAuth';
-
+import MobileAuthentication from './MobileAuthentication';
+import { useDispatch } from 'react-redux';
+import { pageLoader } from '../redux/createSlice/orderSlice';
 export default function SignUp() {
 
   const [formData, setFormData] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [mobileAuth, setMobileAuth] = useState(false);
+  const [codeID, setCodeID] = useState('');
 
+  // console.log(formData.email);
+  const dispatchEvent = useDispatch();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -22,7 +28,9 @@ export default function SignUp() {
     e.preventDefault();
 
     try{
-        setLoading(true);
+      dispatchEvent(pageLoader(true))
+      setLoading(true);
+      
       
       const res = await fetch('/api/user/signup', {
         method:'POST',
@@ -31,29 +39,61 @@ export default function SignUp() {
         },
         body: JSON.stringify(formData),
       });
-
-      const data = await res.json();
       
+      await res.json().then((data) => {
 
+        // console.log(data);
+        setCodeID(data.slice(-4));
+
+        if(data.success === false) {
+          setLoading(false);
+          dispatchEvent(pageLoader(false))
+          setError(data.message);
+          return;
+        }else{
+          setMobileAuth(true)
+          // console.log("working");
+        }
+
+        
+      });
+      
+      
       // e.target.reset();
       
       if(data.success === false) {
         setLoading(false);
+        dispatchEvent(pageLoader(false))
         setError(data.message);
         return;
       }
+      
+      setTimeout(() => {
+        dispatchEvent(pageLoader(false));
+      },500);
       setLoading(false);
-      setError(null);
-      navigate('/signin');
 
+      setError(null);
+      // navigate('/mobile-auth');
+      
     }catch(error){
       setError(error.message);
-      setLoading(false)
+      dispatchEvent(pageLoader(false));
+      setLoading(false);
+
     }
   }
 
   return (
-    <div className='p-3 max-w-lg mx-auto'>
+    <>
+    { mobileAuth ? (
+
+      <MobileAuthentication codeID={codeID} userEmail={formData.email} />
+
+    ) 
+    :
+
+      <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl text-center font-semibold my-7' >
         Sign Up
       </h1>
@@ -79,5 +119,7 @@ export default function SignUp() {
       </div>
       {error && <p className='text-red-700'>{error}</p>}
     </div>
+    }
+    </>
   )
 }

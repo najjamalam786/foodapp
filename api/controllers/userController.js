@@ -4,16 +4,53 @@ import bcryptjs from "bcryptjs";
 import { errorHandler } from "../utils/errors.js";
 import jwt from "jsonwebtoken";
 
+
+// Create User post(/api/user/signup)
 export const createUser = async (req, res, next) => {
     
-    const { username, email, password, isAdmin } = req.body;
+    const { username, email, password, isAdmin} = req.body;
 
     const encrypt_password = bcryptjs.hashSync(password, 10);
     const newUser = new User({ username, email, password: encrypt_password, isAdmin});
     
     try {
-        await newUser.save();
-        res.status(201).json("Successfull user created");
+      const response = await newUser.save();
+
+      if(response === null){
+        res.status(200).json(response);
+      }else{
+        res.status(201).json(response._id);
+      }
+
+    } catch (error) {
+      next(error);
+    }
+}
+
+// Verify Phone number post(/api/user/verify-phone)
+export const verifyPhone = async (req, res, next) => {
+    const clientData = req.body;
+    try {
+        await User.findOneAndUpdate({ email: clientData.email }, { phone: clientData.phone, codeID: clientData.codeID }, { new: true })
+
+        res.status(200).json("OTP send successfully");  
+        
+    } catch (error) {
+        next(error);
+    }
+}
+
+// Verify code post(/api/user/verify-code)
+export const verifyCode = async (req, res, next) => {
+    const code = req.body;
+    try {
+        const response = await User.findOne({codeID: code.code });
+        if(response === null){
+            res.status(200).json(response);
+        }else{
+            res.status(201).json(response._id);
+        }
+        
     } catch (error) {
         next(error);
     }

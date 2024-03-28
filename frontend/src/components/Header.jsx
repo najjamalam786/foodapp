@@ -1,6 +1,6 @@
 import {useState} from 'react'
 import {  MdAdd, MdLogout, MdLogin,  } from "react-icons/md";
-import { FaCaretDown, FaUserCog } from "react-icons/fa";
+import { FaRegUser, FaUserCog } from "react-icons/fa";
 import { GrUserAdmin } from "react-icons/gr";
 import { TiUserAdd } from "react-icons/ti";
 import Logo from "../img/logo.png";
@@ -111,8 +111,8 @@ export default function Header() {
             className="relative">
             {currentUser ? (
               <div className="flex items-center gap-1 ">
-                <FaCaretDown/>
-                <p className="text-lg h-8 text-textColor hover:text-teal-600 duration-100 transition-all ease-in-out lowercase cursor-pointer">{currentUser.username.split(" ")[0]}...</p>
+                <FaRegUser/>
+                <p className="text-lg h-8 text-textColor hover:text-teal-600 duration-100 transition-all ease-in-out lowercase cursor-pointer">{currentUser.username.slice(0, 6)}...</p>
               </div>
             ) 
             : 

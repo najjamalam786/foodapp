@@ -40,33 +40,26 @@ export default function SignUp() {
         body: JSON.stringify(formData),
       });
       
-      await res.json().then((data) => {
+      const userCode = await res.json();
 
-        // console.log(data);
-        setCodeID(data.slice(-4));
-
-        if(data.success === false) {
+        if(userCode.success === false) {
           setLoading(false);
           dispatchEvent(pageLoader(false))
-          setError(data.message);
+          console.log("userCode is:", userCode);
+          setError(userCode.message);
           return;
         }else{
+          setCodeID(userCode.slice(-4));
+        
           setMobileAuth(true)
           // console.log("working");
         }
 
         
-      });
+      
       
       
       // e.target.reset();
-      
-      if(data.success === false) {
-        setLoading(false);
-        dispatchEvent(pageLoader(false))
-        setError(data.message);
-        return;
-      }
       
       setTimeout(() => {
         dispatchEvent(pageLoader(false));

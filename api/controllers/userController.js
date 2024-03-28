@@ -12,15 +12,11 @@ export const createUser = async (req, res, next) => {
 
     const encrypt_password = bcryptjs.hashSync(password, 10);
     const newUser = new User({ username, email, password: encrypt_password, isAdmin});
+    // console.log("newUser:", newUser);
     
     try {
-      const response = await newUser.save();
-
-      if(response === null){
-        res.status(200).json(response);
-      }else{
+        const response = await newUser.save();
         res.status(201).json(response._id);
-      }
 
     } catch (error) {
       next(error);

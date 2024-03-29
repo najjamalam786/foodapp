@@ -6,11 +6,15 @@ const itemSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    category: {
+    week:{
         type: String,
         required: true
     },
-    calories: {
+    day: {
+        type: String,
+        required: true
+    },
+    foodType: {
         type: String,
         required: true
     },

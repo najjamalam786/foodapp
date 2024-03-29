@@ -34,41 +34,79 @@ export const heroData = [
   },
 ];
 
-export const categories = [
+export const weeks = [
   {
     id: 1,
-    name: "Chicken",
-    urlParamName: "chicken",
+    name: "Sunday",
+    urlParamName: "sunday",
   },
   {
     id: 2,
-    name: "Curry",
-    urlParamName: "curry",
+    name: "Monday",
+    urlParamName: "monday",
   },
   {
     id: 3,
-    name: "Rice",
-    urlParamName: "rice",
+    name: "Tuesday",
+    urlParamName: "tuesday",
   },
   {
     id: 4,
-    name: "Fish",
-    urlParamName: "fish",
+    name: "Thursday",
+    urlParamName: "thursday",
   },
   {
     id: 5,
-    name: "Fruits",
-    urlParamName: "fruits",
+    name: "Wednesday",
+    urlParamName: "wednesday",
   },
   {
     id: 6,
-    name: "Icecreams",
-    urlParamName: "icecreams",
+    name: "Friday",
+    urlParamName: "friday",
   },
-
   {
     id: 7,
-    name: "Soft Drinks",
-    urlParamName: "drinks",
+    name: "Saturday",
+    urlParamName: "saturday",
   },
+
 ];
+// export const categories = [
+//   {
+//     id: 1,
+//     name: "Chicken",
+//     urlParamName: "chicken",
+//   },
+//   {
+//     id: 2,
+//     name: "Curry",
+//     urlParamName: "curry",
+//   },
+//   {
+//     id: 3,
+//     name: "Rice",
+//     urlParamName: "rice",
+//   },
+//   {
+//     id: 4,
+//     name: "Fish",
+//     urlParamName: "fish",
+//   },
+//   {
+//     id: 5,
+//     name: "Fruits",
+//     urlParamName: "fruits",
+//   },
+//   {
+//     id: 6,
+//     name: "Icecreams",
+//     urlParamName: "icecreams",
+//   },
+
+//   {
+//     id: 7,
+//     name: "Soft Drinks",
+//     urlParamName: "drinks",
+//   },
+// ];

@@ -15,7 +15,8 @@ export const createItems = async (req, res, next) => {
     }
 };
 
-// Get All Items
+// .get("/get", getItems)
+// Get All Items 
 export const getItems = async (req, res, next) => {
     try {
         const items = await Item.find();

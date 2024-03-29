@@ -10,7 +10,6 @@ import {
 } from "react-icons/md";
 import { PiPlusMinusFill } from "react-icons/pi";
 import { FaRupeeSign } from "react-icons/fa";
-import { categories } from "../utils/data";
 import { useDispatch } from "react-redux";
 import {
     deleteObject,
@@ -28,12 +27,14 @@ const UploadFood = () => {
     const [fields, setFields] = useState(false);
     const [alertStatus, setAlertStatus] = useState("Faild");
     const [msg, setMsg] = useState(null);
+    const [weeks, setWeeks] = useState(null);
 
     const [foodData, setFoodData] = useState({
         name: "",
         imageURL: "",
-        category: "",
-        calories: "",
+        week: "",
+        day: "",
+        foodType: "",
         pieces: "",
         quantity: 1,
         price: "",
@@ -175,7 +176,7 @@ const UploadFood = () => {
               const value = e.target.value;
               setFoodData({ ...foodData, [e.target.name]: value });
             }
-            if(e.target.name === 'category'){
+            if(e.target.name === 'week' || e.target.name === 'day'){
                 const value = e.target.value;
                 setFoodData({ ...foodData, [e.target.name]: value });
             }
@@ -185,6 +186,22 @@ const UploadFood = () => {
                 setFoodData({ ...foodData, [e.target.name]: value });
             }
         };
+
+        useEffect(() => {
+            const fetchWeeks = async () => {
+                try {
+                    const response = await fetch('/api/item/week');
+                    const data = await response.json();
+                    setWeeks(data);
+    
+                } catch (error) {
+                    console.log(error)
+                    
+                }
+            }
+
+            fetchWeeks();
+        }, []);
         
         
     return (
@@ -217,32 +234,65 @@ const UploadFood = () => {
                     />
                 </div>
                 
-
+                
                 <div className="w-full">
                     <select
                         
-                        name="category"
-                        value={foodData.category}
+                        name="week"
+                        value={foodData.week}
                         onChange={handleChange}
                         className="outline-none w-full text-base border-b-2 border-gray-200 p-2 rounded-md cursor-pointer"
                     >
                         <option value="other" className="bg-white">
-                            Select Category
+                            Select week
                         </option>
 
-                        {categories &&
-              categories.map((item) => (
-                <option
-                  key={item.id}
-                  className="text-base border-0 outline-none capitalize bg-white text-headingColor"
-                  value={item.urlParamName}
-                >
-                  {item.name}
-                </option>
-              ))}
+                        
+                
+                { weeks && weeks.map((week) => (
+                  <option
+                    key={week._id}
+                    className="text-base border-0 outline-none capitalize bg-white text-headingColor"
+                    value={`week ${week.index}`}
+                  >
+                    week {week.index}
+                  </option>
+                ))}
+                
+                
 
                     </select>
                 </div>
+                
+                <div className="w-full">
+                    <select
+                        
+                        name="day"
+                        value={foodData.day}
+                        onChange={handleChange}
+                        className="outline-none w-full text-base border-b-2 border-gray-200 p-2 rounded-md cursor-pointer"
+                    >
+                        <option value="other" className="bg-white">
+                            Select day
+                        </option>
+
+                        
+                
+                { weeks && weeks[0].week.map((item) => (
+                  <option
+                    key={item._id}
+                    className="text-base border-0 outline-none capitalize bg-white text-headingColor"
+                    value={item.urlParamName}
+                  >
+                    {item.name}
+                  </option>
+                ))}
+                
+                
+
+                    </select>
+                </div>
+              
 
                 <div className="group flex justify-center items-center flex-col border-2 border-dotted border-gray-300 w-full h-225 md:h-340 cursor-pointer rounded-lg">
 
@@ -292,12 +342,12 @@ const UploadFood = () => {
                     <div className="w-full py-2 border-b border-gray-300 flex items-center gap-2">
                         <MdFoodBank className="text-gray-700 text-3xl" />
                         <input
-                            type="number"
+                            type="text"
                             required
-                            name="calories"
-                            value={foodData.calories}
+                            name="foodType"
+                            value={foodData.foodType}
                             onChange={handleChange}
-                            placeholder="Calories"
+                            placeholder="foodType"
                             className="w-full h-full text-lg bg-transparent outline-none border-none placeholder:text-gray-400 text-textColor"
                         />
                     </div>

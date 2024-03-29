@@ -18,7 +18,7 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
   // const [items, setItems] = useState([]);
 
 
-  
+  // console.log("dataValue: ", dataValue);
 
   // const addtocart = () => {
   //   dispatch(addCartItems(items))
@@ -184,18 +184,26 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
               <p className="text-textColor font-semibold text-base md:text-lg">
                 {item?.name}
               </p>
-              <p className="mt-1 text-sm text-gray-500">
-                {item?.calories} Calories
+              {
+                item.foodType === "veg" ? (
+                  <p className="mt-1 bg-green-700 px-2 text-sm text-white font-semibold rounded-md">
+                {item?.foodType} 
               </p>
+                ) : (
+                  <p className="mt-1 bg-red-800 px-2 text-sm text-white font-semibold rounded-md">
+                {item?.foodType} 
+              </p>
+                )
+              }
               
-              {item?.prices > 1 && (
+              {item?.preces > 1 && (
               <p className="mb-1 text-sm text-gray-500">
                 {item?.pieces} <span className="text-sm text-slate-500">pieces</span>
               </p>
               )}
                 <div className="flex items-center gap-8">
                 <p className="text-lg text-headingColor font-semibold">
-                  <span className="text-sm text-red-500">₹</span> {item?.price}
+                  <span className="text-sm text-slate-500">price: ₹</span> {item?.price}
                 </p>
               </div>
               

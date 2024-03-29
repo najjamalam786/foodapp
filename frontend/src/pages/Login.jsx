@@ -83,6 +83,11 @@ export default function Login() {
       </h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
 
+      {/* <div className="relative">
+          <span className='absolute top-3 left-3'>+91</span>
+        <input type="number" placeholder='Enter your number' className='w-full outline-none remove-arrow border p-3 pl-14 rounded-lg' id="number" onChange={handleChange}/>
+        </div> */}
+
         <input type="email" placeholder='email' className='border p-3 rounded-lg' id="email" onChange={handleChange}/>
 
         <input type="password" placeholder='password' className='border p-3 rounded-lg' id="password" onChange={handleChange} />

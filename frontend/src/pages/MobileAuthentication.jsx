@@ -74,7 +74,9 @@ export default function MobileAuthentication({ codeID, userEmail }) {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
+                    email: userEmail,
                     code: codeV
+
                 })
             });
             const data = await response.json();
@@ -82,9 +84,9 @@ export default function MobileAuthentication({ codeID, userEmail }) {
                 setUser(true);
                 setTimeout(() => {
                     setLoading(false);
-                    // navigate("/signin");
+                    navigate("/signin");
                     
-                }, 4000);
+                }, 2000);
             } else {
 
                 alert(data.message)

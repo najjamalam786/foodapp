@@ -54,12 +54,12 @@ export default function ShippingAddress() {
                     name: currentUser.username,
                     email: currentUser.email,
                     orderItems: cartItems,
-                    shippingAddress: [{
+                    shippingAddress: {
                         landmark: formData.landmark.trim(),
                         address: formData.address.trim(),
                         pincode: formData.pincode.trim(),
                         district: formData.district.trim()
-                    }],
+                    },
                     totalPrice: totalPrice,
 
                 }),
@@ -79,11 +79,12 @@ export default function ShippingAddress() {
                 }),
                 });
 
+                dispatch(addCartItems([]));
+
                     setTimeout(() => {
-                        dispatch(addCartItems([]));
                         dispatch(pageLoader(false));
-                        navigate('/');
                         dispatch(confirmOrderPlaced(true));
+                        navigate('/');
 
                     },1000)
                     
@@ -165,6 +166,7 @@ export default function ShippingAddress() {
                 });
                 
             }
+
         } catch (error) {
             dispatch(pageLoader(false));
             console.log(error)
@@ -293,64 +295,64 @@ export default function ShippingAddress() {
                         </div>) : (
 
                         // Add Shipping Address
-                        <form onSubmit={handleSubmit} className="flex flex-col my-[50px] gap-4">
-                            <div className="flex flex-col gap-4 flex-1">
+                        <form onSubmit={handleSubmit} className="flex flex-col my-[50px] gap-4 ">
+                                    <div className="flex flex-col gap-4 flex-1">
 
-                                <p
-                                    className="border font-semibold text-slate-500 p-3 rounded-lg"
-                                >{currentUser.username} / {currentUser.email}</p>
+                                        <p
+                                            className="border font-semibold text-slate-500 p-3 rounded-lg"
+                                        >{currentUser.username} / {currentUser.email}</p>
 
-                                <input
-                                    type="text"
-                                    placeholder="Landmark"
-                                    className="border p-3 rounded-lg"
-                                    id="landmark"
-                                    maxLength={62}
-                                    minLength={10}
-                                    onChange={handleChange}
-                                    value={formData.landmark}
-                                    required
-                                />
-
-
-                                <textarea
-                                    type="textarea"
-                                    placeholder="Address"
-                                    className="border p-3 rounded-lg"
-                                    id="address"
-                                    onChange={handleChange}
-                                    value={formData.address}
-                                    required
-                                />
-                                <div className='flex justify-between'>
-                                    <input
-                                        type="number"
-                                        placeholder="pincode"
-                                        className="border p-3 rounded-lg"
-                                        id="pincode"
-                                        onChange={handleChange}
-                                        value={formData.pincode}
-                                        required
-                                    />
-                                    <select
-                                        name="district" id="district"
-                                        onChange={handleChange}
-                                        className="w-[50%] border p-3 rounded-lg text-slate-600 font-semibold"
-                                    >
-                                        <option value="Patna">Patna</option>
-                                        <option value="Bhagalpur">Bhagalpur</option>
-                                        <option value="Madhepura">Madhepura</option>
-                                        <option value="Gaya">Gaya</option>
-                                        <option value="Muzaffarnagar">Muzaffarpur</option>
-                                    </select>
-                                </div>
+                                        <input
+                                            type="text"
+                                            placeholder="Landmark"
+                                            className="border p-3 rounded-lg"
+                                            id="landmark"
+                                            maxLength={62}
+                                            minLength={10}
+                                            onChange={handleChange}
+                                            value={formData.landmark}
+                                            required
+                                        />
 
 
-                            </div>
+                                        <textarea
+                                            type="textarea"
+                                            placeholder="Address"
+                                            className="border p-3 rounded-lg"
+                                            id="address"
+                                            onChange={handleChange}
+                                            value={formData.address}
+                                            required
+                                        />
+                                        <div className='flex justify-between'>
+                                            <input
+                                                type="number"
+                                                placeholder="pincode"
+                                                className="border p-3 rounded-lg"
+                                                id="pincode"
+                                                onChange={handleChange}
+                                                value={formData.pincode}
+                                                required
+                                            />
+                                            <select
+                                                name="district" id="district"
+                                                onChange={handleChange}
+                                                className="w-[50%] border p-3 rounded-lg text-slate-600 font-semibold"
+                                            >
+                                                <option value="Patna">Patna</option>
+                                                <option value="Bhagalpur">Bhagalpur</option>
+                                                <option value="Madhepura">Madhepura</option>
+                                                <option value="Gaya">Gaya</option>
+                                                <option value="Muzaffarnagar">Muzaffarpur</option>
+                                            </select>
+                                        </div>
 
-                            {/* tempory button */}
-                            <button type="submit" className="p-3 bg-green-500 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-90">Order Proceed</button>
-                        </form>
+
+                                    </div>
+
+                                    {/* tempory button */}
+                                    <button type="submit" className="p-3 bg-green-500 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-90">Order Proceed</button>
+                                </form>
                     )
 
 

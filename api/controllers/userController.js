@@ -40,7 +40,7 @@ export const verifyPhone = async (req, res, next) => {
 export const verifyCode = async (req, res, next) => {
     const code = req.body;
     try {
-        const response = await User.findOne({codeID: code.code });
+        const response = await User.findOne({email: code.email, codeID: code.code });
         if(response === null){
             res.status(200).json(response);
         }else{
@@ -96,6 +96,8 @@ export const googleLogin = async (req, res, next) => {
     }
 }
 
+
+//Sign In User fetch('/api/user/signin'
 export const signIn = async (req, res, next) => {
     const { email, password } = req.body;
 
@@ -232,7 +234,8 @@ export const deleteUserCartItems = async(req, res, next) => {
     }
 }
 
-// Order create by user 
+
+// Order create by user .post('/ordercreate',verifyToken, orderCreate)
 
 export const orderCreate = async(req, res, next) => {
     const orderData = req.body;
@@ -247,7 +250,9 @@ export const orderCreate = async(req, res, next) => {
                 
             }).then(async() => {
                 
-                await User.findOneAndUpdate({email: orderData.email}, {$set: {userCart: []}}, {new: true});
+                await User.findOneAndUpdate({email: orderData.email}, {$set: {userCart: []}}, {new: true}).then((response) => {
+                    res.status(200).json(response.userCart);
+                });
             });
         }catch(error){
             next(error);
@@ -322,8 +327,7 @@ export const verifyUser = (req, res, next) => {
     }
 }
 
-// Add User address by user
-
+// Add User address by user.post('/useraddress', verifyToken, userAddress)
 export const userAddress = async (req, res, next) => {
     
     try {

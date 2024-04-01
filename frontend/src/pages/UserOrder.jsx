@@ -13,7 +13,6 @@ export default function UserOrder() {
 
   const dispatchEvent = useDispatch();
 
-
   useEffect(() => {
     const fetchOrderData = async(e) => {
       await fetch('/api/user/orderdata', {
@@ -21,7 +20,7 @@ export default function UserOrder() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: currentUser?.email }),
+        body: JSON.stringify({ mobile: currentUser?.mobile }),
       }).then((res) => {
         res.json().then((response) => {
           // console.log("allOrder",allOrder);

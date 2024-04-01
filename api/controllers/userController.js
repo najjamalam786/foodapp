@@ -294,11 +294,12 @@ export const deleteUserCartItems = async(req, res, next) => {
 
 export const orderCreate = async(req, res, next) => {
     const orderData = req.body;
-    const userE = await Order.findOne({email: orderData.email});
+    const userE = await Order.findOne({mobile: orderData.mobile});
 
     if(userE == null){
         try{
             await Order.create({
+                mobile: orderData.mobile,
                 name: orderData.name,
                 email: orderData.email,
                 orderItems: [{foodData: orderData.orderItems, shippingAddress: orderData.shippingAddress, totalPrice: orderData.totalPrice, orderDate: new Date().toDateString(), orderTime: new Date().toLocaleTimeString()}],
@@ -316,7 +317,7 @@ export const orderCreate = async(req, res, next) => {
 
     else{
         try {
-            await Order.findOneAndUpdate({email: orderData.email}, {$push: {orderItems: [{foodData: orderData.orderItems, shippingAddress: orderData.shippingAddress, totalPrice: orderData.totalPrice, orderDate: new Date().toDateString(), orderTime: new Date().toLocaleTimeString()}],  } },{new: true}).then(async() => {
+            await Order.findOneAndUpdate({mobile: orderData.mobile}, {$push: {orderItems: [{foodData: orderData.orderItems, shippingAddress: orderData.shippingAddress, totalPrice: orderData.totalPrice, orderDate: new Date().toDateString(), orderTime: new Date().toLocaleTimeString()}],  } },{new: true}).then(async() => {
 
                 await FoodUser.findOneAndUpdate({email: orderData.email}, {$set: {userCart: []}}, {new: true}).then((response) => {
                     res.status(200).json(response.userCart);
@@ -348,12 +349,12 @@ export const deleteCartItems = async(req, res, next) => {
 }
 
 
-// Order get by user
+// Order get by user .post('/orderdata', orderGet)
 
 export const orderGet = async(req, res, next) => {
     const orderData = req.body;
     try {
-        const response = await Order.findOne({email: orderData.email});
+        const response = await Order.findOne({mobile: orderData.mobile});
         
         if(response === null){
             res.status(200).json(response);

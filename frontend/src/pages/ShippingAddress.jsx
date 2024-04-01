@@ -51,6 +51,7 @@ export default function ShippingAddress() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
+                    mobile: currentUser.mobile,
                     name: currentUser.username,
                     email: currentUser.email,
                     orderItems: cartItems,
@@ -148,8 +149,7 @@ export default function ShippingAddress() {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        name: currentUser.username,
-                        email: currentUser.email,
+                        mobile: currentUser.mobile,
                         orderItems: cartItems,
                         shippingAddress: orderAddress[index],
                         totalPrice: totalPrice,

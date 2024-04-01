@@ -6,8 +6,8 @@ import { getMessage } from "../utils/sendSMS.js";
 const router = express.Router();
 
 router
-.post("/signup", createUser)
-.post("/verify-phone", verifyPhone)
+.post("/sign-up", createUser)
+.post("/verify-mobile", verifyPhone)
 .post("/verify-code", verifyCode)
 .post('/signin', signIn)
 .post('/google', googleLogin)

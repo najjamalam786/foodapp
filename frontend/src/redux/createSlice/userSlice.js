@@ -4,6 +4,8 @@ const initialState = {
   currentUser: null,
   error: null,
   loading: false,
+  email: null,
+  mobileAuth: false,
 };
 
 const userSlice = createSlice({
@@ -58,6 +60,13 @@ const userSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
+
+    userEmail: (state, action) => {
+      state.email = action.payload;
+    },
+    userMobileAuth: (state, action) => {
+      state.mobileAuth = action.payload;
+    },
   },
 });
 
@@ -74,6 +83,10 @@ export const {
   signoutFailure,
   signoutSuccess,
   signoutUserStart,
+  userEmail,
+  userMobileAuth,
+
+
 } = userSlice.actions;
 
 export default userSlice.reducer;

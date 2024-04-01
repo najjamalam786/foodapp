@@ -88,9 +88,9 @@ export default function Login() {
         <input type="number" placeholder='Enter your number' className='w-full outline-none remove-arrow border p-3 pl-14 rounded-lg' id="number" onChange={handleChange}/>
         </div> */}
 
-        <input type="email" placeholder='email' className='border p-3 rounded-lg' id="email" onChange={handleChange}/>
+        <input type="email" placeholder='email' className='border p-3 rounded-lg' id="email" onChange={handleChange} required/>
 
-        <input type="password" placeholder='password' className='border p-3 rounded-lg' id="password" onChange={handleChange} />
+        <input type="password" placeholder='password' className='border p-3 rounded-lg' id="password" onChange={handleChange} required/>
 
         <button disabled={loading} type='submit' className='bg-blue-600 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-95'>{loading ? "Loaging..." : "Sign In"}</button>
 

@@ -23,6 +23,7 @@ import { pageLoader } from "./redux/createSlice/orderSlice";
 import Loader from "./components/Loader";
 import ShowNavBar from "./components/ShowNavBar";
 import ConfirmOrder from "./pages/ConfirmOrder";
+import MobileAuthentication from "./pages/MobileAuthentication";
 // import MobileAuthentication from "./pages/MobileAuthentication";
 
 
@@ -30,6 +31,7 @@ const App = () => {
 
   const { showCart, cartItems } = useSelector((state) => state.item);
   const { loading, confirmOrder } = useSelector((state) => state.order);
+  const { mobileAuth } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   
 
@@ -64,6 +66,8 @@ useEffect(() => {
 
   return (
     <BrowserRouter>
+
+      {mobileAuth && <Main><MobileAuthentication /></Main>}
 
       {loading && <Main><Loader /></Main>}
 

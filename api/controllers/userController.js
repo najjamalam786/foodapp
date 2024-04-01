@@ -3,6 +3,7 @@ import Order from "../models/OrderModel.js"
 import bcryptjs from "bcryptjs";
 import { errorHandler } from "../utils/errors.js";
 import jwt from "jsonwebtoken";
+import { response } from "express";
 
 
 // Create User post(/api/user/signup)
@@ -10,16 +11,27 @@ export const createUser = async (req, res, next) => {
     
     const { username, email, password, isAdmin} = req.body;
 
-    const encrypt_password = bcryptjs.hashSync(password, 10);
-    const newUser = new User({ username, email, password: encrypt_password, isAdmin});
-    // console.log("newUser:", newUser);
-    
-    try {
-        const response = await newUser.save();
-        res.status(201).json(response._id);
+    const user = await User.findOne({email});   
 
-    } catch (error) {
-      next(error);
+    if( user && user.codeID){
+        return res.status(400).json(null);
+    }
+    else if( user && !user.codeID){
+        return res.status(200).json(user);
+    }
+    else{
+        const encrypt_password = bcryptjs.hashSync(password, 10);
+        const newUser = new User({ username, email, password: encrypt_password, isAdmin});
+        // console.log("newUser:", newUser);
+        
+        try {
+            const response = await newUser.save();
+            res.status(201).json(response);
+    
+        } catch (error) {
+          next(error);
+        }
+
     }
 }
 
@@ -27,9 +39,9 @@ export const createUser = async (req, res, next) => {
 export const verifyPhone = async (req, res, next) => {
     const clientData = req.body;
     try {
-        await User.findOneAndUpdate({ email: clientData.email }, { phone: clientData.phone, codeID: clientData.codeID }, { new: true })
+        const response = await User.findOneAndUpdate({ email: clientData.email }, { mobile: clientData.mobile}, { new: true })
 
-        res.status(200).json("OTP send successfully");  
+        res.status(200).json(response);  
         
     } catch (error) {
         next(error);
@@ -39,12 +51,13 @@ export const verifyPhone = async (req, res, next) => {
 // Verify code post(/api/user/verify-code)
 export const verifyCode = async (req, res, next) => {
     const code = req.body;
+    console.log("code", code.mobile);
     try {
-        const response = await User.findOne({email: code.email, codeID: code.code });
+        const response = await User.findOne({mobile: code.mobile, codeID: code.code });
         if(response === null){
-            res.status(200).json(response);
+            res.status(200).json(null);
         }else{
-            res.status(201).json(response._id);
+            res.status(201).json(response);
         }
         
     } catch (error) {

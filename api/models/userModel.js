@@ -4,11 +4,9 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
-        unique: true
     },
-    phone: {
+    mobile: {
         type: String,
-        // unique: true
     },
     codeID: {
         type: String
@@ -16,7 +14,6 @@ const userSchema = new mongoose.Schema({
     email:{
         type: String,
         required: true,
-        unique: true
     },
     password: {
         type: String,
@@ -25,10 +22,6 @@ const userSchema = new mongoose.Schema({
     isAdmin: {
         type: Boolean,
         default: false
-    },
-    avatar:{
-        type: String,
-        default:"https://firebasestorage.googleapis.com/v0/b/fooddeliveryapp-4818c.appspot.com/o/defaultAvatar.png?alt=media&token=18e52fdb-4724-4412-aa01-c224a14dbe14",
     },
     userCart: {
         type: Object,
@@ -42,5 +35,5 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 })
 
-const User = mongoose.model("User", userSchema)
+const User = mongoose.model("Food_user", userSchema)
 export default User

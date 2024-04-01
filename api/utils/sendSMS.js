@@ -1,3 +1,4 @@
+import User from "../models/userModel.js";
 import {} from "dotenv/config.js";
 import Twilio from "twilio";
 const accountSid = process.env.TWILIO_ACCOUNT_SID ;
@@ -24,6 +25,8 @@ const sendSMS = async (toMobile, msg) => {
 export const getMessage = async (req, res, next) => {
     try {
         sendSMS(req.body.mobile, req.body.message);
+        console.log("sendSMS", req.body.codeID);
+        await User.findOneAndUpdate({ mobile: req.body.mobile }, { codeID: req.body.codeID }, { new: true })
         res.status(200).json({ message: "Message sent" });
 
     } catch (error) {

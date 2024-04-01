@@ -7,15 +7,21 @@ import { CgSpinner } from "react-icons/cg";
 import Flag from "../img/indflag.png"
 import Success from "../img/tick.png"
 import { useNavigate } from 'react-router-dom';
+import {useDispatch, useSelector } from 'react-redux';
+import { IoCloseCircleOutline, IoLogInOutline } from 'react-icons/io5';
+import { signInSuccess, userMobileAuth } from '../redux/createSlice/userSlice';
+import { pageLoader } from '../redux/createSlice/orderSlice';
 
-export default function MobileAuthentication({ codeID, userEmail }) {
+export default function MobileAuthentication() {
 
+    const { email } = useSelector((state) => state.user);
     const [codeVerify, setCodeVerify] = useState('');
     const [ph, setPh] = useState('');
     const [loading, setLoading] = useState(false);
     const [showCode, setShowCode] = useState(false);
     const [user, setUser] = useState(false)
 
+    const dispatchEvent = useDispatch();
     const navigate = useNavigate();
     // const [codeID, setCodeID] = useState('');
 
@@ -23,37 +29,50 @@ export default function MobileAuthentication({ codeID, userEmail }) {
         e.preventDefault();
         try {
             setLoading(true);
-            setShowCode(true);
-            setLoading(false);
-
-            await fetch("/api/user/verify-phone", {
+            
+            
+            await fetch("/api/user/verify-mobile", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    email: userEmail,
-                    phone: ph,
-                    codeID: codeID
+                    email: email,
+                    mobile:`+${ph}`,
                 })
-            }).then((res) => res.json()).then(async () => {
-
-                // const code = codeID.slice(0, 4);
-                const phone = `+${ph}`
-
+            }).then((res) => res.json()).then(async (data) => {
+                
+                const code = data._id.slice(-4);
+                console.log("code", code);
+                const mobile = `+${ph}`
+                console.log("mobile", mobile);
+                
+                setTimeout(() => {
+                    dispatchEvent(pageLoader(false));
+                },2000);
                 // console.log("code", codeID);
-                // console.log("mobile", phone);
+                // console.log("mobile", mobile);
                 await fetch("/api/user/message", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        mobile: phone,
-                        message: `( TIFFINBOX ) Your verification code is: ${codeID}`
+                        codeID: code,
+                        mobile: mobile,
+                        message: `( TIFFINBOX ) Your verification code is: ${code}`
                     })
                 })
+
+                dispatchEvent(pageLoader(true));
+                setTimeout(() => {
+                    setLoading(false);
+                    dispatchEvent(pageLoader(false));
+                    setShowCode(true);
+                }, 2000);
             });
+            dispatchEvent(pageLoader(false));
+            setLoading(false);
 
             // const codeID = await response.json();
         } catch (error) {
@@ -65,7 +84,6 @@ export default function MobileAuthentication({ codeID, userEmail }) {
     const handleVerifyCode = async (e) => {
         e.preventDefault();
 
-        if (codeID === codeVerify) {
             setLoading(true);
             const codeV = `${codeVerify}`
             const response = await fetch("/api/user/verify-code", {
@@ -74,33 +92,34 @@ export default function MobileAuthentication({ codeID, userEmail }) {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    email: userEmail,
+                    mobile: `+${ph}`,
                     code: codeV
 
                 })
             });
             const data = await response.json();
             if (data) {
-                setUser(true);
+                dispatchEvent(pageLoader(true));
+                dispatchEvent(signInSuccess(data));
+                
                 setTimeout(() => {
+                    dispatchEvent(pageLoader(false));
+                    setUser(true);
                     setLoading(false);
-                    navigate("/signin");
+                    navigate("/");
                     
                 }, 2000);
             } else {
-
-                alert(data.message)
-                setLoading(false);
                 setUser(false);
 
+                setLoading(true);
+                setTimeout(() => {
+                    setLoading(false);
+                    alert("Invalid code! Please try again");
+            }, 4000);
+
             }
-        } else {
-            setLoading(true);
-            setTimeout(() => {
-                setLoading(false);
-                alert("Invalid code! Please try again");
-        }, 4000);
-        }
+        
 
     }
 
@@ -109,7 +128,14 @@ export default function MobileAuthentication({ codeID, userEmail }) {
         // }
     }, [])
     return (
-        <section className='w-full rounded-lg bg-emerald-500 flex items-center justify-center h-screen'>
+        <section className='  w-full h-full rounded-lg bg-emerald-500 flex items-center justify-center '>
+            <div className=" absolute w-full flex items-center gap-4 bg-yellow-400 top-0 left-0 py-2 px-4 rounded-lg">
+                <p className="text-xl leading-normal text-white">Login </p>
+                <IoLogInOutline size={25}/>
+                
+                <IoCloseCircleOutline size={25} onClick={() => dispatchEvent(userMobileAuth(false))} className='absolute top-2 right-4 cursor-pointer' />
+            </div>
+
             <div className="">
                 {user ? (
                     <div className="w-80 flex flex-col items-center justify-center gap-4 rounded-lg p-4">
@@ -167,7 +193,7 @@ export default function MobileAuthentication({ codeID, userEmail }) {
                                         htmlFor=""
                                         className="font-bold text-xl text-center text-white"
                                     >
-                                        Verify your phone number
+                                        Verify your mobile number
 
                                     </label>
 

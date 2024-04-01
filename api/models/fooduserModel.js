@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const fooduserSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
@@ -19,18 +19,21 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    password: {
-        type: String,
-        required: true
-    },
     isAdmin: {
         type: Boolean,
         default: false
     },
-    
+    userCart: {
+        type: Object,
+        default: {}
+    },
+    userAddress:{
+            type: Object,
+            default: {}
+    }
 }, {
     timestamps: true
 })
 
-const User = mongoose.model("User", userSchema)
-export default User
+const FoodUser = mongoose.model("Food_user", fooduserSchema)
+export default FoodUser

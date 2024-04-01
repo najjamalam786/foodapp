@@ -1,3 +1,4 @@
+import FoodUser from "../models/fooduserModel.js";
 import User from "../models/userModel.js";
 import Order from "../models/OrderModel.js"
 import bcryptjs from "bcryptjs";
@@ -13,10 +14,13 @@ export const createUser = async (req, res, next) => {
     const user = await User.findOne({email});   
 
     if( user && user.userAuth){
+        
         return res.status(400).json(null);
     }
     else if( user && !user.userAuth){
-        return res.status(200).json(user);
+        const encrypt_password = bcryptjs.hashSync(password, 10);
+        const response = await User.findOneAndUpdate({ email: user.email }, { username: username, password:encrypt_password   }, { new: true })
+        return res.status(200).json(response);
     }
     else{
         const encrypt_password = bcryptjs.hashSync(password, 10);
@@ -38,20 +42,58 @@ export const createUser = async (req, res, next) => {
 export const verifyPhone = async (req, res, next) => {
     const clientData = req.body;
 
-    const user = await User.findOne({ mobile: clientData.mobile });
+
+    const mobileNo = await FoodUser.findOne({ mobile: clientData.mobile });
+    if( mobileNo ){
+
+        return res.status(400).json(null);
+
+    }
+
+
+    const user = await User.findOne({ email: clientData.email });
+
     if(user && user.userAuth){
+
         res.status(200).json(null);
-    }else{
+        
+    }
+
+    else if(user && !user.userAuth) {  
+        
+        const user = await User.findOne({ mobile: clientData.mobile });
+
+        if( user && user.userAuth){
+            res.status(200).json(null);
+        }
+        else{
+            try {
+                const response = await User.findOneAndUpdate({ email: clientData.email}, {$set:{ mobile: clientData.mobile}}, { new: true })
+        
+                res.status(200).json(response);  
+                
+            } catch (error) {
+                next(error);
+            }
+            
+            // const response = await FoodUser.findOneAndUpdate({ mobile: clientData.mobile}, {$set:{ email: clientData.email}}, { new: true })
+            // res.status(200).json(response);
+        }
+        
+    }
+    else{
         try {
-            const response = await User.findOneAndUpdate({ email: clientData.email}, { mobile: clientData.mobile}, { new: true })
+            const response = await User.findOneAndUpdate({ email: clientData.email}, {$set:{ mobile: clientData.mobile}}, { new: true })
     
             res.status(200).json(response);  
             
         } catch (error) {
             next(error);
         }
-        
+            
     }
+        
+
 }
 
 // Verify code post(/api/user/verify-code)
@@ -59,9 +101,12 @@ export const verifyCode = async (req, res, next) => {
     const code = req.body;
     try {
         const response = await User.findOneAndUpdate({mobile: code.mobile, codeID: code.code }, {userAuth: true}, { new: true });
+
         if(response === null){
             res.status(200).json(null);
         }else{
+            await FoodUser.create({ email: response.email, mobile: response.mobile, codeID: response.codeID, userAuth: response.userAuth, username: response.username, isAdmin: false })
+
             res.status(201).json(response);
         }
         
@@ -72,7 +117,7 @@ export const verifyCode = async (req, res, next) => {
 
 export const googleLogin = async (req, res, next) => {
     try {
-        const user = await User.findOne({ email: req.body.email });
+        const user = await FoodUser.findOne({ email: req.body.email });
         if(user){
             
 
@@ -90,7 +135,7 @@ export const googleLogin = async (req, res, next) => {
 
             const encrypt_password = bcryptjs.hashSync(generatedPassword, 10);
 
-            const newUser = new User({
+            const newUser = new FoodUser({
                 username: req.body.name.split(" ").join("").toLowerCase() + Math.random().toString(36).slice(-4),
                 email: req.body.email,
                 password: encrypt_password,
@@ -116,7 +161,7 @@ export const signIn = async (req, res, next) => {
     const { email, password } = req.body;
 
     try {
-        const validUser = await User.findOne({ email: email, userAuth: true});
+        const validUser = await FoodUser.findOne({ email: email, userAuth: true});
         const validPassword = bcryptjs.compareSync(password, validUser.password);
 
         if (!validUser) {
@@ -153,7 +198,7 @@ export const logOut = async (req, res, next) => {
 export const UserAllCartData = async(req, res, next) => {
 
     try {
-        const response = await User.findOne({email: req.body.email});
+        const response = await FoodUser.findOne({email: req.body.email});
         res.status(200).json(response.userCart);
     } catch (error) {
         next(error);
@@ -168,12 +213,12 @@ export const addItemToCart = async (req, res, next) => {
     
     
     try {
-        await User.findOneAndUpdate({email: cartData.email,}, {$push: {userCart: cartData.userCart}},{new: true} ).then(async(response) => {
+        await FoodUser.findOneAndUpdate({email: cartData.email,}, {$push: {userCart: cartData.userCart}},{new: true} ).then(async(response) => {
             
             if(response === null){
                 res.status(200).json(response);
             }else{
-                await User.findOne({email: cartData.email}).then((response) => {
+                await FoodUser.findOne({email: cartData.email}).then((response) => {
                     res.status(200).json(response.userCart);
                 })
             }
@@ -208,9 +253,9 @@ export const updateUserCart = async(req, res, next) => {
     };
 
     try {
-        await User.findOneAndUpdate(query, updateDocument, options).then(async() => {
+        await FoodUser.findOneAndUpdate(query, updateDocument, options).then(async() => {
             
-            await User.findOne({email: cartData.email}).then((response) => {
+            await FoodUser.findOne({email: cartData.email}).then((response) => {
                 res.status(200).json(response.userCart);
             })
         });
@@ -232,9 +277,9 @@ export const deleteUserCartItems = async(req, res, next) => {
     };
     
     try {
-        await User.findOneAndUpdate(query, updateDocument, {new: true}).then(async() => {
+        await FoodUser.findOneAndUpdate(query, updateDocument, {new: true}).then(async() => {
             
-            await User.findOne({email: cartData.email}).then((response) => {
+            await FoodUser.findOne({email: cartData.email}).then((response) => {
                 res.status(200).json(response.userCart);
             })
         });
@@ -260,7 +305,7 @@ export const orderCreate = async(req, res, next) => {
                 
             }).then(async() => {
                 
-                await User.findOneAndUpdate({email: orderData.email}, {$set: {userCart: []}}, {new: true}).then((response) => {
+                await FoodUser.findOneAndUpdate({email: orderData.email}, {$set: {userCart: []}}, {new: true}).then((response) => {
                     res.status(200).json(response.userCart);
                 });
             });
@@ -273,7 +318,7 @@ export const orderCreate = async(req, res, next) => {
         try {
             await Order.findOneAndUpdate({email: orderData.email}, {$push: {orderItems: [{foodData: orderData.orderItems, shippingAddress: orderData.shippingAddress, totalPrice: orderData.totalPrice, orderDate: new Date().toDateString(), orderTime: new Date().toLocaleTimeString()}],  } },{new: true}).then(async() => {
 
-                await User.findOneAndUpdate({email: orderData.email}, {$set: {userCart: []}}, {new: true}).then((response) => {
+                await FoodUser.findOneAndUpdate({email: orderData.email}, {$set: {userCart: []}}, {new: true}).then((response) => {
                     res.status(200).json(response.userCart);
                 });
 
@@ -291,7 +336,7 @@ export const orderCreate = async(req, res, next) => {
 export const deleteCartItems = async(req, res, next) => {
     const orderData = req.body;
     try {
-        await User.findOneAndUpdate({email: orderData.email}, {$set: {userCart: []}}, {new: true}).then(() => {
+        await FoodUser.findOneAndUpdate({email: orderData.email}, {$set: {userCart: []}}, {new: true}).then(() => {
             res.json("Cart is empty");
         });
     } catch (error) {
@@ -342,7 +387,7 @@ export const userAddress = async (req, res, next) => {
     
     try {
         const addressData = req.body;
-        const response = await User.findOneAndUpdate({email: addressData.email}, {$addToSet: {userAddress: addressData.shippingAddress}}, {new: true});
+        const response = await FoodUser.findOneAndUpdate({email: addressData.email}, {$addToSet: {userAddress: addressData.shippingAddress}}, {new: true});
         // console.log("userAddress",response.userAddress);
         res.status(200).json(response);
     } catch (error) {
@@ -355,7 +400,7 @@ export const userAddress = async (req, res, next) => {
 
 export const getAdderss = async(req, res, next) => {
     try {
-        const response = await User.findOne({email: req.body.email});
+        const response = await FoodUser.findOne({email: req.body.email});
         res.status(200).json(response.userAddress);
     } catch (error) {
         next(error)

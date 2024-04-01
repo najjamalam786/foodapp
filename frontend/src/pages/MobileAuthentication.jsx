@@ -64,6 +64,7 @@ export default function MobileAuthentication() {
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
+                            email: email,
                             codeID: code,
                             mobile: mobile,
                             message: `( TIFFINBOX ) Your verification code is: ${code}`
@@ -109,7 +110,9 @@ export default function MobileAuthentication() {
                 })
             });
             const data = await response.json();
-            if (data.userAuth) {
+
+
+            if (data && data.userAuth) {
                 dispatchEvent(pageLoader(true));
                 dispatchEvent(signInSuccess(data));
 

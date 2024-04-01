@@ -11,6 +11,10 @@ const userSchema = new mongoose.Schema({
     codeID: {
         type: String
     },
+    userAuth: {
+        type: Boolean,
+        default: false
+    },
     email:{
         type: String,
         required: true,

@@ -49,14 +49,15 @@ export default function Login() {
         // setLoading(false);
         // setError(data.message);
         dispatch(signInFailure(data.message));
+        dispatch(pageLoader(false));
         return;
       }
       // setLoading(false);
       // setError(null);
       setTimeout(() => {
         dispatch(signInSuccess(data));
-        dispatch(pageLoader(false));
         navigate('/');
+        dispatch(pageLoader(false));
       }, 1000);
       
 

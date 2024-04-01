@@ -1,6 +1,5 @@
 import express from "express"
-import { addItemToCart, createUser, UserAllCartData, googleLogin, logOut, signIn, updateUserCart, orderCreate, orderGet, verifyUser, deleteUserCartItems, deleteCartItems, userAddress, getAdderss, verifyPhone, verifyCode } from "../controllers/userController.js";
-import { verifyToken } from "../utils/verifyToken.js";
+import { addItemToCart, createUser, UserAllCartData, googleLogin, logOut, signIn, updateUserCart, orderCreate, orderGet, deleteUserCartItems, deleteCartItems, userAddress, getAdderss, verifyPhone, verifyCode } from "../controllers/userController.js";
 import { getMessage } from "../utils/sendSMS.js";
 
 const router = express.Router();
@@ -12,16 +11,15 @@ router
 .post('/signin', signIn)
 .post('/google', googleLogin)
 .get('/logout', logOut)
-.post('/allcart', verifyToken, UserAllCartData)
-.post('/cart', verifyToken, addItemToCart)
-.post('/updatecart', verifyToken, updateUserCart)
-.post('/deleteusercart', verifyToken, deleteUserCartItems)
-.post('/deletecartItems', verifyToken, deleteCartItems)
-.post('/ordercreate',verifyToken, orderCreate)
-.post('/orderdata',verifyToken, orderGet)
-.get("/verify", verifyUser)
-.post('/useraddress', verifyToken, userAddress)
-.post('/getaddress', verifyToken, getAdderss)
+.post('/allcart', UserAllCartData)
+.post('/cart', addItemToCart)
+.post('/updatecart', updateUserCart)
+.post('/deleteusercart', deleteUserCartItems)
+.post('/deletecartItems',deleteCartItems)
+.post('/ordercreate', orderCreate)
+.post('/orderdata',orderGet)
+.post('/useraddress', userAddress)
+.post('/getaddress', getAdderss)
 .post("/message", getMessage);
 // .post('/reverse', verifyToken, reverseOrder);
 

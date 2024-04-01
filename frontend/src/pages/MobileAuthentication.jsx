@@ -29,6 +29,7 @@ export default function MobileAuthentication() {
         e.preventDefault();
         try {
             setLoading(true);
+            dispatchEvent(pageLoader(true));
             
             
             await fetch("/api/user/verify-mobile", {
@@ -41,38 +42,48 @@ export default function MobileAuthentication() {
                     mobile:`+${ph}`,
                 })
             }).then((res) => res.json()).then(async (data) => {
-                
-                const code = data._id.slice(-4);
-                console.log("code", code);
-                const mobile = `+${ph}`
-                console.log("mobile", mobile);
-                
-                setTimeout(() => {
-                    dispatchEvent(pageLoader(false));
-                },2000);
-                // console.log("code", codeID);
-                // console.log("mobile", mobile);
-                await fetch("/api/user/message", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        codeID: code,
-                        mobile: mobile,
-                        message: `( TIFFINBOX ) Your verification code is: ${code}`
-                    })
-                })
 
-                dispatchEvent(pageLoader(true));
-                setTimeout(() => {
+                if(data === null) {
                     setLoading(false);
                     dispatchEvent(pageLoader(false));
-                    setShowCode(true);
-                }, 2000);
+
+                    alert("User already verified. Please try again!");
+                    return;
+                }
+                else{
+
+                    const code = data._id.slice(-4);
+                    const mobile = `+${ph}`
+                    
+                    
+                    // console.log("code", codeID);
+                    // console.log("mobile", mobile);
+                    await fetch("/api/user/message", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            codeID: code,
+                            mobile: mobile,
+                            message: `( TIFFINBOX ) Your verification code is: ${code}`
+                        })
+                    })
+    
+                    dispatchEvent(pageLoader(true));
+                    setTimeout(() => {
+                        console.log("mobile", mobile);
+                    console.log("code", code);
+
+                        setLoading(false);
+                        setShowCode(true);
+                        dispatchEvent(pageLoader(false));
+                    }, 2000);
+                }
             });
-            dispatchEvent(pageLoader(false));
-            setLoading(false);
+                
+            // dispatchEvent(pageLoader(false));
+            // setLoading(false);
 
             // const codeID = await response.json();
         } catch (error) {
@@ -98,10 +109,10 @@ export default function MobileAuthentication() {
                 })
             });
             const data = await response.json();
-            if (data) {
+            if (data.userAuth) {
                 dispatchEvent(pageLoader(true));
                 dispatchEvent(signInSuccess(data));
-                
+
                 setTimeout(() => {
                     dispatchEvent(pageLoader(false));
                     setUser(true);

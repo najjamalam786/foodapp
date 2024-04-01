@@ -2,8 +2,7 @@ import User from "../models/userModel.js";
 import Order from "../models/OrderModel.js"
 import bcryptjs from "bcryptjs";
 import { errorHandler } from "../utils/errors.js";
-import jwt from "jsonwebtoken";
-import { response } from "express";
+
 
 
 // Create User post(/api/user/signup)
@@ -13,10 +12,10 @@ export const createUser = async (req, res, next) => {
 
     const user = await User.findOne({email});   
 
-    if( user && user.codeID){
+    if( user && user.userAuth){
         return res.status(400).json(null);
     }
-    else if( user && !user.codeID){
+    else if( user && !user.userAuth){
         return res.status(200).json(user);
     }
     else{
@@ -38,22 +37,28 @@ export const createUser = async (req, res, next) => {
 // Verify Phone number post(/api/user/verify-phone)
 export const verifyPhone = async (req, res, next) => {
     const clientData = req.body;
-    try {
-        const response = await User.findOneAndUpdate({ email: clientData.email }, { mobile: clientData.mobile}, { new: true })
 
-        res.status(200).json(response);  
+    const user = await User.findOne({ mobile: clientData.mobile });
+    if(user && user.userAuth){
+        res.status(200).json(null);
+    }else{
+        try {
+            const response = await User.findOneAndUpdate({ email: clientData.email}, { mobile: clientData.mobile}, { new: true })
+    
+            res.status(200).json(response);  
+            
+        } catch (error) {
+            next(error);
+        }
         
-    } catch (error) {
-        next(error);
     }
 }
 
 // Verify code post(/api/user/verify-code)
 export const verifyCode = async (req, res, next) => {
     const code = req.body;
-    console.log("code", code.mobile);
     try {
-        const response = await User.findOne({mobile: code.mobile, codeID: code.code });
+        const response = await User.findOneAndUpdate({mobile: code.mobile, codeID: code.code }, {userAuth: true}, { new: true });
         if(response === null){
             res.status(200).json(null);
         }else{
@@ -70,13 +75,11 @@ export const googleLogin = async (req, res, next) => {
         const user = await User.findOne({ email: req.body.email });
         if(user){
             
-            const token = jwt.sign({ id: user._id}, process.env.JWT_SECRET);
 
             // hide validUser password
             const { password: passwords, ...others } = user._doc
 
             res
-            .cookie("access_token", token, { httpOnly: true })
             .status(200)
             .json(others);
         }
@@ -96,11 +99,9 @@ export const googleLogin = async (req, res, next) => {
 
             })
             await newUser.save();
-            const token = jwt.sign({id: newUser._id}, process.env.JWT_SECRET);
 
             const { password: passwords, ...others } = newUser._doc
             res
-            .cookie("access_token", token, { httpOnly: true })
             .status(200)
             .json(others);
         }
@@ -115,7 +116,7 @@ export const signIn = async (req, res, next) => {
     const { email, password } = req.body;
 
     try {
-        const validUser = await User.findOne({ email: email });
+        const validUser = await User.findOne({ email: email, userAuth: true});
         const validPassword = bcryptjs.compareSync(password, validUser.password);
 
         if (!validUser) {
@@ -125,15 +126,12 @@ export const signIn = async (req, res, next) => {
 
         if (!validPassword) {
             return next(errorHandler(404, "Wrong password"));
-        }
-
-        const token = jwt.sign({ id: validUser._id}, process.env.JWT_SECRET);        
+        }      
 
         // hide validUser password
         const { password: passwords, ...others } = validUser._doc
 
         res
-        .cookie("access_token", token, { httpOnly: true })
         .status(200)
         .json(others);      
         
@@ -147,7 +145,6 @@ export const signIn = async (req, res, next) => {
 
 export const logOut = async (req, res, next) => {
     res
-    .clearCookie("access_token")
     .status(200)
     .json("User has been logged out");
 }
@@ -325,20 +322,20 @@ export const orderGet = async(req, res, next) => {
 }
 
 // User Token Verify
-export const verifyUser = (req, res, next) => {
+// export const verifyUser = (req, res, next) => {
     
-    try {
-        // console.log("working");
-        const token = req.cookies.access_token;
+//     try {
+//         // console.log("working");
+//         const token = req.cookies.access_token;
 
-    if (!token) {
-        res.json(null);
-    }
-    } catch (error) {
-        next(error)
+//     if (!token) {
+//         res.json(null);
+//     }
+//     } catch (error) {
+//         next(error)
         
-    }
-}
+//     }
+// }
 
 // Add User address by user.post('/useraddress', verifyToken, userAddress)
 export const userAddress = async (req, res, next) => {

@@ -18,7 +18,6 @@ import ShippingAddress from "./pages/ShippingAddress";
 import Main from "./Main_2";
 import { useEffect } from "react";
 import UserOrder from "./pages/UserOrder";
-import { deleteSuccess } from "./redux/createSlice/userSlice";
 import { pageLoader } from "./redux/createSlice/orderSlice";
 import Loader from "./components/Loader";
 import ShowNavBar from "./components/ShowNavBar";
@@ -39,25 +38,7 @@ useEffect(() => {
   dispatch(pageLoader(true));
 
   
-  const fetchVerifyUser = async() => {
-    
-    const res = await fetch("/api/user/verify")
 
-    const data = await res.json();
-
-    setTimeout(() => {
-      dispatch(pageLoader(false))
-    }, 800);
-
-    if(data === null ){
-      dispatch(deleteSuccess(data))
-    }
-    
-    
-  }
-  
-  
-  fetchVerifyUser();
   setTimeout(() => {
     dispatch(pageLoader(false))
   }, 800);

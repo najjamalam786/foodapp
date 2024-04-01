@@ -42,11 +42,9 @@ export default function SignUp() {
       
       const data = await res.json();
 
-      console.log("userCode is:", data);
         if(data === null) {
           setLoading(false);
           dispatchEvent(pageLoader(false))
-          console.log("userCode is:", data);
           setError(true);
           return;
         }

@@ -56,7 +56,7 @@ export default function Header() {
   }
 
   return (
-    <header className="z-50 w-screen p-3 px-4 md:p-6 md:px-16 ">
+    <header className="z-50 absolute w-screen p-3 px-4 md:p-6 md:px-16 ">
       {/* desktop & tablet */}
       <div className="hidden md:flex w-full h-full items-center justify-between">
         <Link to={"/"} className="flex flex-col items-center  gap-2">
@@ -64,173 +64,175 @@ export default function Header() {
           <p className="text-headingColor text-xl font-semibold"> TIFFINBOX</p>
         </Link>
 
+        <div className="hidden md:flex w-full items-center justify-end gap-8 mb-8 ">
         <ul
 
-          className="flex items-center text-textColor gap-12 "
+className="flex items-center text-textColor gap-12 "
+>
+<Link to={'/'}>
+  <li className="text-md hover:text-lg hover:text-yellow-500 duration-200 transition-all ease-in-out cursor-pointer">
+    Home
+  </li>
+</Link>
+
+<Link to={'/'}>
+<li className="text-md hover:text-lg hover:text-yellow-500 duration-200 transition-all ease-in-out cursor-pointer">
+  Menu
+</li>
+  
+</Link>
+
+<Link to={'/'}>
+<li className="text-md hover:text-lg hover:text-yellow-500 duration-200 transition-all ease-in-out cursor-pointer">
+  About Us
+</li>
+
+</Link>
+
+<Link to={'/'}>
+<li className="text-md hover:text-lg hover:text-yellow-500 duration-200 transition-all ease-in-out cursor-pointer">
+  Service
+</li>
+
+</Link>
+</ul>
+
+<div className="flex items-center gap-8">
+<div
+  className="relative flex items-center justify-center"
+  onClick={showCartHandler}
+>
+  <img src={AddTiffin} className="text-textColor w-8 h-8  cursor-pointer" alt="FoodBasket" />
+
+
+  {cartItems && cartItems.length > 0 && (
+    <div className=" absolute -top-1 -right-1 w-4 h-4 rounded-full bg-cartNumBg flex items-center justify-center">
+      <p className="text-xs text-white font-semibold">
+        {cartItems.length}
+      </p>
+    </div>
+  )}
+
+</div>
+
+<div
+  onMouseEnter={() => { setIsMenu(true); }}
+  onMouseLeave={() => { setIsMenu(false); }}
+
+
+
+  className="relative bg-orange-500 rounded-lg p-2 px-4 cursor-pointer hover:bg-yellow-500 duration-200 transition-all ease-in-out">
+  {currentUser ? (
+    <div className="flex items-center text-white gap-2 ">
+      <FaUserCircle size={20}/>
+      <p className="text-lg h-8 text-white font-semibold 
+       duration-100 transition-all ease-in-out lowercase cursor-pointer">{currentUser.username.slice(0, 6)}...</p>
+    </div>
+  )
+    :
+    <FaUserCircle size={30}/>
+    }
+
+  {isMenu && <div
+
+    className="w-40 z-10 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-10 right-0 duration-200 transition-all ease-in-out" 
+  >
+
+
+
+
+    {currentUser ? (
+      <div>
+
+        <p
+          className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer  transition-all duration-100 ease-in-out capitalize text-white bg-orange-500 rounded-lg text-base"
+
         >
-          <Link to={'/'}>
-            <li className="text-md hover:text-lg hover:text-yellow-500 duration-200 transition-all ease-in-out cursor-pointer">
-              Home
-            </li>
-          </Link>
+          {currentUser.username.split(" ")[0]} <FaUserCheck />
+        </p>
 
-          <Link to={'/'}>
-          <li className="text-md hover:text-lg hover:text-yellow-500 duration-200 transition-all ease-in-out cursor-pointer">
-            Menu
-          </li>
-            
-          </Link>
+        {currentUser.isAdmin &&
+          <div className="">
+            <Link to={"/createItem"}>
+              <p
+                className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-orange-300 transition-all duration-100 ease-in-out text-textColor text-base"
 
-          <Link to={'/'}>
-          <li className="text-md hover:text-lg hover:text-yellow-500 duration-200 transition-all ease-in-out cursor-pointer">
-            About Us
-          </li>
+              >
+                Admin <GrUserAdmin />
+              </p>
+            </Link>
 
-          </Link>
+            <Link to={"/createItem"}>
+              <p
+                className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-orange-300 transition-all duration-100 ease-in-out text-textColor text-base"
 
-          <Link to={'/'}>
-          <li className="text-md hover:text-lg hover:text-yellow-500 duration-200 transition-all ease-in-out cursor-pointer">
-            Service
-          </li>
+              >
+                New Item <MdAdd />
+              </p>
+            </Link>
 
-          </Link>
-        </ul>
+          </div>
+        }
 
-        <div className="flex items-center gap-8">
-          <div
-            className="relative flex items-center justify-center"
-            onClick={showCartHandler}
+
+        <Link to={"/user-orders"}>
+          <span
+            className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-orange-500 hover:text-white rounded-lg transition-all duration-100 ease-in-out text-textColor text-base"
           >
-            <img src={AddTiffin} className="text-textColor w-8 h-8  cursor-pointer" alt="FoodBasket" />
+            Order
+            <img src={OrderTiffin} className="w-5 h-5" alt="order" />
+          </span>
+
+        </Link>
+
+        <Link to={'/signup'}>
+          <p
+            className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-orange-500 hover:text-white rounded-lg transition-all duration-100 ease-in-out text-textColor text-base"
+            onClick={LogOut}
+          >
+            New SignUp <TiUserAdd />
+          </p>
+        </Link>
+
+        <Link to={'/signin'}>
+          <p
+            className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-orange-500 hover:text-white rounded-lg transition-all duration-100 ease-in-out text-textColor text-base"
+            onClick={LogOut}
+          >
+            Logout <MdLogout />
+          </p>
+        </Link>
+      </div>
+    ) : (
+      <div>
+        <Link to={"/signin"}>
+          <p className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-orange-500 hover:text-white rounded-lg transition-all duration-100 ease-in-out text-textColor text-base"
+
+          >
+            Login <MdLogin />
+          </p>
+
+        </Link>
+
+        <Link to={"/signup"}>
+          <p className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-orange-500 hover:text-white rounded-lg transition-all duration-100 ease-in-out text-textColor text-base"
+
+          >
+            Sign Up <TiUserAdd />
+          </p>
+
+        </Link>
+      </div>
+    )}
 
 
-            {cartItems && cartItems.length > 0 && (
-              <div className=" absolute -top-1 -right-1 w-4 h-4 rounded-full bg-cartNumBg flex items-center justify-center">
-                <p className="text-xs text-white font-semibold">
-                  {cartItems.length}
-                </p>
-              </div>
-            )}
-
-          </div>
-
-          <div
-            onMouseEnter={() => { setIsMenu(true); }}
-            onMouseLeave={() => { setIsMenu(false); }}
-
-
-
-            className="relative bg-orange-500 rounded-lg p-2 px-4 cursor-pointer hover:bg-yellow-500 duration-200 transition-all ease-in-out">
-            {currentUser ? (
-              <div className="flex items-center text-white gap-2 ">
-                <FaUserCircle size={20}/>
-                <p className="text-lg h-8 text-white font-semibold 
-                 duration-100 transition-all ease-in-out lowercase cursor-pointer">{currentUser.username.slice(0, 6)}...</p>
-              </div>
-            )
-              :
-              <FaUserCircle size={30}/>
-              }
-
-            {isMenu && <div
-
-              className="w-40 z-10 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-10 right-0 duration-200 transition-all ease-in-out" 
-            >
-
-
-
-
-              {currentUser ? (
-                <div>
-
-                  <p
-                    className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer  transition-all duration-100 ease-in-out capitalize text-white bg-orange-500 rounded-lg text-base"
-
-                  >
-                    {currentUser.username.split(" ")[0]} <FaUserCheck />
-                  </p>
-
-                  {currentUser.isAdmin &&
-                    <div className="">
-                      <Link to={"/createItem"}>
-                        <p
-                          className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-orange-300 transition-all duration-100 ease-in-out text-textColor text-base"
-
-                        >
-                          Admin <GrUserAdmin />
-                        </p>
-                      </Link>
-
-                      <Link to={"/createItem"}>
-                        <p
-                          className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-orange-300 transition-all duration-100 ease-in-out text-textColor text-base"
-
-                        >
-                          New Item <MdAdd />
-                        </p>
-                      </Link>
-
-                    </div>
-                  }
-
-
-                  <Link to={"/user-orders"}>
-                    <span
-                      className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-orange-500 hover:text-white rounded-lg transition-all duration-100 ease-in-out text-textColor text-base"
-                    >
-                      Order
-                      <img src={OrderTiffin} className="w-5 h-5" alt="order" />
-                    </span>
-
-                  </Link>
-
-                  <Link to={'/signup'}>
-                    <p
-                      className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-orange-500 hover:text-white rounded-lg transition-all duration-100 ease-in-out text-textColor text-base"
-                      onClick={LogOut}
-                    >
-                      New SignUp <TiUserAdd />
-                    </p>
-                  </Link>
-
-                  <Link to={'/signin'}>
-                    <p
-                      className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-orange-500 hover:text-white rounded-lg transition-all duration-100 ease-in-out text-textColor text-base"
-                      onClick={LogOut}
-                    >
-                      Logout <MdLogout />
-                    </p>
-                  </Link>
-                </div>
-              ) : (
-                <div>
-                  <Link to={"/signin"}>
-                    <p className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-orange-500 hover:text-white rounded-lg transition-all duration-100 ease-in-out text-textColor text-base"
-
-                    >
-                      Login <MdLogin />
-                    </p>
-
-                  </Link>
-
-                  <Link to={"/signup"}>
-                    <p className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-orange-500 hover:text-white rounded-lg transition-all duration-100 ease-in-out text-textColor text-base"
-
-                    >
-                      Sign Up <TiUserAdd />
-                    </p>
-
-                  </Link>
-                </div>
-              )}
-
-
-            </div>}
+  </div>}
 
 
 
 
-          </div>
+</div>
+</div>
         </div>
       </div>
 

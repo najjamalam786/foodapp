@@ -61,7 +61,7 @@ useEffect(() => {
 
       {showCart && <Main><CartContainer /></Main>}
 
-      <main className="mt-2 md:mt-4 px-4 md:px-16 py-4 w-full">
+      {/* <main className="mt-2 md:mt-4 px-4 md:px-16 py-4 w-full"> */}
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/signup" element={<SignUp />} />
@@ -85,7 +85,7 @@ useEffect(() => {
           <Route path="/*" element={<Error />} />
 
         </Routes>
-      </main>
+      {/* </main> */}
       
       <ShowNavBar> <Footer /> </ShowNavBar>
 

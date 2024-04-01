@@ -1,7 +1,7 @@
 import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth'
 import { app } from '../firebase.config.js';
 import { useDispatch } from 'react-redux';
-import { signInSuccess } from '../redux/createSlice/userSlice.js';
+import { signInSuccess, userEmail, userMobileAuth } from '../redux/createSlice/userSlice.js';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -30,10 +30,18 @@ export default function GoogleAuth() {
             })
             
             const data = await res.json();
-            // add user in "currentUser" state
-            dispatch(signInSuccess(data));
 
-            navigator('/');
+            if(data && data.userAuth){
+                
+                dispatch(signInSuccess(data));
+                navigator('/');
+            }
+            else{
+                dispatch(userEmail(data.email));
+                dispatch(userMobileAuth(true));
+            }
+            // add user in "currentUser" state
+
             
         }catch(err){
             console.log("could not sign in with google", err);

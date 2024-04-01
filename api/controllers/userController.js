@@ -115,9 +115,11 @@ export const verifyCode = async (req, res, next) => {
     }
 }
 
+
+// google Login
 export const googleLogin = async (req, res, next) => {
     try {
-        const user = await FoodUser.findOne({ email: req.body.email });
+        const user = await User.findOne({ email: req.body.email });
         if(user){
             
 
@@ -135,12 +137,12 @@ export const googleLogin = async (req, res, next) => {
 
             const encrypt_password = bcryptjs.hashSync(generatedPassword, 10);
 
-            const newUser = new FoodUser({
+            const newUser = new User({
                 username: req.body.name.split(" ").join("").toLowerCase() + Math.random().toString(36).slice(-4),
                 email: req.body.email,
                 password: encrypt_password,
                 isAdmin: false,
-                avatar: req.body.photo,
+                userAuth:false,
 
             })
             await newUser.save();

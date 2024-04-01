@@ -94,11 +94,11 @@ export default function Login() {
 
         <div className="relative w-full">
           <span className='absolute w-14 top-3 left-3 border-r-2 border-gray-400 pl-4'>+91</span>
-        <input type="number" placeholder='phone' className='w-full remove-arrow border p-3 pl-20 outline-none  rounded-lg' id="phone" onChange={handleChange} required/>
+        <input type="number" placeholder='phone' className='w-full remove-arrow border p-3 pl-20 outline-none  rounded-lg' id="phone" onChange={handleChange} required autoComplete='off'/>
         </div>
 
 
-        <input type="password" placeholder='password' className='border p-3 rounded-lg' id="password" onChange={handleChange} required/>
+        <input type="password" placeholder='password' className='border p-3 rounded-lg' id="password" onChange={handleChange} required autoComplete='new-password'/>
 
         <button disabled={loading} type='submit' className='bg-blue-600 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-95'>{loading ? "Loaging..." : "Sign In"}</button>
 

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import {Link, useNavigate } from 'react-router-dom';
+import {Link } from 'react-router-dom';
 import GoogleAuth from '../components/GoogleAuth';
 import { useDispatch } from 'react-redux';
 import { pageLoader } from '../redux/createSlice/orderSlice';
@@ -14,7 +14,6 @@ export default function SignUp() {
 
   // console.log(formData.email);
   const dispatchEvent = useDispatch();
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -65,7 +64,6 @@ export default function SignUp() {
       setLoading(false);
 
       setError(null);
-      navigate('/signin');
       
     }catch(error){
       setError(error.message);

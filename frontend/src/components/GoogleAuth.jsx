@@ -3,6 +3,7 @@ import { app } from '../firebase.config.js';
 import { useDispatch } from 'react-redux';
 import { signInSuccess, userEmail, userMobileAuth } from '../redux/createSlice/userSlice.js';
 import { useNavigate } from 'react-router-dom';
+import { FaGooglePlus } from "react-icons/fa6";
 
 
 export default function GoogleAuth() {
@@ -49,7 +50,9 @@ export default function GoogleAuth() {
     }
 
   return (
-    
-        <button onClick={handleGoogleClick} type="button" className='bg-red-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-95'> Contunue with google </button>
+    <>
+        <button onClick={handleGoogleClick} type="button" className='bg-red-700 text-white p-3 flex items-center justify-center gap-4 rounded-lg uppercase hover:opacity-95 disabled:opacity-95'><FaGooglePlus size={25}/>  Contunue with google </button>
+        
+    </>
   )
 }

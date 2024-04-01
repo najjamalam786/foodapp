@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { MdAdd, MdLogout, MdLogin, } from "react-icons/md";
-import { FaRegUser, FaUserCog } from "react-icons/fa";
+import { MdAdd, MdLogout, MdLogin,  MdOutlineMenuBook, } from "react-icons/md";
+import { FaHome,  FaUserCheck, FaUserCircle, FaUserCog, FaUsers } from "react-icons/fa";
+import { FaTruckFast } from "react-icons/fa6";
 import { GrUserAdmin } from "react-icons/gr";
 import { TiUserAdd } from "react-icons/ti";
-import Logo from "../img/logo.png";
-import Avatar from "../img/avatar.png";
+import Logo from "../img/favicon.png";
 import AddTiffin from "../img/pngwing.png";
 import OrderTiffin from "../img/order_tiffin.png";
 import { Link } from "react-router-dom";
@@ -59,29 +59,41 @@ export default function Header() {
     <header className="z-50 w-screen p-3 px-4 md:p-6 md:px-16 ">
       {/* desktop & tablet */}
       <div className="hidden md:flex w-full h-full items-center justify-between">
-        <Link to={"/"} className="flex items-center gap-2">
-          <img src={Logo} className="w-8 object-cover" alt="logo" />
-          <p className="text-headingColor text-xl font-bold"> City</p>
+        <Link to={"/"} className="flex flex-col items-center  gap-2">
+          <img src={Logo} className="w-12 object-cover" alt="logo" />
+          <p className="text-headingColor text-xl font-semibold"> TIFFINBOX</p>
         </Link>
 
         <ul
 
-          className="flex items-center gap-12 "
+          className="flex items-center text-textColor gap-12 "
         >
           <Link to={'/'}>
-            <li className="text-lg text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer">
+            <li className="text-md hover:text-lg hover:text-yellow-500 duration-200 transition-all ease-in-out cursor-pointer">
               Home
             </li>
           </Link>
-          <li className="text-lg text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer">
+
+          <Link to={'/'}>
+          <li className="text-md hover:text-lg hover:text-yellow-500 duration-200 transition-all ease-in-out cursor-pointer">
             Menu
           </li>
-          <li className="text-lg text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer">
+            
+          </Link>
+
+          <Link to={'/'}>
+          <li className="text-md hover:text-lg hover:text-yellow-500 duration-200 transition-all ease-in-out cursor-pointer">
             About Us
           </li>
-          <li className="text-lg text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer">
+
+          </Link>
+
+          <Link to={'/'}>
+          <li className="text-md hover:text-lg hover:text-yellow-500 duration-200 transition-all ease-in-out cursor-pointer">
             Service
           </li>
+
+          </Link>
         </ul>
 
         <div className="flex items-center gap-8">
@@ -89,11 +101,11 @@ export default function Header() {
             className="relative flex items-center justify-center"
             onClick={showCartHandler}
           >
-            <img src={AddTiffin} className="text-textColor w-6 h-6  cursor-pointer" alt="FoodBasket" />
+            <img src={AddTiffin} className="text-textColor w-8 h-8  cursor-pointer" alt="FoodBasket" />
 
 
             {cartItems && cartItems.length > 0 && (
-              <div className=" absolute -top-2 -right-2 w-4 h-4 rounded-full bg-cartNumBg flex items-center justify-center">
+              <div className=" absolute -top-1 -right-1 w-4 h-4 rounded-full bg-cartNumBg flex items-center justify-center">
                 <p className="text-xs text-white font-semibold">
                   {cartItems.length}
                 </p>
@@ -108,25 +120,21 @@ export default function Header() {
 
 
 
-            className="relative">
+            className="relative bg-orange-500 rounded-lg p-2 px-4 cursor-pointer hover:bg-yellow-500 duration-200 transition-all ease-in-out">
             {currentUser ? (
-              <div className="flex items-center gap-1 ">
-                <FaRegUser />
-                <p className="text-lg h-8 text-textColor hover:text-teal-600 duration-100 transition-all ease-in-out lowercase cursor-pointer">{currentUser.username.slice(0, 6)}...</p>
+              <div className="flex items-center text-white gap-2 ">
+                <FaUserCircle size={20}/>
+                <p className="text-lg h-8 text-white font-semibold 
+                 duration-100 transition-all ease-in-out lowercase cursor-pointer">{currentUser.username.slice(0, 6)}...</p>
               </div>
             )
               :
-              <img
-                src={Avatar}
-                className="w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl cursor-pointer rounded-full"
-                alt="userprofile"
-
-
-              />}
+              <FaUserCircle size={30}/>
+              }
 
             {isMenu && <div
 
-              className="w-40 z-10 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-8 right-0"
+              className="w-40 z-10 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-10 right-0 duration-200 transition-all ease-in-out" 
             >
 
 
@@ -136,17 +144,17 @@ export default function Header() {
                 <div>
 
                   <p
-                    className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer  transition-all duration-100 ease-in-out capitalize text-white bg-teal-600 rounded-lg text-base"
+                    className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer  transition-all duration-100 ease-in-out capitalize text-white bg-orange-500 rounded-lg text-base"
 
                   >
-                    {currentUser.username.split(" ")[0]} <FaUserCog />
+                    {currentUser.username.split(" ")[0]} <FaUserCheck />
                   </p>
 
                   {currentUser.isAdmin &&
                     <div className="">
                       <Link to={"/createItem"}>
                         <p
-                          className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor text-base"
+                          className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-orange-300 transition-all duration-100 ease-in-out text-textColor text-base"
 
                         >
                           Admin <GrUserAdmin />
@@ -155,7 +163,7 @@ export default function Header() {
 
                       <Link to={"/createItem"}>
                         <p
-                          className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor text-base"
+                          className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-orange-300 transition-all duration-100 ease-in-out text-textColor text-base"
 
                         >
                           New Item <MdAdd />
@@ -168,7 +176,7 @@ export default function Header() {
 
                   <Link to={"/user-orders"}>
                     <span
-                      className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor text-base"
+                      className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-orange-500 hover:text-white rounded-lg transition-all duration-100 ease-in-out text-textColor text-base"
                     >
                       Order
                       <img src={OrderTiffin} className="w-5 h-5" alt="order" />
@@ -176,9 +184,18 @@ export default function Header() {
 
                   </Link>
 
+                  <Link to={'/signup'}>
+                    <p
+                      className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-orange-500 hover:text-white rounded-lg transition-all duration-100 ease-in-out text-textColor text-base"
+                      onClick={LogOut}
+                    >
+                      New SignUp <TiUserAdd />
+                    </p>
+                  </Link>
+
                   <Link to={'/signin'}>
                     <p
-                      className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor text-base"
+                      className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-orange-500 hover:text-white rounded-lg transition-all duration-100 ease-in-out text-textColor text-base"
                       onClick={LogOut}
                     >
                       Logout <MdLogout />
@@ -188,7 +205,7 @@ export default function Header() {
               ) : (
                 <div>
                   <Link to={"/signin"}>
-                    <p className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor text-base"
+                    <p className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-orange-500 hover:text-white rounded-lg transition-all duration-100 ease-in-out text-textColor text-base"
 
                     >
                       Login <MdLogin />
@@ -197,7 +214,7 @@ export default function Header() {
                   </Link>
 
                   <Link to={"/signup"}>
-                    <p className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor text-base"
+                    <p className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-orange-500 hover:text-white rounded-lg transition-all duration-100 ease-in-out text-textColor text-base"
 
                     >
                       Sign Up <TiUserAdd />
@@ -218,14 +235,14 @@ export default function Header() {
       </div>
 
       {/* mobile */}
-      <div className="flex items-center justify-between md:hidden w-full h-full ">
-        <Link to={"/"} className="flex items-center gap-2">
+      <div className=" flex items-center justify-between md:hidden w-full h-full ">
+        <Link to={"/"} className="flex flex-col items-center gap-2">
           <img src={Logo} className="w-8 object-cover" alt="logo" />
-          <p className="text-headingColor text-xl font-bold"> City</p>
+          <p className="text-headingColor text-xl font-semibold"> TIFFINBOX</p>
         </Link>
 
 
-        <div className="flex items-center gap-8">
+        <div className="flex items-center mb-5 gap-8">
           <div
             className="relative flex items-center justify-center"
             onClick={showCartHandler}
@@ -243,18 +260,11 @@ export default function Header() {
 
           </div>
 
-          <div className="relative" onClick={() => setIsMenu(!isMenu)} >
+          <div className="relative cursor-pointer" onClick={() => setIsMenu(!isMenu)} >
 
-            {currentUser ? <FaRegUser
-
-              className="w-6 text-emerald-600 min-w-[10px] h-6 min-h-[10px]   cursor-pointer " />
+            {currentUser ? <div className="w-full p-2 text-white bg-orange-500 rounded-lg"><FaUserCircle size={30}/></div> 
               : (
-                <img
-
-                  src={Avatar}
-                  className="w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl cursor-pointer rounded-full"
-                  alt="userprofile"
-                />
+                <FaUserCircle size={30} />
               )}
 
             {isMenu &&
@@ -269,10 +279,10 @@ export default function Header() {
 
 
                       <p
-                        className="px-4 py-2 flex items-center justify-between gap-3 transition-all duration-100 ease-in-out capitalize text-white bg-teal-600 rounded-lg text-base"
+                        className="px-4 py-2 pl-4 flex items-center justify-between gap-3 transition-all duration-100 ease-in-out capitalize text-white bg-orange-500 rounded-lg text-base"
 
                       >
-                        {currentUser.username.split(" ")[0]} <FaUserCog />
+                        {currentUser.username.split(" ")[0]} <FaUserCog size={20}/>
                       </p>
 
                       {
@@ -280,14 +290,14 @@ export default function Header() {
 
                           <>
                             <Link to={"/createItem"}>
-                              <p className="px-4 py-2 flex items-center gap-3 cursor-pointer hover:bg-slate-100 transition-all rounded-lg duration-100 ease-in-out text-textColor text-base">
-                                Admin <GrUserAdmin />
+                              <p className="px-4 py-2 pl-4 flex items-center gap-3 cursor-pointer hover:bg-orange-500 transition-all rounded-lg duration-100 ease-in-out text-textColor text-base">
+                                Admin <GrUserAdmin size={20}/>
                               </p>
                             </Link>
 
                             <Link to={"/createItem"}>
-                              <p className="px-4 py-2 flex items-center gap-3 cursor-pointer hover:bg-slate-100 transition-all rounded-lg duration-100 ease-in-out text-textColor text-base">
-                                New Item <MdAdd />
+                              <p className="px-4 py-2 pl-4 flex items-cente justify-between gap-3 cursor-pointer hover:bg-orange-500 transition-all rounded-lg duration-100 ease-in-out text-textColor text-base">
+                                New Item <MdAdd size={20}/>
                               </p>
                             </Link>
                           </>
@@ -295,7 +305,7 @@ export default function Header() {
                         )}
 
                       <Link to={"/user-orders"}>
-                        <span className="px-4 py-2 flex items-center gap-3 cursor-pointer hover:bg-slate-100 rounded-lg transition-all duration-100 ease-in-out text-textColor text-base">
+                        <span className="px-4 py-2 pl-4 flex items-cente justify-between gap-3 cursor-pointer hover:bg-orange-500 hover:text-white rounded-lg transition-all duration-100 ease-in-out text-textColor text-base">
                           Orders
                           <img src={OrderTiffin} className="w-5 h-5" alt="order" />
 
@@ -313,10 +323,10 @@ export default function Header() {
 
                       <Link to={"/signin"}>
                         <p
-                          className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer  transition-all duration-100 ease-in-out capitalize text-white bg-teal-600 rounded-lg text-base"
+                          className="m-2 p-2 pl-6 rounded-md shadow-md flex items-center justify-between bg-orange-500 gap-3 cursor-pointer hover:bg-yellow-300 transition-all duration-100 ease-in-out text-white  text-base"
 
                         >
-                          Login <MdLogin />
+                          Login <MdLogin size={20}/>
                         </p>
                       </Link>
                       {/* <p
@@ -327,10 +337,10 @@ export default function Header() {
                       </p> */}
                       <Link to={"/signup"}>
                         <p
-                          className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-teal-600 hover:text-white rounded-lg transition-all  duration-100 ease-in-out text-textColor text-base"
+                          className="m-2 p-2 pl-6 rounded-md shadow-md flex items-center justify-between bg-orange-500 gap-3 cursor-pointer hover:bg-yellow-300 transition-all duration-100 ease-in-out text-white  text-base"
 
                         >
-                          Sign Up <TiUserAdd className='w-5 h-5' />
+                          Sign Up <TiUserAdd size={20} />
                         </p>
                       </Link>
                     </div>
@@ -343,36 +353,36 @@ export default function Header() {
                   <Link to={"/"}>
 
                     <li
-                      className="text-base text-textColor  duration-100 transition-all ease-in-out cursor-pointer hover:bg-teal-600 hover:text-white rounded-lg px-4 py-2"
+                      className="flex items-cente justify-between text-base text-textColor  duration-100 transition-all ease-in-out cursor-pointer hover:bg-orange-500 hover:text-white rounded-lg px-4 py-2 pl-4"
 
                     >
-                      Home
+                      Home <FaHome size={20}/>
                     </li>
                   </Link>
                   <Link to={"/food-menu"}>
                     <li
-                      className="text-base text-textColor hover:bg-teal-600 hover:text-white rounded-lg duration-100 transition-all ease-in-out cursor-pointer  px-4 py-2"
+                      className=" flex items-cente justify-between text-base text-textColor hover:bg-orange-500 hover:text-white rounded-lg duration-100 transition-all ease-in-out cursor-pointer  px-4 py-2 pl-4"
 
                     >
-                      Food Menu
+                      Food Menu <MdOutlineMenuBook size={20}/>
                     </li>
 
                   </Link>
                   <Link to={"/about"}>
                     <li
-                      className="text-base text-textColor  duration-100 transition-all ease-in-out cursor-pointer hover:bg-teal-600 hover:text-white rounded-lg px-4 py-2"
+                      className="flex items-cente justify-between text-base text-textColor  duration-100 transition-all ease-in-out cursor-pointer hover:bg-orange-500 hover:text-white rounded-lg px-4 py-2 pl-4"
 
                     >
-                      About Us
+                      About Us <FaUsers size={20}/>
                     </li>
 
                   </Link>
                   <Link to={"/service"}>
                     <li
-                      className="text-base text-textColor  duration-100 transition-all ease-in-out cursor-pointer hover:bg-teal-600 hover:text-white rounded-lg px-4 py-2"
+                      className=" flex items-cente justify-between text-base text-textColor  duration-100 transition-all ease-in-out cursor-pointer hover:bg-orange-500 hover:text-white rounded-lg px-4 py-2 pl-4"
 
                     >
-                      Service
+                      Service <FaTruckFast size={20}/>
                     </li>
 
                   </Link>
@@ -384,18 +394,18 @@ export default function Header() {
                   <>
 
                     <Link to={"/signin"}><p
-                      className="m-2 p-2 rounded-md shadow-md flex items-center justify-center bg-gray-300 gap-3 cursor-pointer hover:bg-gray-300 transition-all duration-100 ease-in-out text-black text-base"
+                      className="m-2 p-2 pl-6 rounded-md shadow-md flex items-center justify-between bg-gray-300 gap-3 cursor-pointer hover:bg-orange-500 hover:text-white transition-all duration-100 ease-in-out text-black text-base"
 
                     >New SignUp
-                      <TiUserAdd className='w-5 h-5' />
+                      <TiUserAdd size={20}/>
 
                     </p></Link>
                     <Link to={"/signin"}><p
-                      className="m-2 p-2 rounded-md shadow-md flex items-center justify-center bg-red-500 gap-3 cursor-pointer hover:bg-gray-300 transition-all duration-100 ease-in-out text-white text-base"
+                      className="m-2 p-2 pl-6 rounded-md shadow-md flex items-center justify-between bg-red-500 gap-3 cursor-pointer hover:bg-gray-300 transition-all duration-100 ease-in-out text-white hover:text-red-500 text-base"
                       onClick={LogOut}
 
                     >
-                      Logout <MdLogout />
+                      Logout <MdLogout size={20}/>
 
                     </p></Link>
                   </>

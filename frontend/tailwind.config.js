@@ -58,6 +58,11 @@ export default {
         cartBg: "#282a2c",
         cartItem: "#2e3033",
         cartTotal: "#343739",
+
+        tiffYellow1: "#ffef0b",
+        tiffYellow2: "#ffe209",
+        tiffYellow3: "#eedddd",
+        tiffOrange1: "#e80013",
       },
     },
   },

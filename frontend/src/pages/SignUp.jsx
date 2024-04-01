@@ -84,13 +84,13 @@ export default function SignUp() {
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
         {error && <p className='text-red-500'>User already registered</p>}
 
-        <input type='text' className='border p-3 rounded-lg' id="username" placeholder='username' onChange={handleChange} required />
+        <input type='text' className='border outline-yellow-500 p-3 rounded-lg' id="username" placeholder='username' onChange={handleChange} required autoComplete='off' />
 
-        <input type="email" placeholder='email' className='border p-3 rounded-lg' id="email" onChange={handleChange} required/>
+        <input type="email" placeholder='email' className='border outline-yellow-500 p-3 rounded-lg' id="email" onChange={handleChange} required autoComplete='off'/>
 
-        <input type="password" placeholder='password' className='border p-3 rounded-lg' id="password" onChange={handleChange} required />
+        <input type="password" placeholder='password' className='border outline-yellow-500 p-3 rounded-lg' id="password" onChange={handleChange} required autoComplete='off' />
 
-        <button disabled={loading} type='submit' className='bg-violet-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-95'>{loading ? "Loaging..." : "Sign Up"}</button>
+        <button disabled={loading} type='submit' className='bg-yellow-500 text-white font-semibold p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-95'>Sign Up</button>
 
         
       </form>
@@ -100,7 +100,7 @@ export default function SignUp() {
         <GoogleAuth/>
 
         <Link to='/signin'>
-          <p disabled={loading} className='bg-blue-700 text-white p-3 rounded-lg text-center uppercase hover:opacity-95 disabled:opacity-95'>{loading ? "Loaging..." : "Login"}</p>
+          <p className='bg-orange-500 text-white font-semibold p-3 rounded-lg text-center uppercase hover:opacity-95 disabled:opacity-95'>Log In</p>
         </Link>
       </div>
     </div>

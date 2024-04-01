@@ -105,7 +105,7 @@ export const verifyCode = async (req, res, next) => {
         if(response === null){
             res.status(200).json(null);
         }else{
-            await FoodUser.create({ email: response.email, mobile: response.mobile, codeID: response.codeID, userAuth: response.userAuth, username: response.username, isAdmin: false })
+            await FoodUser.create({ email: response.email, password: response.password, mobile: response.mobile, codeID: response.codeID, userAuth: response.userAuth, username: response.username, isAdmin: false })
 
             res.status(201).json(response);
         }
@@ -158,10 +158,10 @@ export const googleLogin = async (req, res, next) => {
 
 //Sign In User fetch('/api/user/signin'
 export const signIn = async (req, res, next) => {
-    const { email, password } = req.body;
+    const { mobile, password } = req.body;
 
     try {
-        const validUser = await FoodUser.findOne({ email: email, userAuth: true});
+        const validUser = await FoodUser.findOne({ mobile: mobile, userAuth: true});
         const validPassword = bcryptjs.compareSync(password, validUser.password);
 
         if (!validUser) {

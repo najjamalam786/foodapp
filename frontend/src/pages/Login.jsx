@@ -36,7 +36,10 @@ export default function Login() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          mobile:`+91${formData.phone}`,
+          password:formData.password
+        }),
       });
 
       const data = await res.json();
@@ -89,7 +92,11 @@ export default function Login() {
         <input type="number" placeholder='Enter your number' className='w-full outline-none remove-arrow border p-3 pl-14 rounded-lg' id="number" onChange={handleChange}/>
         </div> */}
 
-        <input type="email" placeholder='email' className='border p-3 rounded-lg' id="email" onChange={handleChange} required/>
+        <div className="relative w-full">
+          <span className='absolute w-14 top-3 left-3 border-r-2 border-gray-400 pl-4'>+91</span>
+        <input type="number" placeholder='phone' className='w-full remove-arrow border p-3 pl-20 outline-none  rounded-lg' id="phone" onChange={handleChange} required/>
+        </div>
+
 
         <input type="password" placeholder='password' className='border p-3 rounded-lg' id="password" onChange={handleChange} required/>
 

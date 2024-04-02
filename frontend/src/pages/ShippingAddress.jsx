@@ -176,7 +176,7 @@ export default function ShippingAddress() {
 
     return (
         <>
-            <main className=" p-3 max-w-4xl mx-auto">
+            <main className=" p-3 mt-[10rem] max-w-4xl mx-auto">
                 
                 <div className="w-full  flex flex-col gap-4 sm:flex-row items-center justify-between p-4  ">
 

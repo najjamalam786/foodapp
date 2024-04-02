@@ -44,10 +44,10 @@ export default function MenuContainer() {
 
 
     return (
-        <section className="w-full my-6" id="menu">
+        <section className="px-8 lg:px-16 mt-10 lg:mt-40  w-full my-6" id="menu">
             {weeks && weeks.map((week) => (
-            <div key={week._id} className="w-full flex flex-col items-center justify-center">
-                <p className="text-2xl font-semibold capitalize text-headingColor relative before:absolute before:rounded-lg before:content before:w-16 before:h-1 before:-bottom-2 before:left-0 before:bg-gradient-to-tr from-orange-400 to-orange-600 transition-all ease-in-out duration-100 mr-auto">
+            <div key={week._id} className="w-full flex flex-col gap-2 items-center justify-center">
+                <p className="text-2xl font-semibold capitalize text-headingColor relative before:absolute before:rounded-lg before:content before:w-16 before:h-1 before:-bottom-2 before:left-0 before:bg-gradient-to-tr from-orange-400 to-orange-600 hover:before:w-32 transition-all ease-in-out before:duration-300 mr-auto">
                     Our Hot Dishes {`Week ${week.index}`}
                 </p>
                 

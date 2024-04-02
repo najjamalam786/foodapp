@@ -37,7 +37,7 @@ export default function ConfirmOrder() {
     className="w-full h-full rounded-t-[2rem] bg-gradient-to-tr from-[#0d2650] to-[#3760a7] drop-shadow-md flex flex-col"
     >
         <div className="w-full h-full flex flex-col items-center justify-center gap-6">
-          <img src={ConfirmTiffin} className="w-300" alt="confirm_img" />
+          <img src={ConfirmTiffin} className="w-[10rem] lg:w-225" alt="confirm_img" />
           <div className="flex flex-col items-center justify-center gap-2">
           <p className="text-xl text-white font-semibold">
             Thank you for ordering from our website.

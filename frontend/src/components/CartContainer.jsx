@@ -44,12 +44,12 @@ const CartContainer = () => {
     
     <div
     
-    className="w-full h-full rounded-t-[2rem] bg-green-300 drop-shadow-md flex flex-col"
+    className="w-full h-full rounded-t-[2rem] bg-orange-500 drop-shadow-md flex flex-col"
     >
       
     
-      <div className="w-full  flex items-center rounded-t-[2rem] justify-between p-4 cursor-pointer  bg-green-300">
-      <p className="text-textColor text-lg font-semibold">Cart</p>
+      <div className="w-full  flex items-center rounded-t-[2rem] justify-between p-4 cursor-pointer  bg-orange-500">
+      <p className="text-white text-lg font-semibold">Cart</p>
 
         
         <div>
@@ -64,7 +64,7 @@ const CartContainer = () => {
         </div>
 
         <div onClick={showCartHandler}>
-          <IoMdCloseCircle className=" w-8 text-3xl hover:text-5xl hover:text-red-600" />
+          <IoMdCloseCircle className=" w-8 text-3xl text-white hover:text-5xl hover:text-cartNumBg" />
         </div>
 
        
@@ -72,9 +72,9 @@ const CartContainer = () => {
 
       {/* bottom section */}
       {cartItems && cartItems.length > 0 ? (
-        <div className="w-full h-full bg-cartBg rounded-t-[2rem] flex flex-col">
+        <div className="w-full h-full bg-gray-300 rounded-t-[2rem] flex flex-col">
           {/* cart Items section */}
-          <div className="w-full h-340 md:h-42 px-6 py-10 flex flex-col gap-3 overflow-y-scroll no-scrollbar">
+          <div className="w-full h-[40rem] md:h-42 px-6 py-10 flex flex-col gap-3 overflow-y-scroll no-scrollbar">
             {/* cart Item */}
             {
               cartItems.slice(0).reverse().map((item) => (
@@ -88,21 +88,21 @@ const CartContainer = () => {
           </div>
 
           {/* cart total section */}
-          <div className="w-full flex-1  bg-cartTotal rounded-t-[2rem] flex flex-col items-center justify-evenly px-8 py-2">
+          <div className="w-full h-full flex-1  bg-white rounded-t-[2rem] flex flex-col items-center justify-evenly px-16">
             <div className="w-full flex items-center justify-between">
-              <p className="text-gray-400 text-lg">Sub Total</p>
-              <p className="text-gray-400 text-lg">₹ {total}</p>
+              <p className="text-orange-500 text-2xl">Sub Total</p>
+              <p className="text-gray-600 text-2xl">₹ {total}</p>
             </div>
             <div className="w-full flex items-center justify-between">
-              <p className="text-gray-400 text-lg">Delivery</p>
-              <p className="text-gray-400 text-lg">₹ 20</p>
+              <p className="text-orange-500 text-2xl">Delivery</p>
+              <p className="text-gray-600 text-lg">₹ 20</p>
             </div>
 
             <div className="w-full border-b border-gray-600 my-2"></div>
 
             <div className="w-full flex items-center justify-between">
-              <p className="text-gray-200 text-xl font-semibold">Total</p>
-              <p className="text-gray-200 text-xl font-semibold">
+              <p className="text-orange-500 text-4xl font-semibold">Total</p>
+              <p className="text-orange-500 text-4xl font-semibold">
               ₹ {total + 2.5}
               </p>
             </div>

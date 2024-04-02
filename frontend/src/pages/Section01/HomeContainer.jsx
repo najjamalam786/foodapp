@@ -35,20 +35,25 @@ export default function HomeContainer() {
             <div className=" flex items-center gap-2 justify-center bg-orange-500 px-4 py-1
              rounded-full">
                 <p className='text-base text-white font-semibold'>
-                    Bike Delivery
+                    Fast Delivery
                 </p>
                 <div className='w-10 h-10 bg-white rounded-full overflow-hidden'>
                     <img src={Delivery} className='w-full h-full object-contain' alt="bike img" />
                 </div>
             </div>
             <p className="text-[30px] lg:text-[40px] font-bold tracking-wide text-headingColor mt-4">
-                The Fastest Delivery in <span className='text-orange-600 text-[40px] lg:text-[50px]'> Your City </span>
+                <span className='text-orange-600'> TIFFINBOX </span> Delivery in <span className='text-orange-600 text-[40px] lg:text-[50px]'> Your City </span>
+            </p>
+            <p className="text-[20px] lg:text-[30px] font-bold tracking-wide text-headingColor mt-4">
+            <span className='text-orange-600'> FOOD </span> From Home Kitchen To <span className='text-orange-600 '> Your Place </span>
             </p>
 
-            <p className="text-textColor text-lg lg:text-xl font-semibold my-2 ">Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            <p className="text-textColor text-lg lg:text-xl my-2 ">Healty and Tasty food from our home kitchen to your place. We ensure that the food is hygienic and delicious. Our vision is to provide you with the best food in town and make you feel at home. I promise that you will be satisfied with our food. Test our food now.
+            </p> 
+            <p className="text-textColor text-lg lg:text-xl font-semibold mt-2 ">For monthly subscription...
             </p> 
 
-            <button className='bg-gradient-to-br from-orange-400 to-orange-500 w-full md:w-auto px-4 py-2 rounded-lg hover:shadow-lg transition-all ease-in-out'>
+            <button className='bg-gradient-to-br from-orange-400 to-orange-500 text-white font-semibold w-full md:w-auto px-4 py-2 rounded-lg hover:shadow-lg transition-all ease-in-out'>
                 Order Now
             </button>
         </div>
@@ -58,8 +63,8 @@ export default function HomeContainer() {
 
                 <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center lg:px-32  py-4 gap-4 flex-wrap">
                     {heroData && heroData.map((n) => (
-                        <div key={n.id} className=" lg:w-[20rem]  bg-cardOverlay backdrop-blur-sm rounded-3xl flex flex-col items-center justify-center drop-shadow-lg">
-                            <img src={n.imageSrc} alt="I1" className="w-[20rem] lg:w-[40rem] mt-[-10rem] lg:mt-[-10rem] " />
+                        <div key={n.id} className=" w-[10rem]  lg:w-[12rem]  bg-cardOverlay backdrop-blur-sm rounded-3xl flex flex-col items-center justify-center drop-shadow-lg">
+                            <img src={n.imageSrc} alt="I1" className="w-[8rem] lg:w-[10rem] mt-[-10%] lg:mt-[-20%] " />
                             <p className="text-base font-semibold text-textColor mt-2 lg:mt-4">{n.name}</p>
 
                             <p className="text-[12px] lg:text-sm text-lighttextGray font-semibold my-1 lg:my-3">{n.decp}</p>

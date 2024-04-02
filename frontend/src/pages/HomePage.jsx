@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { MdChevronLeft, MdChevronRight } from "react-icons/md";
-import AddTiffin from "../img/pngwing.png";
+// import { MdChevronLeft, MdChevronRight } from "react-icons/md";
+import AddTiffin2 from "../img/pngwing2.png";
 
 import HomeContainer from "./Section01/HomeContainer";
 import MenuContainer from "./Section02/MenuContainer";
-import FoodContainer from "../components/FoodContainer";
+// import FoodContainer from "../components/FoodContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { itemShowCart } from "../redux/createSlice/itemSlice";
 import { pageLoader } from "../redux/createSlice/orderSlice";
@@ -42,7 +42,7 @@ const HomePage = () => {
 
 
 
-      <section className="w-full my-6">
+      {/* <section className="w-full my-6">
 
         <div className="w-full flex items-center justify-between">
           <p className="text-2xl font-semibold capitalize text-headingColor relative before:absolute before:rounded-lg before:content before:w-32 before:h-1 before:-bottom-2 before:left-0 before:bg-gradient-to-tr from-orange-400 to-orange-600 transition-all ease-in-out duration-100">
@@ -76,14 +76,14 @@ const HomePage = () => {
         />
        
        
-      </section>
+      </section> */}
       
       {currentUser && cartItems && cartItems.length > 0 && (
-              <div className='fixed z-10 bottom-14 right-14 cursor-pointer bg-orange-200 p-2 rounded-full'
+              <div className='fixed z-10 bottom-14 right-14 cursor-pointer bg-orange-500 p-2 rounded-full'
               onClick={showCartHandler}
               >
 
-                <img src={AddTiffin} alt="cart" className="  w-10 h-10 "
+                <img src={AddTiffin2} alt="cart" className="  w-10 h-10 "
                   
                 />
 

@@ -143,7 +143,7 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
         dataValue.slice(0).reverse().map((item) => (
           <div
             key={item._id}
-            className="w-275 h-[175px] min-w-[275px] md:w-300 md:min-w-[300px]  bg-cardOverlay rounded-lg py-2 px-4  my-12 backdrop-blur-lg hover:drop-shadow-lg flex flex-col items-center justify-evenly relative"
+            className="w-275 h-full min-w-[275px] md:w-300 md:min-w-[300px]  bg-cardOverlay rounded-lg py-2 px-4  my-12 backdrop-blur-lg hover:drop-shadow-lg flex flex-col items-center justify-evenly relative"
           >
             <div className="w-full flex items-center justify-between">
               <div
@@ -169,7 +169,7 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
                   </div>
                 ) : (
                   <div
-                    className="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center cursor-pointer hover:shadow-md -mt-8"
+                    className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center cursor-pointer hover:shadow-md -mt-8"
                     onClick={() => {
                       handleClick(item);
                     }}
@@ -180,13 +180,13 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
               
             </div>
 
-            <div className="w-full flex flex-col items-end justify-end -mt-8">
+            <div className="w-full flex flex-col gap-2 items-end justify-end -mt-8">
               <p className="text-textColor font-semibold text-base md:text-lg">
                 {item?.name}
               </p>
               {
                 item.foodType === "veg" ? (
-                  <p className="mt-1 bg-green-700 px-2 text-sm text-white font-semibold rounded-md">
+                  <p className="mt-1 bg-green-600 px-2 text-sm text-white font-semibold rounded-md">
                 {item?.foodType} 
               </p>
                 ) : (
@@ -201,11 +201,9 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
                 {item?.pieces} <span className="text-sm text-slate-500">pieces</span>
               </p>
               )}
-                <div className="flex items-center gap-8">
                 <p className="text-lg text-headingColor font-semibold">
                   <span className="text-sm text-slate-500">price: ₹</span> {item?.price}
                 </p>
-              </div>
               
             </div>
           </div>

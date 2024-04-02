@@ -13,7 +13,7 @@ export default function Main({ children }) {
     return ReactDOM.createPortal(
         <>
         <div className='overlay' />
-        <div className='modal' >
+        <div className='modal w-[70%] lg:w-[50rem] h-[90%] ' >
             {children}
         </div>
 

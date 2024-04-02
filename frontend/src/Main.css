@@ -40,8 +40,8 @@ const MODAL_STYLES = {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1000;
-    height: 90%;
-    width: 80%;
+    
+    background-color: rgb(34,34,34);
     border-radius: 30px;
     /* overflow-y: hidden; */
   }

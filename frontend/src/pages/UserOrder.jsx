@@ -39,10 +39,10 @@ export default function UserOrder() {
   return (
 
     <main
-      className="p-3 mx-auto max-w-6xl h-full drop-shadow-md flex flex-col "
+      className="p-3 mx-auto mt-[10rem] max-w-6xl h-full drop-shadow-md flex flex-col"
     >
       <p
-        className="text-slate-800 text-2xl font-semibold p-1 px-2 "
+        className="text-slate-800 text-2xl font-semibold p-1 px-2 border-b-4 border-orange-500"
       
       >
         Your Order

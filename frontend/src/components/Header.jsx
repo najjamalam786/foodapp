@@ -70,27 +70,27 @@ export default function Header() {
 className="flex items-center text-textColor gap-12 "
 >
 <Link to={'/'}>
-  <li className="text-md hover:text-lg hover:text-yellow-500 duration-200 transition-all ease-in-out cursor-pointer">
+  <li className="text-md hover:text-lg  hover:text-orange-500 duration-200 cursor-pointer relative before:absolute before:rounded-lg before:content before:w-4 before:h-1 before:-bottom-1 before:left-0 before:bg-orange-600 hover:before:w-full transition-all ease-in-out before:duration-300">
     Home
   </li>
 </Link>
 
 <Link to={'/'}>
-<li className="text-md hover:text-lg hover:text-yellow-500 duration-200 transition-all ease-in-out cursor-pointer">
+<li className="text-md hover:text-lg hover:text-orange-500  duration-200  relative before:absolute before:rounded-lg before:content before:w-4 before:h-1 before:-bottom-1 before:left-0 before:bg-orange-600 hover:before:w-full transition-all ease-in-out before:duration-300">
   Menu
 </li>
   
 </Link>
 
 <Link to={'/'}>
-<li className="text-md hover:text-lg hover:text-yellow-500 duration-200 transition-all ease-in-out cursor-pointer">
+<li className="text-md hover:text-lg hover:text-orange-500 duration-200 cursor-pointer relative before:absolute before:rounded-lg before:content before:w-4 before:h-1 before:-bottom-1 before:left-0 before:bg-orange-600 hover:before:w-full transition-all ease-in-out before:duration-300">
   About Us
 </li>
 
 </Link>
 
 <Link to={'/'}>
-<li className="text-md hover:text-lg hover:text-yellow-500 duration-200 transition-all ease-in-out cursor-pointer">
+<li className="text-md hover:text-lg hover:text-orange-500 duration-200 cursor-pointer relative before:absolute before:rounded-lg before:content before:w-4 before:h-1 before:-bottom-1 before:left-0 before:bg-orange-600 hover:before:w-full transition-all ease-in-out before:duration-300">
   Service
 </li>
 

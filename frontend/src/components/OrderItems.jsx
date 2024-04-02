@@ -4,25 +4,29 @@ import FoodData from './FoodData';
 export default function OrderItems({ orderitem }) {
   return (
     <main className="flex flex-col lg:flex-row gap-2">
-      <div className="w-full flex flex-col gap-4 flex-1 py-6 px-6 rounded-lg border ">
+      <div className="w-full flex flex-col gap-4 flex-1 rounded-lg border ">
 
-        <div className="w-full flex justify-between">
-          <p className=" text-slate-600  ">{orderitem.orderDate} </p>
+        <div className="w-full flex px-6 py-2 overflow-hidden bg-orange-500 rounded-t-lg justify-between">
+          <p className=" text-white  ">{orderitem.orderDate} </p>
 
-          <p className='text-slate-500'>{orderitem.orderTime}</p>
+          <p className='text-white'>{orderitem.orderTime}</p>
+
         </div>
-        <div className="w-full px-6 py-4 border rounded-lg flex flex-col ">
+        
+        <div className=" px-6 pb-4">
+          <div className="w-full px-6 py-4 border rounded-lg flex flex-col ">
 
 
-          {/* Food Item */}
-          {orderitem && orderitem.foodData.slice(0).reverse().map((item) => (
-            <FoodData
-              key={item._id}
-              food={item}
+            {/* Food Item */}
+            {orderitem && orderitem.foodData.slice(0).reverse().map((item) => (
+              <FoodData
+                key={item._id}
+                food={item}
 
-            />
-          ))}
+              />
+            ))}
 
+          </div>
         </div>
 
       </div>
@@ -31,7 +35,7 @@ export default function OrderItems({ orderitem }) {
       <div name="totalPrice" className="flex flex-col gap-4 w-full lg:w-[400px] lg:h-full">
         <div className="w-full py-6 px-6 rounded-lg border flex flex-col gap-4">
 
-          <p className="text-base font-semibold text-slate-600"><u>Food Delivery Address</u></p>
+          <p className="text-base font-semibold text-orange-500"><u>Food Delivery Address</u></p>
 
           <div className="flex flex-col overflow-hidden">
 

@@ -3,42 +3,42 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className=" border-t-2 border-gray-400 bg-slate-200 p-6 ">
+    <footer className=" border-t-4 text-white border-gray-300 bg-orange-500 shadow p-6 ">
 
       <div className="flex flex-wrap justify-center gap-8 p-6  lg:py-20 ">
         <div className="text-center p-6">
-          <h5 className='uppercase text-slate-700 font-semibold mb-4'>Location</h5>
+          <h5 className='uppercase border-b-2 font-semibold mb-4'>Location</h5>
           <p>Phulwari Sharif, Patna District</p>
           <p>Md Najjam,Pin- 801505</p>
           <p>Bihar, India</p>
         </div>
 
-        <div className="text-center  p-6">
-          <h5 className='uppercase text-slate-700 font-semibold mb-4'>Working Hours</h5>
+        <div className="text-center   p-6">
+          <h5 className='uppercase border-b-2 font-semibold mb-4'>Working Hours</h5>
           <p>Breakfast: 8:00AM - 10:00AM</p>
           <p>Lunch: 1:00PM - 2:30PM</p>
           <p>Dinner: 8:00PM - 10:00PM</p>
-          <h5 className='font-bold text-gray-600'>
+          <h5 className='font-bold'>
             {new Date().toUTCString().slice(0, 16)}
           </h5>
         </div>
 
 
         <div className="text-center p-6">
-          <h5 className='uppercase text-slate-700 font-semibold mb-4'>Order Now</h5>
+          <h5 className='uppercase border-b-2 font-semibold mb-4'>Order Now</h5>
 
 
 
           <p>Easy Order, Contact Us Now</p>
           <p>
-            <Link to="tel:7667650665" className="text-yellow-500 font-semibold text-3xl">
+            <Link to="tel:7667650665" className="text-cartNumBg font-semibold text-3xl">
               766-765-0665
             </Link>
           </p>
         </div>
 
         <div className="text-center p-6">
-          <h5 className='uppercase text-slate-700 font-semibold mb-4'>Follow Us</h5>
+          <h5 className='uppercase border-b-2 font-semibold mb-4'>Follow Us</h5>
           <p>Our Social Media Plateforms</p>
           {/* <ul className="list-unstyled text-center mt-2">
                   <li>
@@ -71,7 +71,7 @@ export default function Footer() {
         <ul className="flex gap-4 justify-center items-center text-center mb-0">
           <li>
             <Link to="/">
-              © 2023 <span className='font-semibold text-yellow-600'>Najjam</span>. All Rights Reserved
+              © 2023 <span className='font-semibold border-b-2 text-cartNumBg'>Najjam</span>. All Rights Reserved
             </Link>
           </li>
           <li>

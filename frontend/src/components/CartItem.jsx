@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { BiMinus, BiPlus, BiTrash } from "react-icons/bi";
+import React, {  useState } from "react";
+import { BiMinus, BiPlus } from "react-icons/bi";
+import { FaTrash } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { addCartItems } from "../redux/createSlice/itemSlice";
 
@@ -81,7 +82,7 @@ const CartItem = ({ item, setTotal }) => {
 
 
   return (
-    <div className="w-full p-1 px-2 rounded-lg bg-cartItem flex items-center gap-2">
+    <div className="w-full p-1 px-2 rounded-lg bg-white flex items-center gap-2">
       <img
         src={item?.imageURL}
         className="w-20 h-20 max-w-[60px] rounded-full object-contain"
@@ -90,8 +91,8 @@ const CartItem = ({ item, setTotal }) => {
 
       {/* name section */}
       <div className="flex flex-col gap-2">
-        <p className="text-base text-gray-50">{item.name}</p>
-        <p className="text-sm block text-gray-300 font-semibold">
+        <p className="text-base text-orange-500 font-semibold">{item.name}</p>
+        <p className="text-sm block text-slate-500 font-semibold">
           ₹ {parseFloat(item?.price) * qty} {item?.pieces > 1 && `/${item?.pieces}`}
         </p>
 
@@ -101,7 +102,7 @@ const CartItem = ({ item, setTotal }) => {
 
       <div className="flex flex-col items-center gap-4 ml-auto">
 
-        <BiTrash onClick={() => updateQty("delete", item?._id)} className="text-gray-50 hover:text-red-600" />
+        <FaTrash onClick={() => updateQty("delete", item?._id)} className="text-slate-500 text-xl hover:text-cartNumBg cursor-pointer" />
 
         <div className="group flex  gap-2  cursor-pointer">
           <div
@@ -110,10 +111,10 @@ const CartItem = ({ item, setTotal }) => {
 
             }}
           >
-            <BiMinus className="text-gray-50 " />
+            <BiMinus className=" text-orange-500 " />
           </div>
 
-          <p className="w-5 h-5 rounded-sm bg-cartBg text-gray-50 flex items-center justify-center">
+          <p className="w-5 h-5 rounded-sm text-orange-500 font-semibold flex items-center justify-center">
             {qty}
           </p>
 
@@ -122,7 +123,7 @@ const CartItem = ({ item, setTotal }) => {
               updateQty("inc", item?._id);
             }}
           >
-            <BiPlus className="text-gray-50 " />
+            <BiPlus className="text-orange-500 " />
           </div>
         </div>
       </div>

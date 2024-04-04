@@ -11,7 +11,11 @@ export default function ShippingAddress() {
 
     const { currentUser } = useSelector((state) => state.user);
     const { cartItems, totalPrice } = useSelector((state) => state.item);
+    const { monthlySub } = useSelector((state) => state.order);
     const [orderAddress, setOrderAddress] = useState();
+    const [checkBox, setCheckBox] = useState({
+        type: '',
+      });
   const [index, setIndex] = useState();
 //   const [defaultaddress, setDefaultAddress] = useState();
 
@@ -23,6 +27,7 @@ export default function ShippingAddress() {
 
         landmark: "",
         address: "",
+        newMobile: "",
         pincode: "",
         district: "Patna",
 
@@ -45,26 +50,56 @@ export default function ShippingAddress() {
         
         // order create api
         try {
-            await fetch('/api/user/ordercreate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    mobile: currentUser.mobile,
-                    name: currentUser.username,
-                    email: currentUser.email,
-                    orderItems: cartItems,
-                    shippingAddress: {
-                        landmark: formData.landmark.trim(),
-                        address: formData.address.trim(),
-                        pincode: formData.pincode.trim(),
-                        district: formData.district.trim()
-                    },
-                    totalPrice: totalPrice,
 
-                }),
-            }).then(async() => {
+            if(monthlySub === true) {
+                await fetch("/api/user/monthlysub", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        mobile: currentUser.mobile,
+                            
+                            name: currentUser.username,
+                            email: currentUser.email,
+                            monthlySub:true,
+                            shippingAddress: {
+
+                                landmark: formData.landmark.trim(),
+                                address: formData.address.trim(),
+                                pincode: formData.pincode.trim(),
+                                newMobile: formData.newMobile.trim(),
+                                district: formData.district.trim()
+                            },
+                            totalPrice: totalPrice,
+                    }),
+                })
+                    
+            }
+            else{
+                await fetch('/api/user/ordercreate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: currentUser.email,
+                        
+                        name: currentUser.username,
+                        orderItems: cartItems,
+                        shippingAddress: {
+                            landmark: formData.landmark.trim(),
+                            address: formData.address.trim(),
+                            pincode: formData.pincode.trim(),
+                            newMobile: formData.newMobile.trim(),
+                            district: formData.district.trim()
+                        },
+                        totalPrice: totalPrice,
+    
+                    }),
+                })
+
+            }
                 
                 await fetch('/api/user/useraddress', {
                     method: 'POST',
@@ -75,6 +110,7 @@ export default function ShippingAddress() {
                         landmark: formData.landmark.trim(),
                         address: formData.address.trim(),
                         pincode: formData.pincode.trim(),
+                        newMobile: formData.newMobile.trim(),
                         district: formData.district.trim()
                     },
                 }),
@@ -90,7 +126,7 @@ export default function ShippingAddress() {
                     },1000)
                     
                 
-            });
+            
 
         } catch (error) {
             dispatch(pageLoader(false));
@@ -99,6 +135,70 @@ export default function ShippingAddress() {
         }
 
     }
+    
+
+    const handleDefaultAddress = async(e) => {
+        dispatch(pageLoader(true));
+
+        e.preventDefault();
+        try {
+            if(index === undefined){
+                alert("please select address");
+                dispatch(pageLoader(false));
+                return;
+            }else{
+
+                
+                if(monthlySub === true) {
+                    await fetch("/api/user/monthlysub", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            email: currentUser?.email,
+                                monthlySub: true,
+                                shippingAddress: orderAddress[index],
+                                totalPrice: totalPrice,
+                        }),
+                    })
+                }
+                else {
+                    await fetch('/api/user/ordercreate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            
+                            email: currentUser.email,
+                            orderItems: cartItems,
+                            shippingAddress: orderAddress[index],
+                            totalPrice: totalPrice,
+                        })
+
+                    });
+                }
+
+
+                setTimeout(() => {
+                    dispatch(addCartItems([]));
+                    dispatch(pageLoader(false));
+                    navigate('/');
+                    dispatch(confirmOrderPlaced(true));
+                }, 1000)
+
+
+            }
+
+        } catch (error) {
+            dispatch(pageLoader(false));
+            console.log(error)
+            
+        }
+    }
+
+
     useEffect(() => {
         dispatch(pageLoader(true));
         
@@ -135,50 +235,12 @@ export default function ShippingAddress() {
 
     }, [])
 
-    const handleDefaultAddress = async(e) => {
-        dispatch(pageLoader(true));
-
-        e.preventDefault();
-        try {
-            if(index === undefined){
-                alert("please select address");
-            }else{
-                await fetch('/api/user/ordercreate', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        mobile: currentUser.mobile,
-                        orderItems: cartItems,
-                        shippingAddress: orderAddress[index],
-                        totalPrice: totalPrice,
-    
-                    })
-                }).then(() => {
-
-                    setTimeout(() => {
-                        dispatch(addCartItems([]));
-                        dispatch(pageLoader(false));
-                        navigate('/');
-                        dispatch(confirmOrderPlaced(true));
-                    },1000)
-                });
-                
-            }
-
-        } catch (error) {
-            dispatch(pageLoader(false));
-            console.log(error)
-            
-        }
-    }
 
     return (
         <>
             <main className=" p-3 mt-[10rem] max-w-4xl mx-auto">
                 
-                <div className="w-full  flex flex-col gap-4 sm:flex-row items-center justify-between p-4  ">
+                <div className="w-full  flex flex-col gap-8 sm:gap-4 sm:flex-row items-center justify-between p-4  ">
 
                     <div className="flex  items-center ">
                         <img src={Logo} alt="logo" className="w-14 h-14 " />
@@ -193,7 +255,7 @@ export default function ShippingAddress() {
                     </p>
                 </div>
 
-                {orderAddress && orderAddress.length > 0 ?
+                {orderAddress && orderAddress.length > 0 && !flag ?
                     (
 
                         <div className="flex flex-col gap-4">
@@ -206,6 +268,7 @@ export default function ShippingAddress() {
                                             address={item}
                                             setIndex={setIndex}
                                             index={index}
+                                            checkBox={checkBox} setCheckBox={setCheckBox}
                                             
 
                                         />
@@ -215,14 +278,31 @@ export default function ShippingAddress() {
 
                                 </div>
                                 <button
-                                    className="w-full bg-green-500 mb-4 text-slate-50 p-3 rounded-lg"
+                                    className="w-full bg-orange-500 mb-4 text-slate-50 p-3 rounded-lg"
                                     onClick={handleDefaultAddress}
 
-                                >Order Confirm</button>
+                                >Order Proceed</button>
+
+                                <button
+                                    className="w-full bg-slate-800 text-slate-50 p-3 rounded-lg"
+                                    onClick={() => setflag(!flag)}
+
+                                >Add Address</button>
                             </div>
 
-                            {flag ? (
-                                // Add Shipping Address
+
+                        </div>) : (
+
+                            <div className="">
+                                {orderAddress && orderAddress.length > 0 && <button
+                                    className="w-full bg-slate-800 text-slate-50 p-3 rounded-lg"
+                                    onClick={() => setflag(!flag)}
+
+                                >Selct Address</button>}
+
+
+                                {/* Add Shipping Address */}
+
                                 <form onSubmit={handleSubmit} className="flex flex-col my-[50px] gap-4 ">
                                     <div className="flex flex-col gap-4 flex-1">
 
@@ -256,82 +336,21 @@ export default function ShippingAddress() {
                                             <input
                                                 type="number"
                                                 placeholder="pincode"
-                                                className="border p-3 rounded-lg"
+                                                className="border remove-arrow p-3 rounded-lg"
                                                 id="pincode"
                                                 onChange={handleChange}
                                                 value={formData.pincode}
                                                 required
                                             />
-                                            <select
-                                                name="district" id="district"
-                                                onChange={handleChange}
-                                                className="w-[50%] border p-3 rounded-lg text-slate-600 font-semibold"
-                                            >
-                                                <option value="Patna">Patna</option>
-                                                <option value="Bhagalpur">Bhagalpur</option>
-                                                <option value="Madhepura">Madhepura</option>
-                                                <option value="Gaya">Gaya</option>
-                                                <option value="Muzaffarnagar">Muzaffarpur</option>
-                                            </select>
-                                        </div>
-
-
-                                    </div>
-
-                                    {/* tempory button */}
-                                    <button type="submit" className="p-3 bg-green-500 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-90">Order Proceed</button>
-                                </form>
-                            ) :
-                                (
-                                    <button
-                                        className="w-full bg-slate-800 text-slate-50 p-3 rounded-lg"
-                                        onClick={() => setflag(true)}
-
-                                    >Add Address</button>
-                                )
-
-                            }
-
-                        </div>) : (
-
-                        // Add Shipping Address
-                        <form onSubmit={handleSubmit} className="flex flex-col my-[50px] gap-4 ">
-                                    <div className="flex flex-col gap-4 flex-1">
-
-                                        <p
-                                            className="border font-semibold text-slate-500 p-3 rounded-lg"
-                                        >{currentUser.username} / {currentUser.email}</p>
-
-                                        <input
-                                            type="text"
-                                            placeholder="Landmark"
-                                            className="border p-3 rounded-lg"
-                                            id="landmark"
-                                            maxLength={62}
-                                            minLength={10}
-                                            onChange={handleChange}
-                                            value={formData.landmark}
-                                            required
-                                        />
-
-
-                                        <textarea
-                                            type="textarea"
-                                            placeholder="Address"
-                                            className="border p-3 rounded-lg"
-                                            id="address"
-                                            onChange={handleChange}
-                                            value={formData.address}
-                                            required
-                                        />
-                                        <div className='flex justify-between'>
+                                            
+                                                
                                             <input
                                                 type="number"
-                                                placeholder="pincode"
-                                                className="border p-3 rounded-lg"
-                                                id="pincode"
+                                                placeholder="mobile"
+                                                className="border remove-arrow p-3 rounded-lg"
+                                                id="newMobile"
                                                 onChange={handleChange}
-                                                value={formData.pincode}
+                                                value={formData.newMobile}
                                                 required
                                             />
                                             <select
@@ -340,10 +359,7 @@ export default function ShippingAddress() {
                                                 className="w-[50%] border p-3 rounded-lg text-slate-600 font-semibold"
                                             >
                                                 <option value="Patna">Patna</option>
-                                                <option value="Bhagalpur">Bhagalpur</option>
-                                                <option value="Madhepura">Madhepura</option>
-                                                <option value="Gaya">Gaya</option>
-                                                <option value="Muzaffarnagar">Muzaffarpur</option>
+                                                
                                             </select>
                                         </div>
 
@@ -351,8 +367,11 @@ export default function ShippingAddress() {
                                     </div>
 
                                     {/* tempory button */}
-                                    <button type="submit" className="p-3 bg-green-500 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-90">Order Proceed</button>
+                                    <button type="submit" className="p-3 bg-orange-500 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-90">Order Proceed</button>
                                 </form>
+                            </div>
+
+
                     )
 
 

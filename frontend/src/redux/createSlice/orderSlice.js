@@ -4,6 +4,7 @@ const initialState = {
     orderItems: [],
     loading: false,
     confirmOrder: false,
+    monthlySub: false,
     
 };
 
@@ -22,9 +23,12 @@ const orderSlice = createSlice({
     confirmOrderPlaced: (state, action) => {
       state.confirmOrder = action.payload;
     },
+    monthlySubscription: (state, action) => {
+      state.monthlySub = action.payload;
+    }
     
   },
 });
 
-export const { addAllOrders, pageLoader, confirmOrderPlaced  } = orderSlice.actions;
+export const { addAllOrders, pageLoader, confirmOrderPlaced, monthlySubscription  } = orderSlice.actions;
 export default orderSlice.reducer

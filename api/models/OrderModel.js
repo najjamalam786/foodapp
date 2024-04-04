@@ -16,6 +16,10 @@ const orderSchema = new mongoose.Schema({
 
     orderItems:[
         {
+            monthlySub:{
+                type:Boolean,
+                
+            },
             orderDate:{
                 type:String,
                 required:true
@@ -27,7 +31,6 @@ const orderSchema = new mongoose.Schema({
             
             foodData:{
                 type:Array,
-                required:true,
             },
     
             shippingAddress:{
@@ -38,6 +41,14 @@ const orderSchema = new mongoose.Schema({
                 type:Number,
                 required:true
             },
+            expireTillDate:{
+                type:String,
+                required:true
+            },
+            expireDate:{
+                type:String,
+                required:true
+            }
             
         }
     ],

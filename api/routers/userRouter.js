@@ -1,5 +1,5 @@
 import express from "express"
-import { addItemToCart, createUser, UserAllCartData, googleLogin, logOut, signIn, updateUserCart, orderCreate, orderGet, deleteUserCartItems, deleteCartItems, userAddress, getAdderss, verifyPhone, verifyCode } from "../controllers/userController.js";
+import { addItemToCart, createUser, UserAllCartData, googleLogin, logOut, signIn, updateUserCart, orderCreate, orderGet, deleteUserCartItems, deleteCartItems, userAddress, getAdderss, verifyPhone, verifyCode, monthlySubscription, expireMonthlySub } from "../controllers/userController.js";
 import { getMessage } from "../utils/sendSMS.js";
 
 const router = express.Router();
@@ -12,6 +12,8 @@ router
 .post('/google', googleLogin)
 .get('/logout', logOut)
 .post('/allcart', UserAllCartData)
+.post("/expiremonthlysub", expireMonthlySub)
+.post('/monthlysub', monthlySubscription)
 .post('/cart', addItemToCart)
 .post('/updatecart', updateUserCart)
 .post('/deleteusercart', deleteUserCartItems)

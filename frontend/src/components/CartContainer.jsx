@@ -44,7 +44,7 @@ const CartContainer = () => {
     
     <div
     
-    className="w-full h-full rounded-t-[2rem] bg-orange-500 drop-shadow-md flex flex-col"
+    className="w-full h-full rounded-t-[2rem] bg-orange-500 drop-shadow-md flex flex-col "
     >
       
     
@@ -74,7 +74,7 @@ const CartContainer = () => {
       {cartItems && cartItems.length > 0 ? (
         <div className="w-full h-full bg-gray-300 rounded-t-[2rem] flex flex-col">
           {/* cart Items section */}
-          <div className="w-full h-[40rem] md:h-42 px-6 py-10 flex flex-col gap-3 overflow-y-scroll no-scrollbar">
+          <div className="w-full h-[20rem] px-6 py-10 flex flex-col gap-3 overflow-y-scroll no-scrollbar">
             {/* cart Item */}
             {
               cartItems.slice(0).reverse().map((item) => (
@@ -88,7 +88,7 @@ const CartContainer = () => {
           </div>
 
           {/* cart total section */}
-          <div className="w-full h-full flex-1  bg-white rounded-t-[2rem] flex flex-col items-center justify-evenly px-16">
+          <div className="w-full p-6 flex-1  bg-white rounded-t-[2rem] flex flex-col items-center justify-evenly px-16">
             <div className="w-full flex items-center justify-between">
               <p className="text-orange-500 text-2xl">Sub Total</p>
               <p className="text-gray-600 text-2xl">₹ {total}</p>

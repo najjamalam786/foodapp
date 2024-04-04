@@ -61,7 +61,7 @@ export default function Header() {
       <div className="hidden md:flex w-full h-full items-center justify-between">
         <Link to={"/"} className="flex flex-col items-center  gap-2">
           <img src={Logo} className="w-12 object-cover" alt="logo" />
-          <p className="text-headingColor text-xl font-semibold"> TIFFINBOX</p>
+          <p className="text-slate-800 text-xl font-bold"> TIFFINBOX</p>
         </Link>
 
         <div className="hidden md:flex w-full items-center justify-end gap-8 mb-8 ">
@@ -102,7 +102,7 @@ className="flex items-center text-textColor gap-12 "
   className="relative flex items-center justify-center"
   onClick={showCartHandler}
 >
-  <img src={AddTiffin} className="text-textColor w-8 h-8  cursor-pointer" alt="FoodBasket" />
+  <img src={AddTiffin} className="text-textColor w-7  cursor-pointer" alt="FoodBasket" />
 
 
   {cartItems && cartItems.length > 0 && (
@@ -121,7 +121,7 @@ className="flex items-center text-textColor gap-12 "
 
 
 
-  className="relative bg-orange-500 rounded-lg p-2 px-4 cursor-pointer hover:bg-yellow-500 duration-200 transition-all ease-in-out">
+  className="relative bg-orange-500 rounded-lg p-2 px-4 cursor-pointer hover:bg-cartNumBg duration-200 transition-all ease-in-out">
   {currentUser ? (
     <div className="flex items-center text-white gap-2 ">
       <FaUserCircle size={20}/>
@@ -184,6 +184,15 @@ className="flex items-center text-textColor gap-12 "
           </span>
 
         </Link>
+        <Link to={"/user-member"}>
+          <span
+            className="px-4 py-2 flex items-center justify-between gap-3 cursor-pointer hover:bg-orange-500 hover:text-white rounded-lg transition-all duration-100 ease-in-out text-textColor text-base"
+          >
+            Food Member
+            <img src={OrderTiffin} className="w-5 h-5" alt="order" />
+          </span>
+
+        </Link>
 
         <Link to={'/signup'}>
           <p
@@ -240,7 +249,7 @@ className="flex items-center text-textColor gap-12 "
       <div className=" flex items-center justify-between md:hidden w-full h-full ">
         <Link to={"/"} className="flex flex-col items-center gap-2">
           <img src={Logo} className="w-8 object-cover" alt="logo" />
-          <p className="text-headingColor text-xl font-semibold"> TIFFINBOX</p>
+          <p className="text-cartNumBg text-xl font-semibold"> TIFFINBOX</p>
         </Link>
 
 
@@ -403,7 +412,7 @@ className="flex items-center text-textColor gap-12 "
 
                     </p></Link>
                     <Link to={"/signin"}><p
-                      className="m-2 p-2 pl-6 rounded-md shadow-md flex items-center justify-between bg-red-500 gap-3 cursor-pointer hover:bg-gray-300 transition-all duration-100 ease-in-out text-white hover:text-red-500 text-base"
+                      className="m-2 p-2 pl-6 rounded-md shadow-md flex items-center justify-between bg-cartNumBg gap-3 cursor-pointer hover:bg-gray-300 transition-all duration-100 ease-in-out text-white hover:text-cartNumBg hover:font-semibold text-base"
                       onClick={LogOut}
 
                     >

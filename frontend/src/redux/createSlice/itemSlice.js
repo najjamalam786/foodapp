@@ -5,6 +5,7 @@ const initialState = {
     foodItems: [],
     showCart: false,
     cartItems: [],
+    monthlySubItems: [],
     totalPrice: 0,
   };
 
@@ -30,10 +31,13 @@ const itemSlice = createSlice({
     addTotalPrice(state, action) {
       state.totalPrice = action.payload;
     },
+    monthlySubscriptionItem(state, action) {
+      state.monthlySubItems = action.payload;
+    },
     
     
   },
 })
 
-export const { signInUser, itemAdded, itemShowCart, addCartItems, addTotalPrice  } = itemSlice.actions
+export const { signInUser, itemAdded, itemShowCart, addCartItems, addTotalPrice,  monthlySubscriptionItem } = itemSlice.actions
 export default itemSlice.reducer

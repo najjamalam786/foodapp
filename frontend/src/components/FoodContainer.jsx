@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { MdShoppingBasket } from "react-icons/md";
 import NotFound from "../img/NotFound.svg";
 import { useDispatch, useSelector } from "react-redux";

@@ -31,6 +31,18 @@ const fooduserSchema = new mongoose.Schema({
         type: Object,
         default: {}
     },
+    monthlySub: {
+        success: {
+            type: Boolean,
+            default: false
+        },
+        saveDate: {
+            type: String
+        },
+        expireDate: {
+            type: String
+        }
+    },
     userAddress:{
             type: Object,
             default: {}

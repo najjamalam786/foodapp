@@ -1,9 +1,15 @@
 import React from 'react'
 import FoodData from './FoodData';
 
+
 export default function OrderItems({ orderitem }) {
+
+console.log(orderitem.monthlySub)
   return (
-    <main className="flex flex-col lg:flex-row gap-2">
+
+    <>
+    {
+      orderitem.monthlySub === undefined && <main className="flex flex-col lg:flex-row gap-2">
       <div className="w-full flex flex-col gap-4 flex-1 rounded-lg border ">
 
         <div className="w-full flex px-6 py-2 overflow-hidden bg-orange-500 rounded-t-lg justify-between">
@@ -41,8 +47,9 @@ export default function OrderItems({ orderitem }) {
 
             <p className="text-base text-gray-400">Landmark: <span className='text-slate-600'>{orderitem.shippingAddress.landmark}</span></p>
             <p className="text-base text-gray-400">Address: <span className='text-slate-600'>{orderitem.shippingAddress.address}</span></p>
-            <p className="text-base  text-gray-400">district: <span className='text-slate-600'>{orderitem.shippingAddress.district}</span></p>
+            <p className="text-base  text-gray-400">District: <span className='text-slate-600'>{orderitem.shippingAddress.district}</span></p>
             <p className="text-base text-gray-400">pincode: <span className='text-slate-600'>{orderitem.shippingAddress.pincode}</span></p>
+            <p className="text-base text-gray-400">Phone number: <span className='text-slate-600'>{orderitem.shippingAddress.newMobile}</span></p>
 
 
 
@@ -63,5 +70,10 @@ export default function OrderItems({ orderitem }) {
 
       </div>
     </main>
+
+    }
+    
+    </>
+
   );
 }

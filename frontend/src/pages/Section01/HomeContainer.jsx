@@ -1,16 +1,43 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Delivery from '../../img/delivery.png';
 import Lemon from "../../img/lemon.png";
 import Pngwing1 from "../../img/pngwing1.png";
 import HomeFront from "../../img/homeFront.png";
 import Pngwing3 from "../../img/pngwing3.png";
+import MonthImg from "../../img/monthlySub.png";
 import HomeBg from "../../img/home.png"
 import { heroData } from '../../utils/data';
+import { useDispatch } from 'react-redux';
+import { monthlySubscription } from '../../redux/createSlice/orderSlice';
+import { Link } from 'react-router-dom';
+import { addTotalPrice, monthlySubscriptionItem } from '../../redux/createSlice/itemSlice';
+
 // import CartContainer from '../../components/CartContainer';
 
 
 export default function HomeContainer() {
 
+    // const [hero, setHero] = useState({
+    //     name: "Monthly Subscription",
+    //     imageURL:'https://firebasestorage.googleapis.com/v0/b/fooddeliveryapp-4818c.appspot.com/o/monthlySub.png?alt=media&token=e1612426-1091-4620-9d4d-b1f521ecf92e',
+    //     quantity: 1,
+    //     price: 4499,
+        
+    // });
+
+    const dispatch = useDispatch();
+
+    const handleCheck = () => {
+        dispatch(monthlySubscription(true))
+        dispatch(addTotalPrice(4499));
+
+    }
+    
+    useEffect(() => {
+        dispatch(monthlySubscription(false))
+
+
+    }, [])
     
   return (
     <section className='w-full relative '>
@@ -53,9 +80,14 @@ export default function HomeContainer() {
             <p className="text-textColor text-lg lg:text-xl font-semibold mt-2 ">For monthly subscription...
             </p> 
 
-            <button className='bg-gradient-to-br from-orange-400 to-orange-500 text-white font-semibold w-full md:w-auto px-4 py-2 rounded-lg hover:shadow-lg transition-all ease-in-out'>
-                Order Now
+
+            <Link to="/order-create">
+            <button className='bg-gradient-to-br from-orange-400 to-orange-500 text-white font-semibold w-full md:w-auto px-4 py-2 rounded-lg hover:shadow-lg transition-all ease-in-out'
+            onClick={ handleCheck }>
+                Order For Monthly 
             </button>
+
+            </Link>
         </div>
         <div className="p-2 flex-1 flex items-center relative  ">
             <div className="w-full item-center justify-center relative">

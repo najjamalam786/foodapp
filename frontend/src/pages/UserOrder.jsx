@@ -20,13 +20,12 @@ export default function UserOrder() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ mobile: currentUser?.mobile }),
+        body: JSON.stringify({ email: currentUser?.email }),
       }).then((res) => {
         res.json().then((response) => {
-          // console.log("allOrder",allOrder);
-         
-            dispatchEvent(addAllOrders(response));
-            
+          
+          dispatchEvent(addAllOrders(response));
+          
           
         })
       })

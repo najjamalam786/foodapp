@@ -6,6 +6,7 @@ import { confirmOrderPlaced } from '../redux/createSlice/orderSlice';
 
 export default function ConfirmOrder() {
     const {currentUser} = useSelector(state => state.user)
+    const {monthlySub} = useSelector(state => state.order)
     const dispatch = useDispatch();
 
     const confirmOrderHandler = () => {
@@ -24,8 +25,6 @@ export default function ConfirmOrder() {
 
                   message: `from TIFFINBOX... Thank you for ordering from our ${currentUser.email} website. Your order will be delivered soon. `
                 }),
-            }).then(() => {
-                console.log("working twilio")
             })
         }
 
@@ -34,21 +33,40 @@ export default function ConfirmOrder() {
   return (
     <div
     
-    className="w-full h-full rounded-t-[2rem] bg-gradient-to-tr from-[#0d2650] to-[#3760a7] drop-shadow-md flex flex-col"
+    className="w-full h-full rounded-t-[2rem] bg-gradient-to-br from-blue-800 to-blue-500 drop-shadow-md "
     >
-        <div className="w-full h-full flex flex-col items-center justify-center gap-6">
+        <div className="relative w-full h-full flex flex-col items-center justify-center gap-6">
           <img src={ConfirmTiffin} className="w-[10rem] lg:w-225" alt="confirm_img" />
           <div className="flex flex-col items-center justify-center gap-2">
-          <p className="text-xl text-white font-semibold">
+          <p className="text-4xl sm:text-6xl text-white font-extrabold">
+            Order Place
+            
+          </p>
+          <p className="text-sm sm:text-xl bg-gradient-to-r from-[#1aff00f1] to-[#0078da94] p-2 pl-4 text-cartNumBg rounded-lg font-bold">Your Food will be delivered soon...</p>
+          </div>
+        <button onClick={confirmOrderHandler} className='bg-blue-500 w-[200px] text-white font-semibold  px-4 py-2 rounded-lg'>Go Back Home</button>
+
+        
+        { monthlySub ? (
+        <Link to="/user-member">
+        <button onClick={confirmOrderHandler} className='bg-blue-500 w-[200px] text-white px-4 py-2 rounded-lg'>See Membership</button>
+        </Link>
+
+        ) : (
+
+        <Link to="/user-orders">
+        <button onClick={confirmOrderHandler} className='bg-blue-800 w-[200px] text-white px-4 py-2 rounded-lg'>See Order</button>
+        </Link>
+        )
+      
+
+        }
+
+          <p className="w-full text-center  bottom-[10%] left-[10%] text-white  text-[15px] sm:text-xl bg-gradient-to-r from-orange-600 to-orange-300 p-2 font-semibold ">
             Thank you for ordering from our website.
             
           </p>
-          <p className="text-xl text-white font-semibold">Your Food will be delivered soon...</p>
-          </div>
-        <button onClick={confirmOrderHandler} className='bg-orange-500 w-[200px] text-white  px-4 py-2 rounded-lg'>Go Back Home</button>
-        <Link to="/user-orders">
-        <button onClick={confirmOrderHandler} className='bg-green-500 w-[200px] text-white px-4 py-2 rounded-lg'>See Order</button>
-        </Link>
+
         </div>
     </div>
   )

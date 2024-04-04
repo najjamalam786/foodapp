@@ -208,6 +208,7 @@ export const UserAllCartData = async(req, res, next) => {
 }
 
 
+
 // Add to cart
 
 export const addItemToCart = async (req, res, next) => {
@@ -215,6 +216,7 @@ export const addItemToCart = async (req, res, next) => {
     
     
     try {
+        
         await FoodUser.findOneAndUpdate({email: cartData.email,}, {$push: {userCart: cartData.userCart}},{new: true} ).then(async(response) => {
             
             if(response === null){
@@ -291,15 +293,80 @@ export const deleteUserCartItems = async(req, res, next) => {
     }
 }
 
+// Expire MonthlySub .post("/api/user/expiremonthlysub", expireMonthlySub)
+
+export const expireMonthlySub = async (req, res, next) => {
+    const orderData = req.body;
+    try {
+        
+        await Order.findOneAndUpdate({email: orderData.email, orderItems: {$elemMatch: {_id: orderData._id}}}, {$set: {"orderItems.$.monthlySub": orderData.monthlySub}});
+
+        res.status(200).json(true);
+
+    } catch (error) {
+        next(error);
+    }
+}
+
+// MonthlySub Users .post("/api/user/monthlysub", monthlySub)
+export const monthlySubscription = async (req, res, next) => {
+    const orderData = req.body;
+
+    const todayDate = new Date().getDate();
+      const todayMonth = new Date().getMonth();
+      const todayYear = new Date().getFullYear();
+      const expireTime = new Date(todayYear, todayMonth, todayDate + 1).toDateString();
+      const expire = new Date(todayYear, todayMonth, todayDate + 2).toDateString();
+
+    const userE = await Order.findOne({email: req.body.email});
+    if(userE == null){
+        try{
+            
+            await Order.create({
+                mobile: orderData.mobile,
+                name: orderData.name,
+                email: orderData.email,
+                orderItems: [{monthlySub: orderData.monthlySub, shippingAddress: orderData.shippingAddress, totalPrice: orderData.totalPrice, expireTillDate: expireTime, expireDate: expire, orderDate: new Date().toDateString(), orderTime: new Date().toLocaleTimeString()}],
+                
+            }).then(async() => {
+                
+                await FoodUser.findOneAndUpdate({email: req.body.email}, {$push: { monthlySub: { success: true, saveDate: new Date().toDateString(), expireDate: expire }} } ).then((response) => {
+                    res.status(200).json(response.userCart);
+                });
+            });
+        }catch(error){
+            next(error);
+        }
+    }
+
+    else{
+        try {
+
+            await Order.findOneAndUpdate({email: orderData.email}, {$push: {orderItems: [{monthlySub: orderData.monthlySub, shippingAddress: orderData.shippingAddress, totalPrice: orderData.totalPrice, expireTillDate: expireTime, expireDate: expire, orderDate: new Date().toDateString(), orderTime: new Date().toLocaleTimeString()}],  } },{new: true}).then(async() => {
+
+                await FoodUser.findOneAndUpdate({email: orderData.email}, {$push: { monthlySub: { success: true, saveDate: new Date().toDateString(), expireDate: expire }} } ).then((response) => {
+                    res.status(200).json(response.userCart);
+                });
+
+            });
+            
+        } catch (error) {
+
+            next(error);
+        }
+    }
+}
+
 
 // Order create by user .post('/ordercreate',verifyToken, orderCreate)
 
 export const orderCreate = async(req, res, next) => {
     const orderData = req.body;
-    const userE = await Order.findOne({mobile: orderData.mobile});
+    const userE = await Order.findOne({email: orderData.email});
 
     if(userE == null){
         try{
+            
             await Order.create({
                 mobile: orderData.mobile,
                 name: orderData.name,
@@ -319,7 +386,7 @@ export const orderCreate = async(req, res, next) => {
 
     else{
         try {
-            await Order.findOneAndUpdate({mobile: orderData.mobile}, {$push: {orderItems: [{foodData: orderData.orderItems, shippingAddress: orderData.shippingAddress, totalPrice: orderData.totalPrice, orderDate: new Date().toDateString(), orderTime: new Date().toLocaleTimeString()}],  } },{new: true}).then(async() => {
+            await Order.findOneAndUpdate({email: orderData.email}, {$push: {orderItems: [{foodData: orderData.orderItems, shippingAddress: orderData.shippingAddress, totalPrice: orderData.totalPrice, orderDate: new Date().toDateString(), orderTime: new Date().toLocaleTimeString()}],  } },{new: true}).then(async() => {
 
                 await FoodUser.findOneAndUpdate({email: orderData.email}, {$set: {userCart: []}}, {new: true}).then((response) => {
                     res.status(200).json(response.userCart);
@@ -334,6 +401,7 @@ export const orderCreate = async(req, res, next) => {
     }
     
 }
+
 
 // Delete Cart Items if "cartItems" is empty
 export const deleteCartItems = async(req, res, next) => {
@@ -355,8 +423,9 @@ export const deleteCartItems = async(req, res, next) => {
 
 export const orderGet = async(req, res, next) => {
     const orderData = req.body;
+
     try {
-        const response = await Order.findOne({mobile: orderData.mobile});
+        const response = await Order.findOne({email: orderData.email});
         
         if(response === null){
             res.status(200).json(response);

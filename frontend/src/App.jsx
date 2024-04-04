@@ -23,21 +23,21 @@ import Loader from "./components/Loader";
 import ShowNavBar from "./components/ShowNavBar";
 import ConfirmOrder from "./pages/ConfirmOrder";
 import MobileAuthentication from "./pages/MobileAuthentication";
+import UserMember from "./pages/UserMember";
 // import MobileAuthentication from "./pages/MobileAuthentication";
 
 
 const App = () => {
 
-  const { showCart, cartItems } = useSelector((state) => state.item);
-  const { loading, confirmOrder } = useSelector((state) => state.order);
+  const { showCart, cartItems,monthlySubItems } = useSelector((state) => state.item);
+  const { loading, confirmOrder, monthlySub } = useSelector((state) => state.order);
   const { mobileAuth } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  
 
 useEffect(() => {
   dispatch(pageLoader(true));
 
-  
+
 
   setTimeout(() => {
     dispatch(pageLoader(false))
@@ -70,9 +70,10 @@ useEffect(() => {
 
           <Route element={<PrivateRout />}>
 
-            <Route path="/order-create" element={cartItems.length > 0 && <ShippingAddress/>} />
+            <Route path="/order-create" element={cartItems.length > 0 || monthlySub ? <ShippingAddress/> : ""} />
             
             <Route path="/user-orders" element={<UserOrder/>} />
+            <Route path="/user-member" element={<UserMember/>} />
             
             <Route element={<AdminPrivateRout />}>
               <Route path="/createItem" element={<UploadFood />} />

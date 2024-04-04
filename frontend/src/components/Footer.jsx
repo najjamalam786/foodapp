@@ -3,18 +3,25 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className=" border-t-4 text-white border-gray-300 bg-orange-500 shadow p-6 ">
+    <footer className=" border-t-2 text-gray-800 border-gray-300 bg-gradient-to-r from-[#ececec] to-[rgb(236,236,235)] bg-shadow p-2 ">
 
-      <div className="flex flex-wrap justify-center gap-8 p-6  lg:py-20 ">
-        <div className="text-center p-6">
-          <h5 className='uppercase border-b-2 font-semibold mb-4'>Location</h5>
+      
+
+      <div className="  flex flex-wrap justify-center gap-8 py-20 pt-36">
+
+        <div className=" relative text-center  p-6">
+        <div className="absolute right-0 left-0 top-[-2rem] mx-auto flex items-center justify-center ">
+        <p className="text-cartNumBg text-4xl font-bold">TIFFINBOX</p>
+      </div>
+
+          <h5 className='uppercase border-b-2 font-semibold text-orange-500  border-orange-500 mb-4'>Location</h5>
           <p>Phulwari Sharif, Patna District</p>
           <p>Md Najjam,Pin- 801505</p>
           <p>Bihar, India</p>
         </div>
 
         <div className="text-center   p-6">
-          <h5 className='uppercase border-b-2 font-semibold mb-4'>Working Hours</h5>
+          <h5 className='uppercase border-b-2 font-semibold text-orange-500  border-orange-500 mb-4'>Working Hours</h5>
           <p>Breakfast: 8:00AM - 10:00AM</p>
           <p>Lunch: 1:00PM - 2:30PM</p>
           <p>Dinner: 8:00PM - 10:00PM</p>
@@ -25,7 +32,7 @@ export default function Footer() {
 
 
         <div className="text-center p-6">
-          <h5 className='uppercase border-b-2 font-semibold mb-4'>Order Now</h5>
+          <h5 className='uppercase border-b-2 font-semibold text-orange-500  border-orange-500 mb-4'>Order Now</h5>
 
 
 
@@ -38,7 +45,7 @@ export default function Footer() {
         </div>
 
         <div className="text-center p-6">
-          <h5 className='uppercase border-b-2 font-semibold mb-4'>Follow Us</h5>
+          <h5 className='uppercase border-b-2 font-semibold text-orange-500  border-orange-500 mb-4'>Follow Us</h5>
           <p>Our Social Media Plateforms</p>
           {/* <ul className="list-unstyled text-center mt-2">
                   <li>

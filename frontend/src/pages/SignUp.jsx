@@ -2,7 +2,6 @@ import { useState } from 'react'
 import {Link } from 'react-router-dom';
 import GoogleAuth from '../components/GoogleAuth';
 import { useDispatch } from 'react-redux';
-import { pageLoader } from '../redux/createSlice/orderSlice';
 import { userEmail, userMobileAuth } from '../redux/createSlice/userSlice';
 export default function SignUp() {
 
@@ -27,7 +26,6 @@ export default function SignUp() {
     e.preventDefault();
 
     try{
-      dispatchEvent(pageLoader(true))
       setLoading(true);
       
       
@@ -43,7 +41,6 @@ export default function SignUp() {
 
         if(data === null) {
           setLoading(false);
-          dispatchEvent(pageLoader(false))
           setError(true);
           return;
         }
@@ -57,17 +54,12 @@ export default function SignUp() {
       
       
       // e.target.reset();
-      
-      setTimeout(() => {
-        dispatchEvent(pageLoader(false));
-      },500);
       setLoading(false);
 
       setError(null);
       
     }catch(error){
       setError(error.message);
-      dispatchEvent(pageLoader(false));
       setLoading(false);
 
     }

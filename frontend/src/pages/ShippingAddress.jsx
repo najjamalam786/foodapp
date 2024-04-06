@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { addCartItems } from '../redux/createSlice/itemSlice';
 import Logo from '../img/food_logo.png';
 import OrderAddress from '../components/OrderAddress';
-import { confirmOrderPlaced, pageLoader } from '../redux/createSlice/orderSlice';
+import { confirmOrderPlaced } from '../redux/createSlice/orderSlice';
 
 
 export default function ShippingAddress() {
@@ -47,7 +47,6 @@ export default function ShippingAddress() {
 
     const handleSubmit = async (e) => {
 
-        dispatch(pageLoader(true));
         e.preventDefault();
 
         // order create api
@@ -121,18 +120,13 @@ export default function ShippingAddress() {
 
             dispatch(addCartItems([]));
 
-            setTimeout(() => {
-                dispatch(pageLoader(false));
-                dispatch(confirmOrderPlaced(true));
-                navigate('/');
-
-            }, 1000)
+            dispatch(confirmOrderPlaced(true));
+            navigate('/');
 
 
 
 
         } catch (error) {
-            dispatch(pageLoader(false));
             console.log("Error", error);
 
         }
@@ -141,13 +135,11 @@ export default function ShippingAddress() {
 
 
     const handleDefaultAddress = async (e) => {
-        dispatch(pageLoader(true));
 
         e.preventDefault();
         try {
             if (index === undefined) {
                 alert("please select address");
-                dispatch(pageLoader(false));
                 return;
             } else {
 
@@ -184,18 +176,15 @@ export default function ShippingAddress() {
                 }
 
 
-                setTimeout(() => {
-                    dispatch(addCartItems([]));
-                    dispatch(pageLoader(false));
-                    navigate('/');
-                    dispatch(confirmOrderPlaced(true));
-                }, 1000)
+                dispatch(addCartItems([]));
+                navigate('/');
+                dispatch(confirmOrderPlaced(true));
+                
 
 
             }
 
         } catch (error) {
-            dispatch(pageLoader(false));
             console.log(error)
 
         }
@@ -203,7 +192,6 @@ export default function ShippingAddress() {
 
 
     useEffect(() => {
-        dispatch(pageLoader(true));
 
         const fetchOrderAddress = async () => {
             try {
@@ -219,21 +207,14 @@ export default function ShippingAddress() {
                 const userAddress = await res.json();
                 setOrderAddress(userAddress);
 
-                setTimeout(() => {
-                    dispatch(pageLoader(false))
-                }, 800);
 
             } catch (error) {
-                dispatch(pageLoader(false));
                 console.log(error);
             }
         }
 
         fetchOrderAddress();
 
-        setTimeout(() => {
-            dispatch(pageLoader(false))
-        }, 800);
 
 
     }, [])

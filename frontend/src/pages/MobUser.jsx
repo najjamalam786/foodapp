@@ -14,7 +14,6 @@ import { TbPaperBag } from 'react-icons/tb'
 import { FaPeopleGroup, FaRegCircleQuestion, FaRegHandshake } from 'react-icons/fa6'
 import { FaPlus } from 'react-icons/fa';
 import { deleteFailure, deleteSuccess, deleteUserStart } from '../redux/createSlice/userSlice';
-import { pageLoader } from '../redux/createSlice/orderSlice';
 export default function MobUser() {
 
     const dispatchEvent = useDispatch();
@@ -27,34 +26,23 @@ export default function MobUser() {
     }
 
     const handleLogOut = async () => {
-        dispatchEvent(pageLoader(true));
         try {
             dispatchEvent(addCartItems([]));
             dispatchEvent(deleteUserStart())
             const res = await fetch('api/user/logout')
             const data = await res.json()
             if (data.success === false) {
-                dispatchEvent(pageLoader(false));
                 dispatchEvent(deleteFailure(data.message))
 
             }
 
             dispatchEvent(deleteSuccess(data));
-            setTimeout(() => {
-                dispatchEvent(pageLoader(false));
-            }, 2000);
+            
 
         } catch (error) {
             dispatchEvent(deleteFailure(error.message))
         }
     }
-
-    useEffect(() => {
-        dispatchEvent(pageLoader(true));
-        setTimeout(() => {
-            dispatchEvent(pageLoader(false));
-        },500);
-    }, [])
 
     return (
         <main className='w-full bg-orange-100 flex flex-col gap-4'>

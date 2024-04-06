@@ -6,7 +6,6 @@ import MenuContainer from "./Section02/MenuContainer";
 // import FoodContainer from "../components/FoodContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { itemShowCart } from "../redux/createSlice/itemSlice";
-import { pageLoader } from "../redux/createSlice/orderSlice";
 import { TbPaperBag } from "react-icons/tb";
 
 
@@ -26,13 +25,7 @@ const HomePage = () => {
   }
 
   useEffect(() => {
-    dispatchEvent(pageLoader(true));
-
     
-
-    setTimeout(() => {
-      dispatchEvent(pageLoader(false));
-    }, 800);
   }, [scrollValue, showCart]);
 
   return (

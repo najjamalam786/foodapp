@@ -4,7 +4,7 @@ import Logo from "../img/food_logo.png"
 import { Link } from 'react-router-dom';
 import OrderItems from '../components/OrderItems';
 import { useDispatch, useSelector } from 'react-redux';
-import { addAllOrders, pageLoader } from '../redux/createSlice/orderSlice';
+import { addAllOrders } from '../redux/createSlice/orderSlice';
 
 
 export default function UserOrder() {
@@ -17,7 +17,6 @@ export default function UserOrder() {
 
   useEffect(() => {
     const fetchOrderData = async (e) => {
-      dispatchEvent(pageLoader(true));
       
       await fetch('/api/user/orderdata', {
         method: 'POST',
@@ -31,19 +30,12 @@ export default function UserOrder() {
           dispatchEvent(addAllOrders(response));
 
 
-          setTimeout(() => {
-            dispatchEvent(pageLoader(false));
-          }, 800);
-
-
         })
       })
     }
 
     fetchOrderData();
-    setTimeout(() => {
-      dispatchEvent(pageLoader(false));
-    }, 800);
+    
   }, [])
 
 

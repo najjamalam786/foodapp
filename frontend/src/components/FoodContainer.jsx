@@ -119,17 +119,7 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
     }
     
     // last API call
-    
-    
-    useEffect(() => {
-
-      // dispatch(pageLoader(true));
-      // setTimeout(() => {
-      //   dispatch(pageLoader(false));
-      // }, 500);
-     
-        
-    }, []);
+ 
     
     
 

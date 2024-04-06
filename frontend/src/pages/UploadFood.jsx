@@ -19,7 +19,6 @@ import {
     uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase.config.js";
-import { pageLoader } from "../redux/createSlice/orderSlice.js";
 
 
 const UploadFood = () => {
@@ -43,7 +42,6 @@ const UploadFood = () => {
     
 
     const uploadImage = (e) => {
-        dispatchEvent(pageLoader(true));
 
         const imagefile = e.target.files[0];
         const storage = getStorage(app);
@@ -63,23 +61,18 @@ const UploadFood = () => {
                 setFields(true);
                 setMsg("Error while uploading : Try Again!");
                 setAlertStatus("Faild");
-                setTimeout(() => {
-                    setFields(false);
-                    dispatchEvent(pageLoader(false));
-                }, 4000);
+                setFields(false);
                 
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                     setFoodData({ ...foodData, imageURL: downloadURL });
 
-                    dispatchEvent(pageLoader(false));
                     setFields(true);
                     setMsg("Image uploaded successfully!");
                     setAlertStatus("Success");
-                    setTimeout(() => {
-                        setFields(false);
-                    }, 4000);
+                    setFields(false);
+                    
 
                 });
             });
@@ -87,23 +80,17 @@ const UploadFood = () => {
     };
 
     const deleteImage = () => {
-        dispatchEvent(pageLoader(true));
 
         const storage = getStorage(app)
         const deleteRef = ref(storage, foodData.imageURL);
         deleteObject(deleteRef).then(() => {
             setFoodData({ ...foodData, imageURL: "" });
             
-            setTimeout(() => {
-                dispatchEvent(pageLoader(false));
-            }, 500);
 
             setFields(true);
             setMsg("Image deleted successfully!");
             setAlertStatus("success");
-            setTimeout(() => {
-                setFields(false);
-            }, 4000);
+            
         });
     };
 
@@ -115,7 +102,6 @@ const UploadFood = () => {
             try{
                 
                 
-                dispatchEvent(pageLoader(true));
             const response = await fetch("/api/item/create", {
                 method: "POST",
                 headers: {
@@ -125,13 +111,7 @@ const UploadFood = () => {
             });
 
             const data = await response.json();
-            
-            
-
-
-            setTimeout(() => {
-                dispatchEvent(pageLoader(false));
-            }, 500);
+           
             setFields(true);
 
             if(data.success === false){
@@ -160,10 +140,7 @@ const UploadFood = () => {
           setFields(true);
           setMsg("Error while uploading : Try Again!");
           setAlertStatus("Faild");
-          setTimeout(() => {
-            setFields(false);
-            dispatchEvent(pageLoader(false));
-          }, 4000);
+          setFields(false);
         }
 
       };
@@ -188,7 +165,6 @@ const UploadFood = () => {
         };
 
         useEffect(() => {
-            dispatchEvent(pageLoader(true));
             const fetchWeeks = async () => {
                 try {
                     const response = await fetch('/api/item/week');
@@ -199,14 +175,8 @@ const UploadFood = () => {
                     console.log(error)
                     
                 }
-                setTimeout(() => {
-                    dispatchEvent(pageLoader(false));
-                }, 500);
             }
             
-            setTimeout(() => {
-                dispatchEvent(pageLoader(false));
-            }, 500);
             fetchWeeks();
         }, []);
         

@@ -10,7 +10,6 @@ import { useNavigate } from 'react-router-dom';
 import {useDispatch, useSelector } from 'react-redux';
 import { IoCloseCircleOutline, IoLogInOutline } from 'react-icons/io5';
 import { signInSuccess, userMobileAuth } from '../redux/createSlice/userSlice';
-import { pageLoader } from '../redux/createSlice/orderSlice';
 
 export default function MobileAuthentication() {
 
@@ -29,7 +28,6 @@ export default function MobileAuthentication() {
         e.preventDefault();
         try {
             setLoading(true);
-            dispatchEvent(pageLoader(true));
             
             
             await fetch("/api/user/verify-mobile", {
@@ -45,7 +43,6 @@ export default function MobileAuthentication() {
 
                 if(data === null) {
                     setLoading(false);
-                    dispatchEvent(pageLoader(false));
 
                     alert("User already verified. Please try again!");
                     return;
@@ -70,15 +67,8 @@ export default function MobileAuthentication() {
                             message: `( FOOD-HOUSE ) Your verification code is: ${code}`
                         })
                     })
-    
-                    dispatchEvent(pageLoader(true));
-                    setTimeout(() => {
-                       
-
-                        setLoading(false);
-                        setShowCode(true);
-                        dispatchEvent(pageLoader(false));
-                    }, 2000);
+                    setLoading(false);
+                    setShowCode(true);
                 }
             });
                 
@@ -112,24 +102,19 @@ export default function MobileAuthentication() {
 
 
             if (data && data.userAuth) {
-                dispatchEvent(pageLoader(true));
                 dispatchEvent(signInSuccess(data));
 
-                setTimeout(() => {
-                    dispatchEvent(pageLoader(false));
-                    setUser(true);
-                    setLoading(false);
-                    navigate("/");
-                    
-                }, 2000);
+                
+                setUser(true);
+                setLoading(false);
+                navigate("/");
             } else {
                 setUser(false);
 
                 setLoading(true);
-                setTimeout(() => {
-                    setLoading(false);
-                    alert("Invalid code! Please try again");
-            }, 4000);
+                
+                setLoading(false);
+                alert("Invalid code! Please try again");
 
             }
         

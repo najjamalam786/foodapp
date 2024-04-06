@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { pageLoader } from '../redux/createSlice/orderSlice';
 import NotFound from "../img/NotFound.svg";
 
 import Address from '../components/Address';
@@ -16,7 +15,6 @@ export default function UserAddress() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        // dispatch(pageLoader(true));
 
         const fetchOrderAddress = async () => {
             try {
@@ -32,21 +30,13 @@ export default function UserAddress() {
                 const userAddress = await res.json();
                 setOrderAddress(userAddress);
 
-                setTimeout(() => {
-                    dispatch(pageLoader(false))
-                }, 800);
 
             } catch (error) {
-                dispatch(pageLoader(false));
                 console.log(error);
             }
         }
 
         fetchOrderAddress();
-
-        setTimeout(() => {
-            dispatch(pageLoader(false))
-        }, 800);
 
 
     }, [])

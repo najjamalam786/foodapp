@@ -4,14 +4,12 @@ import NotFound from "../img/NotFound.svg";
 import { useDispatch, useSelector } from 'react-redux';
 import MemberOrder from '../components/MemberOrder';
 import { monthlySubscriptionItem } from '../redux/createSlice/itemSlice';
-import { pageLoader } from '../redux/createSlice/orderSlice';
 export default function UserMember() {
 
     const { monthlySubItems } = useSelector(state => state.item);
     const {currentUser} = useSelector(state => state.user);
     const dispatch = useDispatch();
       useEffect(() => {
-        dispatch(pageLoader(true));
         const fetchOrderData = async(e) => {
           await fetch('/api/user/orderdata', {
             method: 'POST',
@@ -25,17 +23,11 @@ export default function UserMember() {
              
                 dispatch(monthlySubscriptionItem(response));
                 
-                setTimeout(() => {
-                  dispatch(pageLoader(false));
-                }, 800);
               
             })
           })
         }
         fetchOrderData();
-        setTimeout(() => {
-          dispatch(pageLoader(false));
-        }, 800);
       }, [])
      
 

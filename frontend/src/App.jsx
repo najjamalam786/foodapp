@@ -1,7 +1,6 @@
 // import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import { AnimatePresence } from "framer-motion";
-// import { useStateValue } from "./context/StateProvider";
+
 import Header from "./components/Header";
 import Success from "./components/Success";
 import Error from "./components/Error";
@@ -12,13 +11,10 @@ import UploadFood from "./pages/UploadFood";
 import PrivateRout from "./components/PrivateRout";
 import AdminPrivateRout from "./components/AdminPrivateRout";
 import HomePage from "./pages/HomePage";
-import { useDispatch, useSelector } from "react-redux";
 import CartContainer from "./components/CartContainer";
 import ShippingAddress from "./pages/ShippingAddress";
 import Main from "./Main_2";
-import { useEffect } from "react";
 import UserOrder from "./pages/UserOrder";
-import { pageLoader } from "./redux/createSlice/orderSlice";
 import Loader from "./components/Loader";
 import ShowNavBar from "./components/ShowNavBar";
 import ConfirmOrder from "./pages/ConfirmOrder";
@@ -29,25 +25,14 @@ import UserAddress from "./pages/UserAddress";
 import HelpCenter from "./pages/HelpCenter";
 import ScrollTop from "./components/ScrollTop";
 import AboutUs from "./pages/AboutUs";
-// import MobileAuthentication from "./pages/MobileAuthentication";
 
 
 const App = () => {
 
-  const { showCart, cartItems, monthlySubItems } = useSelector((state) => state.item);
-  const { loading, confirmOrder, monthlySub } = useSelector((state) => state.order);
+  const { showCart } = useSelector((state) => state.item);
+  const { loading, confirmOrder } = useSelector((state) => state.order);
   const { mobileAuth } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(pageLoader(true));
-
-
-
-    setTimeout(() => {
-      dispatch(pageLoader(false))
-    }, 800);
-  }, [])
 
 
   return (

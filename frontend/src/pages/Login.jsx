@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInStart, signInFailure, signInSuccess } from '../redux/createSlice/userSlice';
 import GoogleAuth from '../components/GoogleAuth';
-import { pageLoader } from '../redux/createSlice/orderSlice';
 
 export default function Login() {
 
@@ -24,7 +23,6 @@ export default function Login() {
   }
 
   const handleSubmit = async(e) => {
-    dispatch(pageLoader(true));
     e.preventDefault();
 
     try{
@@ -52,33 +50,21 @@ export default function Login() {
         // setLoading(false);
         // setError(data.message);
         dispatch(signInFailure(data.message));
-        dispatch(pageLoader(false));
         return;
       }
-      // setLoading(false);
-      // setError(null);
-      setTimeout(() => {
-        dispatch(signInSuccess(data));
-        navigate('/');
-        dispatch(pageLoader(false));
-      }, 1000);
+      
+      dispatch(signInSuccess(data));
+      navigate('/');
       
 
     }catch(error){
       // setError(error.message);
       // setLoading(false)
-      dispatch(pageLoader(false));
 
       dispatch(signInFailure(error.message));
     }
   }
 
-  useEffect(() => {
-    dispatch(pageLoader(true));
-    setTimeout(() => {
-      dispatch(pageLoader(false));
-    }, 500);
-  },[])
 
   return (
     <div className='p-3 max-w-lg mx-auto'>

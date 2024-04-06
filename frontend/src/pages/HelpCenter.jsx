@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import PhoneInput from "react-phone-input-2";
 import Flag from "../img/indflag.png"
 import { useSelector, useDispatch } from "react-redux";
-import { pageLoader } from '../redux/createSlice/orderSlice';
 import { CgSpinner } from 'react-icons/cg';
 import { RiCustomerService2Fill } from "react-icons/ri";
 
@@ -35,7 +34,6 @@ export default function HelpCenter() {
 
         try {
             setLoading(true);
-            dispatchEvent(pageLoader(true));
 
 
             await fetch("/api/user/help", {
@@ -52,7 +50,6 @@ export default function HelpCenter() {
             setTimeout(() => {
 
                 setLoading(false);
-                dispatchEvent(pageLoader(false));
             }, 2000);
 
         } catch (error) {
@@ -61,12 +58,7 @@ export default function HelpCenter() {
         }
     }
 
-    useEffect(() => {
-        dispatchEvent(pageLoader(true));
-        setTimeout(() => {
-            dispatchEvent(pageLoader(false));
-        },500);
-    }, [])
+
 
 
     return (

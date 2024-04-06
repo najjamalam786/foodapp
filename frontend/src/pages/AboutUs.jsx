@@ -1,19 +1,9 @@
-import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux';
+import React from 'react'
 import AboutImg from "../img/about_img.jpg"
-import { pageLoader } from '../redux/createSlice/orderSlice';
 
 export default function AboutUs() {
 
-  const dispatchEvent = useDispatch();
 
-  useEffect(() => {
-    dispatchEvent(pageLoader(true));
-
-    setTimeout(() => {
-      dispatchEvent(pageLoader(false));
-    }, 500);
-  },[])
   return (
     <div className='p-4 px-10 my-[10rem]'>
       <h1 className='text-slate-600 font-bold text-[2.5rem] text-center mb-8 border-b-2'>About Us</h1>

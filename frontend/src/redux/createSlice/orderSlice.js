@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     orderItems: [],
-    loading: false,
     confirmOrder: false,
     monthlySub: false,
     
@@ -17,9 +16,6 @@ const orderSlice = createSlice({
     addAllOrders: (state, action) => {
       state.orderItems = action.payload;
     },
-    pageLoader: (state, action) => {
-      state.loading = action.payload
-    },
     confirmOrderPlaced: (state, action) => {
       state.confirmOrder = action.payload;
     },
@@ -30,5 +26,5 @@ const orderSlice = createSlice({
   },
 });
 
-export const { addAllOrders, pageLoader, confirmOrderPlaced, monthlySubscription  } = orderSlice.actions;
+export const { addAllOrders, confirmOrderPlaced, monthlySubscription  } = orderSlice.actions;
 export default orderSlice.reducer

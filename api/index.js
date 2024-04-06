@@ -4,7 +4,7 @@ import itemRouter from './routers/itemRouter.js'
 import userRouter from './routers/userRouter.js'
 import cookieParser from 'cookie-parser';
 import {} from "dotenv/config.js"
-
+import path from 'path';
 
 
 const app = express();
@@ -15,11 +15,20 @@ mongoose.connect(process.env.MONGODB_URL)
 })
 .catch((error) => console.log(error))
 
+const __dirname = path.resolve();
+
+
 app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api/item', itemRouter);
 app.use('/api/user', userRouter);
+
+app.use(express.static(path.join(__dirname, '/frontend/dist')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '/frontend/dist/index.html'));
+});
 
 
 app.listen(PORT, () => {

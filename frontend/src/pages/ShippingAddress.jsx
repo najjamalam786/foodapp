@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import NotFound from "../img/NotFound.svg";
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from "react-router-dom";
 import { addCartItems } from '../redux/createSlice/itemSlice';
-import Logo from '../img/favicon.png';
+import Logo from '../img/food_logo.png';
 import OrderAddress from '../components/OrderAddress';
 import { confirmOrderPlaced, pageLoader } from '../redux/createSlice/orderSlice';
 
@@ -15,9 +17,9 @@ export default function ShippingAddress() {
     const [orderAddress, setOrderAddress] = useState();
     const [checkBox, setCheckBox] = useState({
         type: '',
-      });
-  const [index, setIndex] = useState();
-//   const [defaultaddress, setDefaultAddress] = useState();
+    });
+    const [index, setIndex] = useState();
+    //   const [defaultaddress, setDefaultAddress] = useState();
 
     const [flag, setflag] = useState(false);
 
@@ -34,12 +36,12 @@ export default function ShippingAddress() {
     })
 
     const handleChange = (e) => {
-       
-            setFormData({
-                ...formData,
-                [e.target.id]: e.target.value.replace(/\s+/g, ' '),
-            })
-        
+
+        setFormData({
+            ...formData,
+            [e.target.id]: e.target.value.replace(/\s+/g, ' '),
+        })
+
 
     }
 
@@ -47,11 +49,11 @@ export default function ShippingAddress() {
 
         dispatch(pageLoader(true));
         e.preventDefault();
-        
+
         // order create api
         try {
-
-            if(monthlySub === true) {
+            
+            if (monthlySub === true) {
                 await fetch("/api/user/monthlysub", {
                     method: "POST",
                     headers: {
@@ -59,24 +61,24 @@ export default function ShippingAddress() {
                     },
                     body: JSON.stringify({
                         mobile: currentUser.mobile,
-                            
-                            name: currentUser.username,
-                            email: currentUser.email,
-                            monthlySub:true,
-                            shippingAddress: {
 
-                                landmark: formData.landmark.trim(),
-                                address: formData.address.trim(),
-                                pincode: formData.pincode.trim(),
-                                newMobile: formData.newMobile.trim(),
-                                district: formData.district.trim()
-                            },
-                            totalPrice: totalPrice,
+                        username: currentUser.username,
+                        email: currentUser.email,
+                        monthlySub: true,
+                        shippingAddress: {
+
+                            landmark: formData.landmark.trim(),
+                            address: formData.address.trim(),
+                            pincode: formData.pincode.trim(),
+                            newMobile: formData.newMobile.trim(),
+                            district: formData.district.trim()
+                        },
+                        totalPrice: totalPrice,
                     }),
                 })
-                    
+                
             }
-            else{
+            else {
                 await fetch('/api/user/ordercreate', {
                     method: 'POST',
                     headers: {
@@ -84,8 +86,8 @@ export default function ShippingAddress() {
                     },
                     body: JSON.stringify({
                         email: currentUser.email,
-                        
-                        name: currentUser.username,
+
+                        username: currentUser.username,
                         orderItems: cartItems,
                         shippingAddress: {
                             landmark: formData.landmark.trim(),
@@ -95,18 +97,19 @@ export default function ShippingAddress() {
                             district: formData.district.trim()
                         },
                         totalPrice: totalPrice,
-    
+
                     }),
                 })
 
             }
-                
-                await fetch('/api/user/useraddress', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ email: currentUser?.email, shippingAddress: {
+
+            await fetch('/api/user/useraddress', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: currentUser?.email, shippingAddress: {
                         landmark: formData.landmark.trim(),
                         address: formData.address.trim(),
                         pincode: formData.pincode.trim(),
@@ -114,19 +117,19 @@ export default function ShippingAddress() {
                         district: formData.district.trim()
                     },
                 }),
-                });
+            });
 
-                dispatch(addCartItems([]));
+            dispatch(addCartItems([]));
 
-                    setTimeout(() => {
-                        dispatch(pageLoader(false));
-                        dispatch(confirmOrderPlaced(true));
-                        navigate('/');
+            setTimeout(() => {
+                dispatch(pageLoader(false));
+                dispatch(confirmOrderPlaced(true));
+                navigate('/');
 
-                    },1000)
-                    
-                
-            
+            }, 1000)
+
+
+
 
         } catch (error) {
             dispatch(pageLoader(false));
@@ -135,21 +138,21 @@ export default function ShippingAddress() {
         }
 
     }
-    
 
-    const handleDefaultAddress = async(e) => {
+
+    const handleDefaultAddress = async (e) => {
         dispatch(pageLoader(true));
 
         e.preventDefault();
         try {
-            if(index === undefined){
+            if (index === undefined) {
                 alert("please select address");
                 dispatch(pageLoader(false));
                 return;
-            }else{
+            } else {
 
-                
-                if(monthlySub === true) {
+
+                if (monthlySub === true) {
                     await fetch("/api/user/monthlysub", {
                         method: "POST",
                         headers: {
@@ -157,9 +160,9 @@ export default function ShippingAddress() {
                         },
                         body: JSON.stringify({
                             email: currentUser?.email,
-                                monthlySub: true,
-                                shippingAddress: orderAddress[index],
-                                totalPrice: totalPrice,
+                            monthlySub: true,
+                            shippingAddress: orderAddress[index],
+                            totalPrice: totalPrice,
                         }),
                     })
                 }
@@ -170,7 +173,7 @@ export default function ShippingAddress() {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            
+
                             email: currentUser.email,
                             orderItems: cartItems,
                             shippingAddress: orderAddress[index],
@@ -194,32 +197,32 @@ export default function ShippingAddress() {
         } catch (error) {
             dispatch(pageLoader(false));
             console.log(error)
-            
+
         }
     }
 
 
     useEffect(() => {
         dispatch(pageLoader(true));
-        
+
         const fetchOrderAddress = async () => {
             try {
-                
-                    const res = await fetch('/api/user/getaddress', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ email: currentUser?.email }),
-                    })
 
-                    const userAddress = await res.json();
-                    setOrderAddress(userAddress);
+                const res = await fetch('/api/user/getaddress', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email: currentUser?.email }),
+                })
 
-                    setTimeout(() => {
-                        dispatch(pageLoader(false))
-                    }, 800);
-                
+                const userAddress = await res.json();
+                setOrderAddress(userAddress);
+
+                setTimeout(() => {
+                    dispatch(pageLoader(false))
+                }, 800);
+
             } catch (error) {
                 dispatch(pageLoader(false));
                 console.log(error);
@@ -238,60 +241,64 @@ export default function ShippingAddress() {
 
     return (
         <>
-            <main className=" p-3 mt-[10rem] max-w-4xl mx-auto">
-                
-                <div className="w-full  flex flex-col gap-8 sm:gap-4 sm:flex-row items-center justify-between p-4  ">
+            {cartItems && cartItems.length > 0 || monthlySub === true ?
+                (<main className=" p-3 mt-[10rem] max-w-4xl mx-auto">
 
-                    <div className="flex  items-center ">
-                        <img src={Logo} alt="logo" className="w-14 h-14 " />
-                        <p className="w-full text-slate-800 text-2xl font-semibold ">Cash On Delivery</p>
+                    <div className="w-full  flex flex-col gap-8 sm:gap-4 sm:flex-row items-center justify-between p-4  ">
+
+                        <div className="flex  items-center ">
+                            <Link to={"/"}>
+                                <img src={Logo} alt="logo" className="w-[180px] object-cover " />
+
+                            </Link>
+                            <p className="w-full text-slate-800 text-2xl font-semibold ">Cash On Delivery</p>
+                        </div>
+                        <p
+                            className="text-slate-800 text-2xl font-semibold p-1 px-2 "
+                        // onClick={clearCartItem}
+
+                        >
+                            Food Delivery Address
+                        </p>
                     </div>
-                    <p
-                        className="text-slate-800 text-2xl font-semibold p-1 px-2 "
-                    // onClick={clearCartItem}
 
-                    >
-                        Food Delivery Address
-                    </p>
-                </div>
+                    {orderAddress && orderAddress.length > 0 && !flag ?
+                        (
 
-                {orderAddress && orderAddress.length > 0 && !flag ?
-                    (
-
-                        <div className="flex flex-col gap-4">
                             <div className="flex flex-col gap-4">
-                                <div className="w-full max-h-[700px] md:h-42 flex flex-col md:flex-row gap-3 overflow-y-scroll no-scrollbar">
+                                <div className="flex flex-col gap-4">
+                                    <div className="w-full max-h-[700px] md:h-42 flex flex-col md:flex-row gap-3 overflow-y-scroll no-scrollbar">
 
-                                    {orderAddress.map((item, index) => (
-                                        <OrderAddress
-                                            key={index}
-                                            address={item}
-                                            setIndex={setIndex}
-                                            index={index}
-                                            checkBox={checkBox} setCheckBox={setCheckBox}
-                                            
-
-                                        />
-                                    ))}
+                                        {orderAddress.map((item, index) => (
+                                            <OrderAddress
+                                                key={index}
+                                                address={item}
+                                                setIndex={setIndex}
+                                                index={index}
+                                                checkBox={checkBox} setCheckBox={setCheckBox}
 
 
+                                            />
+                                        ))}
 
+
+
+                                    </div>
+                                    <button
+                                        className="w-full bg-orange-500 mb-4 text-slate-50 p-3 rounded-lg"
+                                        onClick={handleDefaultAddress}
+
+                                    >Order Proceed</button>
+
+                                    <button
+                                        className="w-full bg-slate-800 text-slate-50 p-3 rounded-lg"
+                                        onClick={() => setflag(!flag)}
+
+                                    >Add Address</button>
                                 </div>
-                                <button
-                                    className="w-full bg-orange-500 mb-4 text-slate-50 p-3 rounded-lg"
-                                    onClick={handleDefaultAddress}
-
-                                >Order Proceed</button>
-
-                                <button
-                                    className="w-full bg-slate-800 text-slate-50 p-3 rounded-lg"
-                                    onClick={() => setflag(!flag)}
-
-                                >Add Address</button>
-                            </div>
 
 
-                        </div>) : (
+                            </div>) : (
 
                             <div className="">
                                 {orderAddress && orderAddress.length > 0 && <button
@@ -342,8 +349,8 @@ export default function ShippingAddress() {
                                                 value={formData.pincode}
                                                 required
                                             />
-                                            
-                                                
+
+
                                             <input
                                                 type="number"
                                                 placeholder="mobile"
@@ -359,7 +366,7 @@ export default function ShippingAddress() {
                                                 className="w-[50%] border p-3 rounded-lg text-slate-600 font-semibold"
                                             >
                                                 <option value="Patna">Patna</option>
-                                                
+
                                             </select>
                                         </div>
 
@@ -372,13 +379,22 @@ export default function ShippingAddress() {
                             </div>
 
 
-                    )
+                        )
 
 
-                }
+                    }
 
 
-            </main>
+                </main>
+
+                ) : (<>
+                    <div className="w-full flex flex-col items-center justify-center">
+                        <img src={NotFound} className="h-340" />
+                        <p className="text-xl text-headingColor font-semibold my-2">
+                            Order Not Found
+                        </p>
+                    </div>
+                </>)}
         </>
     );
 }

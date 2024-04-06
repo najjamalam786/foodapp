@@ -1,6 +1,6 @@
 import express from "express"
 import { addItemToCart, createUser, UserAllCartData, googleLogin, logOut, signIn, updateUserCart, orderCreate, orderGet, deleteUserCartItems, deleteCartItems, userAddress, getAdderss, verifyPhone, verifyCode, monthlySubscription, expireMonthlySub } from "../controllers/userController.js";
-import { getMessage } from "../utils/sendSMS.js";
+import { getHelp, getMessage } from "../utils/sendSMS.js";
 
 const router = express.Router();
 
@@ -22,7 +22,8 @@ router
 .post('/orderdata',orderGet)
 .post('/useraddress', userAddress)
 .post('/getaddress', getAdderss)
-.post("/message", getMessage);
+.post("/message", getMessage)
+.post('/help', getHelp);
 // .post('/reverse', verifyToken, reverseOrder);
 
 

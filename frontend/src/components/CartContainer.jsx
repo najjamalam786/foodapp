@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { IoMdCloseCircle } from "react-icons/io";
-import Logo from "../img/favicon.png";
+import Logo from "../img/delivery.png";
 import { useDispatch, useSelector } from "react-redux";
 import EmptyCart from "../img/emptyCart.svg";
 import { addTotalPrice, itemShowCart } from "../redux/createSlice/itemSlice";
@@ -32,7 +32,7 @@ const CartContainer = () => {
   
   useEffect(() => {
 
-    if(cartItems.length > 0){
+    if(cartItems){
       setTotal(
         cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
       );
@@ -54,11 +54,11 @@ const CartContainer = () => {
         
         <div>
         <p
-          className="flex items-center gap-2 p-1 px-2 my-2 bg-gray-100 rounded-md hover:shadow-md  cursor-pointer text-textColor text-base"
+          className=" flex items-center gap-2 p-1 px-2 my-2 bg-gray-100 rounded-md hover:shadow-md  cursor-pointer text-textColor text-base"
           // onClick={clearCartItem}
 
         >
-          <img src={Logo} alt="logo" className="w-8 h-8 object-contain" />
+          <img src={Logo} alt="logo" className="w-8 object-contain" />
 
         </p>
         </div>
@@ -90,19 +90,19 @@ const CartContainer = () => {
           {/* cart total section */}
           <div className="w-full p-6 flex-1  bg-white rounded-t-[2rem] flex flex-col items-center justify-evenly px-16">
             <div className="w-full flex items-center justify-between">
-              <p className="text-orange-500 text-2xl">Sub Total</p>
-              <p className="text-gray-600 text-2xl">₹ {total}</p>
+              <p className="text-orange-500 text-xl sm:text-2xl">Sub Total</p>
+              <p className="text-gray-600 text-xl sm:text-2xl">₹ {total}</p>
             </div>
             <div className="w-full flex items-center justify-between">
-              <p className="text-orange-500 text-2xl">Delivery</p>
+              <p className="text-orange-500 text-xl sm:text-2xl">Delivery</p>
               <p className="text-gray-600 text-lg">₹ 20</p>
             </div>
 
             <div className="w-full border-b border-gray-600 my-2"></div>
 
             <div className="w-full flex items-center justify-between">
-              <p className="text-orange-500 text-4xl font-semibold">Total</p>
-              <p className="text-orange-500 text-4xl font-semibold">
+              <p className="text-orange-500 text-2xl sm:text-4xl font-semibold">Total</p>
+              <p className="text-orange-500 text-2xl sm:text-4xl font-semibold">
               ₹ {total + 2.5}
               </p>
             </div>

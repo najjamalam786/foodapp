@@ -33,3 +33,14 @@ export const getMessage = async (req, res, next) => {
         
     }
 }
+export const getHelp = async (req, res, next) => {
+    try {
+        sendSMS(req.body.mobile, req.body.message);
+        
+        res.status(200).json({ message: "Message sent" });
+
+    } catch (error) {
+        next(error)
+        
+    }
+}

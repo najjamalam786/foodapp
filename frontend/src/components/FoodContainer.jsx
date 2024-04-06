@@ -48,7 +48,7 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
 
     const handleClick = (items) => {
 
-      if(cartItems.length === 0){
+      if(cartItems && cartItems.length === 0){
         deleteCartItems();
       }
       
@@ -57,30 +57,33 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
           // first api call
           if(currentUser ){
             
-            for(let i = 0; i < cartItems.length; i++){
-              if(cartItems[i]._id === items._id){
-                
-                // second API call
-                await fetch("/api/user/updatecart", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    ID: items._id,
-                    qty: cartItems[i].quantity + 1,
-                    email: currentUser?.email,
-                  }),
-                }).then((res) => {
-                  res.json().then((allCart) => {
-                    dispatch(addCartItems(allCart))
-
-                  });
-                });
+            if(cartItems && cartItems.length > 0){
+              for(let i = 0; i < cartItems.length; i++){
+                if(cartItems[i]._id === items._id){
                   
-                return;
+                  // second API call
+                  await fetch("/api/user/updatecart", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      ID: items._id,
+                      qty: cartItems[i].quantity + 1,
+                      email: currentUser?.email,
+                    }),
+                  }).then((res) => {
+                    res.json().then((allCart) => {
+                      dispatch(addCartItems(allCart))
+  
+                    });
+                  });
+                    
+                  return;
+                }
               }
             }
+
 
             
             // first API call
@@ -143,11 +146,11 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
         dataValue.slice(0).reverse().map((item) => (
           <div
             key={item._id}
-            className="w-275 h-full min-w-[275px] md:w-300 md:min-w-[300px]  bg-cardOverlay rounded-lg py-2 px-4  my-12 backdrop-blur-lg hover:drop-shadow-lg flex flex-col items-center justify-evenly relative"
+            className="w-165 h-full min-w-[165px] md:w-300 md:min-w-[300px]  bg-gray-100 rounded-lg py-2 px-4  my-10 backdrop-blur-lg hover:drop-shadow-lg flex flex-col items-center justify-evenly relative"
           >
             <div className="w-full flex items-center justify-between">
               <div
-                className="w-40 h-40 -mt-8 drop-shadow-2xl"
+                className="w-40 h-40 overflow-hidden rounded-full -mt-10 drop-shadow-2xl"
                 
               >
                 <img
@@ -180,7 +183,7 @@ const FoodContainer = ({flag, dataValue, scrollValue }) => {
               
             </div>
 
-            <div className="w-full flex flex-col gap-2 items-end justify-end -mt-8">
+            <div className="w-full flex flex-col gap-2 items-end justify-end ">
               <p className="text-textColor font-semibold text-base md:text-lg">
                 {item?.name}
               </p>

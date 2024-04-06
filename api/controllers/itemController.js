@@ -6,9 +6,8 @@ import Item from "../models/itemModel.js";
 // Create Items
 export const createItems = async (req, res, next) => {
     const item = req.body;
-    const newItem = new Item(item);
     try {
-        await newItem.save();
+        const newItem = await Item.create(item);
         res.status(201).json(newItem);
     } catch (error) {
         next(error);

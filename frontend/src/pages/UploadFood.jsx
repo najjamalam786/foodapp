@@ -56,7 +56,7 @@ const UploadFood = () => {
         uploadTask.on('state_changed',
             (snapshot) => {
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log('Upload is ' + progress + '% done');
+                
             },
             (error) => {
                 console.log(error);
@@ -188,6 +188,7 @@ const UploadFood = () => {
         };
 
         useEffect(() => {
+            dispatchEvent(pageLoader(true));
             const fetchWeeks = async () => {
                 try {
                     const response = await fetch('/api/item/week');
@@ -198,15 +199,21 @@ const UploadFood = () => {
                     console.log(error)
                     
                 }
+                setTimeout(() => {
+                    dispatchEvent(pageLoader(false));
+                }, 500);
             }
-
+            
+            setTimeout(() => {
+                dispatchEvent(pageLoader(false));
+            }, 500);
             fetchWeeks();
         }, []);
         
         
     return (
         
-        <form onSubmit={handleSubmit} className="w-full min-h-screen flex items-center justify-center">
+        <form onSubmit={handleSubmit} className="w-full min-h-screen flex items-center justify-center my-[6rem]">
             
             <div className="w-[90%] md:w-[80%] border border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center gap-4">
                 {fields && (<p

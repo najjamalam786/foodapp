@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 // import { MdChevronLeft, MdChevronRight } from "react-icons/md";
-import AddTiffin2 from "../img/pngwing2.png";
 
 import HomeContainer from "./Section01/HomeContainer";
 import MenuContainer from "./Section02/MenuContainer";
@@ -8,6 +7,7 @@ import MenuContainer from "./Section02/MenuContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { itemShowCart } from "../redux/createSlice/itemSlice";
 import { pageLoader } from "../redux/createSlice/orderSlice";
+import { TbPaperBag } from "react-icons/tb";
 
 
 
@@ -83,9 +83,7 @@ const HomePage = () => {
               onClick={showCartHandler}
               >
 
-                <img src={AddTiffin2} alt="cart" className="  w-10 h-10 "
-                  
-                />
+                <TbPaperBag size={35} className="text-white cursor-pointer" alt="FoodBasket"/>
 
                 <div className=" absolute -top-1 -right-1 w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center">
                   <p className="text-xs text-white font-semibold">

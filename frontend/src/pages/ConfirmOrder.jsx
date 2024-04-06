@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import { Link } from "react-router-dom";
-import ConfirmTiffin from "../img/confirm_favicon.png"
+import OrderPlace from "../img/food-delivery.png"
+import Delivery from '../img/delivery.png';
+
 import { useDispatch, useSelector } from 'react-redux'
 import { confirmOrderPlaced } from '../redux/createSlice/orderSlice';
 
@@ -23,7 +25,7 @@ export default function ConfirmOrder() {
                 body: JSON.stringify({
                   mobile: import.meta.env.VITE_TWILIO_NUMBER, 
 
-                  message: `from TIFFINBOX... Thank you for ordering from our ${currentUser.email} website. Your order will be delivered soon. `
+                  message: `from FOOD-HOUSE... Thank you for ordering from our ${currentUser.email} ans ${currentUser.mobile} website. Your order will be delivered soon. `
                 }),
             })
         }
@@ -36,13 +38,20 @@ export default function ConfirmOrder() {
     className="w-full h-full rounded-t-[2rem] bg-gradient-to-br from-blue-800 to-blue-500 drop-shadow-md "
     >
         <div className="relative w-full h-full flex flex-col items-center justify-center gap-6">
-          <img src={ConfirmTiffin} className="w-[10rem] lg:w-225" alt="confirm_img" />
+          <img src={OrderPlace} className="w-[10rem] lg:w-225" alt="confirm_img" />
           <div className="flex flex-col items-center justify-center gap-2">
           <p className="text-4xl sm:text-6xl text-white font-extrabold">
             Order Place
             
           </p>
-          <p className="text-sm sm:text-xl bg-gradient-to-r from-[#1aff00f1] to-[#0078da94] p-2 pl-4 text-cartNumBg rounded-lg font-bold">Your Food will be delivered soon...</p>
+          
+          <div className="flex gap-4 items-center bg-gradient-to-r from-[#ffffff00] to-[#00e6eece] p-2 pl-4 rounded-r-full">
+          <p className="text-sm sm:text-xl  text-slate-800 font-bold">Your Food will be delivered soon...
+          </p>
+          <div className='w-10 h-10 bg-white rounded-full overflow-hidden'>
+                    <img src={Delivery} className='w-full h-full object-contain' alt="bike img" />
+                </div>
+          </div>
           </div>
         <button onClick={confirmOrderHandler} className='bg-blue-500 w-[200px] text-white font-semibold  px-4 py-2 rounded-lg'>Go Back Home</button>
 

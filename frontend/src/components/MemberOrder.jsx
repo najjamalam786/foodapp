@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import MemberImg from "../img/monthlySub.png"
+import MemberImg from "../img/member_img.png"
 import { useSelector } from 'react-redux';
 
 export default function MemberOrder({ memberorder }) {
@@ -70,22 +70,24 @@ export default function MemberOrder({ memberorder }) {
         </div>
         
         <div className=" px-6 pb-4">
-          <div className="w-full px-6 py-4 border bg-gradient-to-tr from-blue-800 to-sky-400 rounded-lg flex flex-col ">
+          <div className="w-full relative px-6 py-4 border bg-gradient-to-tr from-blue-800 to-sky-400 rounded-lg flex flex-col ">
           
 
-          <main className="flex items-center justify-center gap-2">
-          <img
+          <main className="flex items-center justify-start gap-2">
+          <div className="w-24 absolute h-full left-4 flex items-center justify-center overflow-hidden">
+            <img
             src={MemberImg}
-            className="w-20 h-20 max-w-[60px] rounded-full object-contain"
+            className="max-w-[140px] object-contain"
             alt=""
           />
+          </div>
     
           {/* name section */}
             
           
-            <div className="flex flex-col align-bottom gap-4 overflow-hidden">
-              <p className="text-sm sm:text-lg font-semibold text-white">Welcome to Premimum Membership</p>
-                <p className='text-[12px] sm:text-sm text-white font-semibold'>
+            <div className="flex flex-col align-bottom pl-[100px] gap-2 overflow-hidden">
+              <p className="text-sm sm:text-lg font-semibold text-white">Welcome to Prime Membership</p>
+                <p className='text-[10px] sm:text-sm text-white font-semibold'>
                   Fast Delivery  
                 </p>
                 {/* <div className='w-10 h-10 bg-white rounded-full overflow-hidden'>

@@ -67,14 +67,13 @@ export default function MobileAuthentication() {
                             email: email,
                             codeID: code,
                             mobile: mobile,
-                            message: `( TIFFINBOX ) Your verification code is: ${code}`
+                            message: `( FOOD-HOUSE ) Your verification code is: ${code}`
                         })
                     })
     
                     dispatchEvent(pageLoader(true));
                     setTimeout(() => {
-                        console.log("mobile", mobile);
-                    console.log("code", code);
+                       
 
                         setLoading(false);
                         setShowCode(true);

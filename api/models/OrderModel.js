@@ -1,17 +1,14 @@
 import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
-    name:{
+    username:{
         type:String,
-        required:true
     },
     email:{
         type:String,
-        required:true
     },
     mobile:{
         type:String,
-        required:true
     },
 
     orderItems:[
@@ -22,11 +19,9 @@ const orderSchema = new mongoose.Schema({
             },
             orderDate:{
                 type:String,
-                required:true
             },
             orderTime:{
                 type:String,
-                required: true
             },
             
             foodData:{
@@ -35,19 +30,15 @@ const orderSchema = new mongoose.Schema({
     
             shippingAddress:{
                 type:Object,
-                required:true
             },
             totalPrice:{
                 type:Number,
-                required:true
             },
             expireTillDate:{
                 type:String,
-                required:true
             },
             expireDate:{
                 type:String,
-                required:true
             }
             
         }

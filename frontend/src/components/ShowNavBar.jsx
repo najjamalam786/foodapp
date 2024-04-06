@@ -8,7 +8,7 @@ export default function ShowNavBar({children}) {
 
     useEffect(() => {
 
-        if(location.pathname === "/order-create" || location.pathname === "/signin" || location.pathname === "/signup" || location.pathname === "/success" || location.pathname === "/user-orders"){ 
+        if(location.pathname === "/user-profile" || location.pathname === "/order-create" || location.pathname === "/signin" || location.pathname === "/signup" || location.pathname === "/success" || location.pathname === "/user-orders"){ 
             setShowNav(false);
         }
         else{

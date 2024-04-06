@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Delivery from '../../img/delivery.png';
-import Lemon from "../../img/lemon.png";
 import Pngwing1 from "../../img/pngwing1.png";
 import HomeFront from "../../img/homeFront.png";
 import Pngwing3 from "../../img/pngwing3.png";
-import MonthImg from "../../img/monthlySub.png";
-import HomeBg from "../../img/home.png"
+import HomeBg from "../../img/home_img.png"
 import { heroData } from '../../utils/data';
 import { useDispatch } from 'react-redux';
 import { monthlySubscription } from '../../redux/createSlice/orderSlice';
@@ -45,9 +43,7 @@ export default function HomeContainer() {
             <img src={HomeBg} alt="home-bg"  className="w-screen h-full object-cover" />
         </div>
 
-        <div className="w-[10%] absolute top-[-1.5%] left-[20%] sm:top-[-5%]  z-[-1] rotate-[40deg]">
-            <img src={Lemon} alt="img" className="" />
-        </div>
+        
         <div className="w-[30%] absolute top-[60%] left-[20%]   z-[-1] ">
             <img src={Pngwing1} alt="img" className="" />
         </div>
@@ -59,32 +55,37 @@ export default function HomeContainer() {
         <div className="px-8 lg:px-16 py-16 lg:py-10 mt-[3rem] lg:mt-[6rem]  flex flex-col md:flex-row">
 
         <div className='flex-1 flex flex-col items-start justify-center  gap-6'>
-            <div className=" flex items-center gap-2 justify-center bg-orange-500 px-4 py-1
+        <div className=" flex items-center gap-2 justify-center bg-orange-500 px-4 py-1
              rounded-full">
                 <p className='text-base text-white font-semibold'>
-                    Fast Delivery
+                    20% OFF TODAY
                 </p>
                 <div className='w-10 h-10 bg-white rounded-full overflow-hidden'>
                     <img src={Delivery} className='w-full h-full object-contain' alt="bike img" />
                 </div>
             </div>
-            <p className="text-[30px] lg:text-[40px] font-bold tracking-wide text-headingColor mt-4">
-                <span className='text-orange-600'> TIFFINBOX </span> Delivery in <span className='text-orange-600 text-[40px] lg:text-[50px]'> Your City </span>
+            <div className="flex flex-col items-start justify-center">
+            <p className="text-green-600 text-[40px] lg:text-[50px] font-bold tracking-wide  ">
+                SOMETHING HEALTHY
             </p>
-            <p className="text-[20px] lg:text-[30px] font-bold tracking-wide text-headingColor mt-4">
-            <span className='text-orange-600'> FOOD </span> From Home Kitchen To <span className='text-orange-600 '> Your Place </span>
+            <p className="text-orange-600 text-[40px] lg:text-[50px] font-bold tracking-wide  ">
+                SOMETHING TASTY
+            </p>
+            </div>
+            <p className="text-[20px] lg:text-[30px] font-bold tracking-wide text-headingColor mt-4">It is the biggest  <span className='text-orange-600 '> DIGITAL FOOD HOUSE  </span>
             </p>
 
-            <p className="text-textColor text-lg lg:text-xl my-2 ">Healty and Tasty food from our home kitchen to your place. We ensure that the food is hygienic and delicious. Our vision is to provide you with the best food in town and make you feel at home. I promise that you will be satisfied with our food. Test our food now.
+            <p className="text-textColor text-lg lg:text-xl my-2 "><span className="text-orange-600">FOOD HOUSE</span> is a online plateform that brings you the variety of foods in the best prices without compermise hygiene and quality. Healty and tasty food is available here.
+            Order Now.
             </p> 
-            <p className="text-textColor text-lg lg:text-xl font-semibold mt-2 ">For monthly subscription...
+            <p className="text-textColor text-lg lg:text-xl font-semibold mt-2 ">Our monthly premium subscription...
             </p> 
 
 
             <Link to="/order-create">
-            <button className='bg-gradient-to-br from-orange-400 to-orange-500 text-white font-semibold w-full md:w-auto px-4 py-2 rounded-lg hover:shadow-lg transition-all ease-in-out'
+            <button className='bg-gradient-to-br from-[#5066f7] to-[#02135c] text-white font-semibold w-full md:w-auto px-4 py-2 rounded-lg hover:shadow-lg transition-all ease-in-out'
             onClick={ handleCheck }>
-                Order For Monthly 
+                Prime Membership 
             </button>
 
             </Link>

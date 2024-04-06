@@ -8,9 +8,9 @@ import {} from "dotenv/config.js"
 
 
 const app = express();
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
-mongoose.connect("mongodb://localhost:27017/food-delivery")
+mongoose.connect(process.env.MONGODB_URL)
     .then(() => {console.log("Connected to MongoDB");
 })
 .catch((error) => console.log(error))

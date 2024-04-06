@@ -6,13 +6,13 @@
 import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDxME3h_6qgXWHG5QvaHde6HJZVP-7EIKg",
-  authDomain: "fooddeliveryapp-4818c.firebaseapp.com",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
   databaseURL: "https://fooddeliveryapp-4818c-default-rtdb.firebaseio.com",
   projectId: "fooddeliveryapp-4818c",
   storageBucket: "fooddeliveryapp-4818c.appspot.com",
-  messagingSenderId: "833788459560",
-  appId: "1:833788459560:web:74004faebbc2725567931d"
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase

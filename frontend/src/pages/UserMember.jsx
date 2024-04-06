@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react'
-import EmptyCart from "../img/emptyCart.svg";
+import NotFound from "../img/NotFound.svg";
+
 import { useDispatch, useSelector } from 'react-redux';
 import MemberOrder from '../components/MemberOrder';
 import { monthlySubscriptionItem } from '../redux/createSlice/itemSlice';
+import { pageLoader } from '../redux/createSlice/orderSlice';
 export default function UserMember() {
 
     const { monthlySubItems } = useSelector(state => state.item);
     const {currentUser} = useSelector(state => state.user);
     const dispatch = useDispatch();
       useEffect(() => {
-        
+        dispatch(pageLoader(true));
         const fetchOrderData = async(e) => {
           await fetch('/api/user/orderdata', {
             method: 'POST',
@@ -23,12 +25,17 @@ export default function UserMember() {
              
                 dispatch(monthlySubscriptionItem(response));
                 
+                setTimeout(() => {
+                  dispatch(pageLoader(false));
+                }, 800);
               
             })
           })
         }
-    
         fetchOrderData();
+        setTimeout(() => {
+          dispatch(pageLoader(false));
+        }, 800);
       }, [])
      
 
@@ -74,12 +81,12 @@ export default function UserMember() {
                 />
               ))
               : (
-                <div className="w-full h-full flex flex-col items-center justify-center gap-6">
-                  <img src={EmptyCart} className="w-300" alt="" />
-                  <p className="text-xl text-textColor font-semibold">
-                    Add some items to your order
-                  </p>
-                </div>
+                <div className="w-full flex flex-col items-center justify-center">
+          <img src={NotFound} className="h-340" />
+          <p className="text-xl text-headingColor font-semibold my-2">
+            Membership Not Found
+          </p>
+        </div>
                 )}
               
               

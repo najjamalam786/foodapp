@@ -4,7 +4,6 @@ import FoodData from './FoodData';
 
 export default function OrderItems({ orderitem }) {
 
-console.log(orderitem.monthlySub)
   return (
 
     <>

@@ -318,7 +318,7 @@ export const monthlySubscription = async (req, res, next) => {
       const expireTime = new Date(todayYear, todayMonth, todayDate + 1).toDateString();
       const expire = new Date(todayYear, todayMonth, todayDate + 2).toDateString();
 
-    const userE = await Order.findOne({email: req.body.email});
+    const userE = await Order.findOne({email: orderData.email});
     if(userE == null){
         try{
             
@@ -330,7 +330,7 @@ export const monthlySubscription = async (req, res, next) => {
                 
             }).then(async() => {
                 
-                await FoodUser.findOneAndUpdate({email: req.body.email}, {$push: { monthlySub: { success: true, saveDate: new Date().toDateString(), expireDate: expire }} } ).then((response) => {
+                await FoodUser.findOneAndUpdate({email: orderData.email}, {$push: { monthlySub: { success: true, saveDate: new Date().toDateString(), expireDate: expire }} } ).then((response) => {
                     res.status(200).json(response.userCart);
                 });
             });
@@ -363,17 +363,19 @@ export const monthlySubscription = async (req, res, next) => {
 export const orderCreate = async(req, res, next) => {
     const orderData = req.body;
     const userE = await Order.findOne({email: orderData.email});
-
+    // console.log(userE)
+    // console.log('1 order', userE);
     if(userE == null){
         try{
+            // console.log('working', response);
             
             await Order.create({
                 mobile: orderData.mobile,
-                name: orderData.name,
+                username: orderData.username,
                 email: orderData.email,
                 orderItems: [{foodData: orderData.orderItems, shippingAddress: orderData.shippingAddress, totalPrice: orderData.totalPrice, orderDate: new Date().toDateString(), orderTime: new Date().toLocaleTimeString()}],
                 
-            }).then(async() => {
+            }).then(async(response) => {
                 
                 await FoodUser.findOneAndUpdate({email: orderData.email}, {$set: {userCart: []}}, {new: true}).then((response) => {
                     res.status(200).json(response.userCart);
@@ -386,7 +388,7 @@ export const orderCreate = async(req, res, next) => {
 
     else{
         try {
-            await Order.findOneAndUpdate({email: orderData.email}, {$push: {orderItems: [{foodData: orderData.orderItems, shippingAddress: orderData.shippingAddress, totalPrice: orderData.totalPrice, orderDate: new Date().toDateString(), orderTime: new Date().toLocaleTimeString()}],  } },{new: true}).then(async() => {
+            await Order.findOneAndUpdate({email: orderData.email}, {$push: {orderItems: [{foodData: orderData.orderItems, shippingAddress: orderData.shippingAddress, totalPrice: orderData.totalPrice, orderDate: new Date().toDateString(), orderTime: new Date().toLocaleTimeString()}],  } },{new: true}).then(async(response) => {
 
                 await FoodUser.findOneAndUpdate({email: orderData.email}, {$set: {userCart: []}}, {new: true}).then((response) => {
                     res.status(200).json(response.userCart);
@@ -460,7 +462,6 @@ export const userAddress = async (req, res, next) => {
     try {
         const addressData = req.body;
         const response = await FoodUser.findOneAndUpdate({email: addressData.email}, {$addToSet: {userAddress: addressData.shippingAddress}}, {new: true});
-        // console.log("userAddress",response.userAddress);
         res.status(200).json(response);
     } catch (error) {
         next(error)

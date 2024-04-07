@@ -28,7 +28,6 @@ import AboutUs from "./pages/AboutUs";
 import { useSelector } from "react-redux";
 
 
-
 const App = () => {
 
   const { showCart } = useSelector((state) => state.item);

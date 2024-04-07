@@ -50,8 +50,6 @@ export default function UserAddress() {
 
                 <p
                     className="text-slate-800 text-2xl font-semibold p-1 px-2 "
-                // onClick={clearCartItem}
-
                 >
                     Your Address
                 </p>

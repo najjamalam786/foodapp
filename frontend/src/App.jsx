@@ -25,7 +25,8 @@ import UserAddress from "./pages/UserAddress";
 import HelpCenter from "./pages/HelpCenter";
 import ScrollTop from "./components/ScrollTop";
 import AboutUs from "./pages/AboutUs";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
+
 
 
 const App = () => {

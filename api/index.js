@@ -8,7 +8,7 @@ import path from 'path';
 
 
 const app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = 8000;
 
 mongoose.connect(process.env.MONGODB_URL)
     .then(() => {console.log("Connected to MongoDB");
